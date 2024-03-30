@@ -8,8 +8,12 @@ import { CssTransition } from "@mui/base/Transitions";
 import { PopupContext } from "@mui/base/Unstable_Popup";
 import { Link } from "react-router-dom";
 import { Avatar } from "@mui/material";
+import { useAuth } from "./AuthProvider";
 
 const MenuIntroduction = () => {
+
+  const {logOut} = useAuth();
+
   const createHandleMenuClick = (menuItem: string) => {
     return () => {
       switch (menuItem) {
@@ -79,7 +83,7 @@ const MenuIntroduction = () => {
         </MenuItem>
         <MenuItem onClick={createHandleMenuClick("Log out")}>
           {" "}
-          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+          <Link to="#" style={{ textDecoration: "none", color: "inherit" }} onClick={logOut}>
             Log out
           </Link>
         </MenuItem>

@@ -52,8 +52,8 @@ const CustomTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.group}>
+          {rows.map((row, index) => (
+            <TableRow key={index}>
               <TableCell align='center' component="th" scope="row">
                 {row.group}
               </TableCell>

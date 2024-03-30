@@ -1,7 +1,7 @@
 import {
   Route,
   createBrowserRouter,
-  createRoutesFromElements,
+  createRoutesFromElements
 } from "react-router-dom";
 import MainPage from "../components/mainpage/MainPage";
 import AdminDashboard from "../pages/AdminDashboard";
@@ -20,18 +20,28 @@ import UserViewSingleGroup from "../pages/UserViewSingleGroup";
 import UserViewAllMeetings from "../pages/UserViewAllMeetings";
 import UserViewSingleMeetings from "../pages/UserViewSingleMeeting";
 import PrivateRoute from "../components/common/PrivateRoutes";
-import { AuthProvider } from "../components/common/AuthProvider";
+import { AuthProvider, useAuth} from "../components/common/AuthProvider";
+import { useEffect } from "react";
+
+const logoutUser = () => {
+  console.log("fdskfjdsf");
+  const {logout} = useAuth();
+  useEffect(() => {
+    logout();
+  }, [logout]);
+  return null;
+}
 
 const rootRouter = createBrowserRouter(
   createRoutesFromElements(
     <AuthProvider>
       <Route path="/" element={<LandingPage />}></Route>
-      <Route element={<PrivateRoute />}>
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-      </Route>
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
-      {/* <Route path="logout" action={logoutUser} /> */}
+      <Route path="/logout" action={logoutUser} />
+      <Route element={<PrivateRoute />}>
+      <Route path="/admin/dashboard" element={<AdminDashboard />} /></Route>
+      
     </AuthProvider>
   )
 );

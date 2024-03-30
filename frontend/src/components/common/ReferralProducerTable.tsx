@@ -53,8 +53,8 @@ const ReferralProducerTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.fullname}>
+          {rows.map((row, index) => (
+            <TableRow key={index}>
               <TableCell align='center' component="th" scope="row">
                 {row.fullname}
               </TableCell>
