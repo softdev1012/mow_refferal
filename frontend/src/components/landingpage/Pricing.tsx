@@ -181,7 +181,7 @@ export default function Pricing() {
                       }}
                     />
                     <Typography
-                      component="text"
+                      component="div"
                       variant="subtitle2"
                       sx={{
                         color:

@@ -14,6 +14,8 @@ import Features from '../components/landingpage/Features';
 import Testimonials from '../components/landingpage/Testimonials';
 import FAQ from '../components/landingpage/FAQ';
 import Footer from '../components/landingpage/Footer';
+// import { useNavigate } from "react-router-dom";
+// import {useAuth} from '../components/common/AuthProvider';
 
 
 
@@ -28,8 +30,17 @@ const LandingPage = () => {
   const toggleColorMode = () => {
     setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
-
-  
+  // const {user} = useAuth();
+  // const navigate = useNavigate();
+  // React.useEffect(() => {
+    
+  //   console.log(user);
+  //   if (user != null) {
+  //     if (user.roles[0] == 'USER') {
+  //       navigate("/admin/dashboard");
+  //     }
+  //   }
+  // }, []);
 
   return (
     <ThemeProvider theme={showCustomTheme ? defaultTheme : defaultTheme}>

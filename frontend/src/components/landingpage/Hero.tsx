@@ -1,4 +1,3 @@
-import * as React from "react";
 import { alpha } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -69,8 +68,7 @@ export default function Hero() {
               aria-label="Enter your email address"
               placeholder="Your email address"
               inputProps={{
-                autocomplete: "off",
-                ariaLabel: "Enter your email address",
+                autoComplete: "off"
               }}
             />
             <Button variant="contained" color="primary">

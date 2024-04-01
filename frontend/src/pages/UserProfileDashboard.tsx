@@ -3,6 +3,8 @@ import ResponsiveAppBar from "../layouts/ResponsiveAppBar";
 import { CustomAvatar } from "../components";
 import { MainHeader } from "../components/mainpage";
 import PerkCard from "../components/common/Card";
+import { useAuth } from "../components/common/AuthProvider";
+import { useEffect, useState } from "react";
 import {
   AccountInfo,
   BusinessInfo,
@@ -10,7 +12,21 @@ import {
   Total,
 } from "../components/UserProfileDashboard";
 
+
 const UserProfileDashboard: React.FC = () => {
+  const {getInfo} = useAuth();
+  const [userInfo, setUserInfo] = useState<any>(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userData = await getInfo();
+        setUserInfo(userData);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <>
       <ResponsiveAppBar />
@@ -48,13 +64,13 @@ const UserProfileDashboard: React.FC = () => {
                 spacing={1}
               >
                 <Grid item sx={{ fontWeight: 600 }}>
-                  User Name
+                  {userInfo == null? "Name": userInfo.businessname}
                 </Grid>
                 <Grid item sx={{ fontWeight: 600 }}>
                   Phone
                 </Grid>
                 <Grid item sx={{ fontWeight: 600 }}>
-                  Email
+                  {userInfo == null? "Email": userInfo.email}
                 </Grid>
                 <Grid item sx={{ fontWeight: 600 }}>
                   <Button>Edit Profile</Button>

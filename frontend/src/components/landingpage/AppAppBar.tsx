@@ -154,21 +154,18 @@ function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 variant="text"
                 size="small"
                 component="a"
-                href="/material-ui/getting-started/templates/sign-in/"
-                target="_blank"
+                href="/signin"
               >
-                 <Link to="/signin">Sign in</Link>
-
+                Sign in
               </Button>
               <Button
                 color="primary"
                 variant="contained"
                 size="small"
                 component="a"
-                href="/material-ui/getting-started/templates/sign-up/"
-                target="_blank"
+                href="/signup"
               >
-                 <Link to="/signup">Sign Up</Link>
+                Sign Up
               </Button>
             </Box>
             <Box sx={{ display: { sm: '', md: 'none' } }}>

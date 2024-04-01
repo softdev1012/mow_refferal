@@ -1,7 +1,7 @@
 import React from "react";
-import { RouterProvider } from "react-router-dom";
+// import { RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { rootRouter } from "./routes";
+// import { rootRouter } from "./routes";
 import "./App.css";
 import {
   QueryClient,

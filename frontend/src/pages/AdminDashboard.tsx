@@ -1,4 +1,4 @@
-import {GroupChart, MemberChart, RefferalProducerTable, Transfer } from "../components/adminpage";
+import {GroupChart, MemberChart, Transfer } from "../components/adminpage";
 import ResponsiveAppBar from "../layouts/ResponsiveAppBar";
 // import PageHeader from "../layouts/PageHeader";
 // import MainPage from "../components/mainpage/MainPage";

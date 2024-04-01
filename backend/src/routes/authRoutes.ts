@@ -10,6 +10,7 @@ import {
 } from "../validators";
 import { validatePayload } from "../middleware/payloadvalidatorMiddleware";
 import authController from "../controllers/authController";
+import {verifyToken} from "../middleware/authMiddleware";
 
 const authRoute: Router = Router();
 
@@ -18,8 +19,8 @@ authRoute.post("/signup", validatePayload(signupSchema), authController.signup);
 authRoute.get("/verifyuserbyid", validatePayload(verifyItemByIdSchema), authController.verifyUserById);//complete
 // authRoute.post("/forgot-password", validatePayload(verifyItemByEmailSchema), authController.forgotPassword);//complete
 // authRoute.get("/password-reset", authController.resetPassword);
-// authRoute.get("/me", verifyToken, async (req : Request, res : Response) => {
-//     await authController.fetchMe(req, res);
-// });
+authRoute.get("/me", verifyToken, async (req : Request, res : Response) => {
+    await authController.fetchMe(req, res);
+});
 
 export default authRoute;

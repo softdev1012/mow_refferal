@@ -1,6 +1,6 @@
 
 import { useContext, createContext, useState } from "react";
-import { signin as signinFn} from "../../services";
+import { signin as signinFn, fetchMe} from "../../services";
 
 import { useNavigate } from "react-router-dom";
 const AuthContext = createContext<any>(null);
@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }:AuthProviderProps) => {
   const loginAction = async (data:{email:string,password:string}) => {
     try {
       const res = await signinFn(data);
-      console.log("res",res);
+      // console.log("res",res);
       if (res.data) {
         setUser(res.data);
         setToken(res.accessToken);
@@ -30,7 +30,22 @@ export const AuthProvider = ({ children }:AuthProviderProps) => {
     }
   };
 
+  const getInfo = async () => {
+    try {
+      const res = await fetchMe();
+      // console.log("res",res);
+      if (res) {
+        return res;
+      }
+    } catch (err) {
+      // throw new Error(res.message);
+      console.error(err);
+      return null;
+    }
+  };
+
   const logOut = () => {
+
     setUser(null);
     setToken("");
     localStorage.removeItem("site");
@@ -38,7 +53,7 @@ export const AuthProvider = ({ children }:AuthProviderProps) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, loginAction, logOut }}>
+    <AuthContext.Provider value={{ token, user, loginAction, getInfo, logOut}}>
       {children}
     </AuthContext.Provider>
   );
