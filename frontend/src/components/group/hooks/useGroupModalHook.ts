@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+// import { zodResolver } from "@hookform/resolvers/zod";
 import { changeModalStatus, useAppDispatch, useAppSelector } from "../../../store";
 import { useGroupCreateHook, useGroupUpdateHook, useGetGroupHook } from "."; 
 import { ModalStatus } from "../../../types";
@@ -24,7 +24,9 @@ const useGroupModalHook = () => {
         name: z.string(),
         location: z.string(),
         owner: z.string(),
-        profileStatus: z.boolean(), 
+        profileStatus: z.boolean(),
+        logo: z.string(),
+        counterMember: z.number(),
     });
 
     type ValidationSchema = z.infer<typeof validationSchema>;
@@ -34,11 +36,13 @@ const useGroupModalHook = () => {
         location: "",
         owner:"",
         profileStatus: false,
+        logo: "default.png",
+        counterMember: 0
     }
 
     const {register, handleSubmit, reset, formState: {errors}} = useForm<ValidationSchema>({
-        defaultValues: defaultValues,
-        resolver: zodResolver(validationSchema)
+        // defaultValues: defaultValues,
+        // resolver: zodResolver(validationSchema)
     });
 
     useEffect(() => {
@@ -48,22 +52,26 @@ const useGroupModalHook = () => {
           {
             reset({
             name: editablegroup.name,
-          location: editablegroup.location,
-          owner: editablegroup.owner,
+            location: editablegroup.location,
+            owner: editablegroup.owner,
             profileStatus: editablegroup.profileStatus,
+            logo: editablegroup.logo,
+            counterMember: editablegroup.counterMember
           });}
       }, [editablegroup, currentId]);
 
-    const onSubmit: SubmitHandler<ValidationSchema> = async (data: ValidationSchema) => {
-        isEdit ? await updateMutation.mutateAsync({updatedGroup: {...data, _id: null}, _id: currentId}) : await createMutation.mutateAsync({...data, _id: null});
-        dispatch(
-            changeModalStatus({
-              modalStatus: ModalStatus.CLOSE,
-              currentId: undefined,
-            })
-          );
-          reset(defaultValues);
-        };
+    const onSubmit: SubmitHandler<ValidationSchema> = async (data: ValidationSchema) => {   
+      // console.log("submit", data);
+      // return;
+      isEdit ? await updateMutation.mutateAsync({updatedGroup: {...data, _id: null}, _id: currentId}) : await createMutation.mutateAsync({...data, _id: null});
+      dispatch(
+          changeModalStatus({
+            modalStatus: ModalStatus.CLOSE,
+            currentId: undefined,
+          })
+        );
+        reset(defaultValues);
+      };
     return {isOpen, register, handleSubmit, onSubmit, dispatch, errors}
 }
 

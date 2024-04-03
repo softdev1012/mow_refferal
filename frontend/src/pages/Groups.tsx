@@ -8,13 +8,33 @@ import { MainHeader } from "../components/mainpage";
 import GroupList from "../components/group/GroupList";
 import GroupModal from "../components/group/GroupModal";
 import { ConfirmModal } from "../components/group";
+import { useState, useEffect} from "react";
+import { fetchTotals } from "../services";
+
 const Groups: React.FC = () =>{
+
+    const [totGroupNum, setTotGroupNum] = useState(0);
+    const [totMemberNum, setTotMemberNum] = useState(0);
+
+    const fetchTotalNumber = async () => {
+        try {
+            const response =  await fetchTotals();
+            setTotGroupNum(response.totGroupNum);
+            setTotMemberNum(response.totMemberNum);
+        } catch (error) {
+            console.error("Error fetching owners:", error);
+        }
+    };
+    useEffect(() => {
+        fetchTotalNumber();
+    }, []);
+
     return(
         <>
         <ResponsiveAppBar />
         <MainHeader color={"#38B6FF"} title={"Groups/Clan"} hasPlus={true} />
         <Container maxWidth="xl">
-        <Counter items={["Total Groups", "Total Members"]} values={["200","75"]}/>
+        <Counter items={["Total Groups", "Total Members"]} values={[totGroupNum.toString(),totMemberNum.toString()]}/>
         <MainPage>
                 <GroupList/>
         </MainPage>

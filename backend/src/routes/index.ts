@@ -6,6 +6,7 @@ import referralrouter from "./ReferralRoutes";
 import taskrouter from "./TaskRoutes";
 import userrouter from "./UserRoutes";
 import authRoute from "./authRoutes";
+import filerouter from "./FileRoutes";
 
 const router = Router();
 
@@ -15,6 +16,7 @@ router.use('/api/owners', ownerrouter);
 router.use('/api/referrals', referralrouter);
 router.use('/api/groups', grouprouter);
 router.use('/api/meetings', meetingrouter);
+router.use('/api/files', filerouter);
 
 router.use('/account', authRoute);
 

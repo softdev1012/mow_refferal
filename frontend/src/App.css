@@ -7,7 +7,7 @@
  /* b */
 }
 .modal-container {
-  @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white border p-8 w-96 max-h-[550px] overflow-y-auto shadow-md rounded-lg;
+  @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white border p-8 w-96 /*max-h-[550px]*/ overflow-y-auto shadow-md rounded-lg;
   border: none;
 }
 

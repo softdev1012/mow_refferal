@@ -62,7 +62,7 @@ const UserModal: React.FC = () => {
             type="text"
             _id="clan"
             placeholder="Enter the user clan name"
-            autoFocus={false}
+            autoFocus={true}
             required={true}
             label="Clan Name"
             register={register}
@@ -72,7 +72,7 @@ const UserModal: React.FC = () => {
             Clan status:&nbsp;<BaseToogle register={register} status={"clanstatus"}/>
           </div>
           <div className="flex items-start mb-5">
-            Profile Status:&nbsp; <BaseToogle register={register} status={"profilestatus"} />
+            Profile Status:&nbsp; <BaseToogle register={register} status={"profileStatus"} />
           </div>
 
           <div className="flex justify-center"> 

@@ -29,6 +29,17 @@ export interface IBaseInputFieldProps {
   error: string | undefined;
 }
 
+export interface IBaseSelectFieldProps {
+  _id: string;
+  placeholder: string;
+  autoFocus: boolean;
+  required: boolean;
+  label: string;
+  register: any;
+  options: any[];
+  error: string | undefined;
+}
+
 export interface IBaseTextarea {
   _id: string;
   placeholder: string;
@@ -51,4 +62,12 @@ export interface ITaskItemProps {
 export interface IPaginatedTasks {
   data: ITask[];
   pageNumber: number | null;
+}
+
+
+export interface IImageUpload {
+  _id: string;
+  register: any;
+  autoFocus: boolean;
+  required: boolean;
 }

@@ -1,4 +1,5 @@
-import { Group } from "../models";
+import { group } from "console";
+import { Group, Owner } from "../models";
 import { IGroup } from "../types/group";
 
 
@@ -32,6 +33,38 @@ class GroupRepository {
 
     async delete(id:string) {
         return Group.findByIdAndDelete(id);
+    }
+
+    async count(): Promise<number> {
+        try {
+            const totalCount = await Group.countDocuments();
+            return totalCount;
+        } catch (error) {
+            console.error("Error getting total count of documents:", error);
+            throw error; // Rethrow the error to handle it at a higher level
+        }
+    }
+
+    async sum(field: string): Promise<number> {
+        try {
+            const result = await Group.aggregate([
+                {
+                    $group: {
+                        _id: null,
+                        total: { $sum: `$${field}` }
+                    }
+                }
+            ]);
+
+            if (result.length > 0) {
+                return result[0].total;
+            } else {
+                return 0;
+            }
+        } catch (error) {
+            console.error(`Error summing up column ${field}:`, error);
+            throw error;
+        }
     }
 }
 

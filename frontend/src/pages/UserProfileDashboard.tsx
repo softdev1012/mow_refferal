@@ -67,7 +67,7 @@ const UserProfileDashboard: React.FC = () => {
                   {userInfo == null? "Name": userInfo.businessname}
                 </Grid>
                 <Grid item sx={{ fontWeight: 600 }}>
-                  Phone
+                  {userInfo == null? "Phone": userInfo.phone}
                 </Grid>
                 <Grid item sx={{ fontWeight: 600 }}>
                   {userInfo == null? "Email": userInfo.email}

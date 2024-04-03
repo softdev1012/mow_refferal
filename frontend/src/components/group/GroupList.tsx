@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
 import {
   DataGrid,
   GridToolbar,
@@ -14,8 +14,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { changeModalStatus, useAppDispatch } from "../../store";
 import { ModalStatus } from "../../types";
-import { CustomAvatar } from "..";
-import { Grid } from "@mui/material";
+import { IOwner } from "../../types/owner";
+import { fetchOwners } from "../../services";
 
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -25,6 +25,24 @@ const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
 
 const GroupList: React.FC = () => {
   const dispatch = useAppDispatch();
+  const [owners, setOwners] = useState<IOwner[]>();
+  
+  const fetchOwnersList = async () => {
+    try {
+
+      const response =  await fetchOwners(1, 10000000);
+      setOwners(response.data);
+    } catch (error) {
+      console.error("Error fetching owners:", error);
+    }
+  };
+  const getOwnerName = (ownerId: string) : string => {
+    const owner = owners?.find(owner => owner._id === ownerId);
+    return owner?owner.name : "";
+  };
+  useEffect(() => {
+    fetchOwnersList();
+  }, []);
 
   const handleEditClick = (groupId: string) => {
     dispatch(
@@ -44,13 +62,17 @@ const GroupList: React.FC = () => {
     );
   };
 
-  const [page, setPage] = React.useState<number>(1);
+  const [page, setPage] = useState<number>(1);
   const { data: groups } = useGroupListHook(page);
 
   const columns: GridColDef[] = [
     { field: "name", headerName: "Group Name",headerClassName:"custom-header", flex: 1 },
     { field: "location", headerName: "Location/Territory",headerClassName:"custom-header", flex: 1 },
-    { field: "owner", headerName: "Owner",headerClassName:"custom-header", flex: 1 },
+    { field: "owner", headerName: "Owner",headerClassName:"custom-header", flex: 1,
+      renderCell: (params) => {
+          return <span>{params.value?getOwnerName(params.value) : ""}</span>
+      },
+    },
     {
       field: "profileStatus",
       headerName: "Profile Status",
@@ -112,11 +134,11 @@ const GroupList: React.FC = () => {
     // numberOfMembers: group.numberOfMembers,
   }));
 
-  const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
+  const [filterModel, setFilterModel] = useState<GridFilterModel>({
     items: [],
     quickFilterValues: [],
   });
-  const [ignoreDiacritics, setIgnoreDiacritics] = React.useState(true);
+  const [ignoreDiacritics, setIgnoreDiacritics] = useState(true);
 
   return (
     <div style={{ width: "100%" }}>

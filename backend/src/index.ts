@@ -6,6 +6,7 @@ import router from './routes';
 import { errorHandlerMiddleware } from './middleware';
 import dotenv from 'dotenv';
 import referralrouter from './routes/ReferralRoutes';
+import path from "path";
 
 dotenv.config();
 
@@ -23,6 +24,8 @@ const routes= router;
 
 
 app.use("/", routes);
+console.log(__dirname);
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use(errorHandlerMiddleware);
 

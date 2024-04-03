@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { IOwner } from '../types/owner';
 
 const ownerSchema = new mongoose.Schema({
-    name: String,
+  name: String,
   clan: String,
   rank: String,
   clanStatus: Boolean,

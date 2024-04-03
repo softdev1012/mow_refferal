@@ -28,3 +28,9 @@ export const deleteGroup = async (_id: string) => {
   const response = await instance.delete(`${baseUrl}${_id}`);
   return response.data;
 };
+
+export const fetchTotals = async () => {
+  const url = baseUrl + "total/";
+  const response = await instance.get(url);
+  return response.data;
+};

@@ -15,6 +15,8 @@ import ResponsiveAppBar from "../layouts/ResponsiveAppBar";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { register as registerFn} from "../services";
+import { MuiTelInput } from 'mui-tel-input'
+import { useState } from "react";
 
 const defaultTheme = createTheme();
 
@@ -23,15 +25,19 @@ const SignUp = () => {
 
   const {mutate,isPending} = useMutation({
     mutationFn:registerFn
-  })
+  });
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const handleTelInputChange = (value: string) => {
+    setPhoneNumber(value);
+  };
 
   const onSubmit=async (data:any  )=>{
     try{
       await mutate({...data,username:data.firstName})
     }
-catch(err){
-  console.log(err)
-}
+    catch(err){
+      console.log(err)
+    }
   }
   return (
     <>
@@ -90,6 +96,19 @@ catch(err){
                     label="Business Name"
                     autoFocus
                   />
+                </Grid>
+                <Grid item xs={12}>
+                <MuiTelInput
+                  {...register("phone")}
+                  required
+                  label="Phone Number"
+                  id="phone"
+                  fullWidth
+                  autoFocus
+                  defaultCountry="US"
+                  value={phoneNumber}
+                  onChange={handleTelInputChange}
+                />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField

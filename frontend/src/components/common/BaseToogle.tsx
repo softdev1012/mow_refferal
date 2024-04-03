@@ -2,7 +2,10 @@ import { IBaseToogleProps } from "../../types";
 import { useState } from "react";
 
 
-const BaseToogle: React.FC<IBaseToogleProps> = ({ register, status }) => {
+const BaseToogle: React.FC<IBaseToogleProps> = ({
+  register,
+  status,
+}) => {
   const [isChecked, setIsChecked] = useState(register(status));
 
   const handleToggle = () => {

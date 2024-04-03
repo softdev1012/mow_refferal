@@ -4,3 +4,4 @@ export * from './OwnerController';
 export * from './ReferralController';
 export * from './GroupController';
 export * from './MeetingController';
+export * from './FileController';

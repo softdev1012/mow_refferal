@@ -108,3 +108,19 @@ export async function removeUserFromGroup(req: Request, res: Response, next: Nex
         next(error);
     }
 }
+
+
+export async function totalGroup(req: Request, res: Response, next: NextFunction) {
+    
+    try {
+        const total = await GroupRepository.count();
+        const member = await GroupRepository.sum("counterMember");
+        const result = {
+            totGroupNum: total.toString(),
+            totMemberNum: member.toString()
+        };
+        res.status(200).send(result);
+    } catch (error) {
+        next(error);
+    }
+}

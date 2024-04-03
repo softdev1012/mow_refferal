@@ -82,7 +82,7 @@ const OwnerModal: React.FC = () => {
             Clan status:&nbsp;<BaseToogle register={register} status={"clanstatus"}/>
           </div>
           <div className="flex items-start mb-5">
-            Profile Status:&nbsp; <BaseToogle register={register} status={"profilestatus"} />
+            Profile Status:&nbsp; <BaseToogle register={register} status={"profileStatus"} />
           </div>
 
           <div className="flex justify-center"> 

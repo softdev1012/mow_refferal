@@ -16,7 +16,7 @@ import Token from "../models/token";
 
 const signup = async (req: Request, res: Response) => {
   try {
-    const { username, email, password, businessname, street, city, zipcode} = req.body;
+    const { username, email, password, businessname, phone, street, city, zipcode} = req.body;
     console.log(req.body);
 
     const userExists = await User.findOne({ email });
@@ -28,6 +28,7 @@ const signup = async (req: Request, res: Response) => {
       name: username,
       email: email,
       businessname:businessname,
+      phone: phone,
       zipcode:zipcode,
       street:street,
       city:city,
