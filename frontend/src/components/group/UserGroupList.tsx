@@ -10,20 +10,24 @@ import Switch from "@mui/material/Switch";
 import { useGroupListHook } from "./hooks";
 import { IGroup } from "../../types/group";
 import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
 import { changeModalStatus, useAppDispatch } from "../../store";
 import { ModalStatus } from "../../types";
 import { IOwner } from "../../types/owner";
 import { fetchOwners } from "../../services";
+import { Tooltip } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
   month: "long",
   year: "numeric",
 });
 
-const GroupList: React.FC = () => {
+const imageURL = "http://localhost:8001/uploads/";
+
+const UserGroupList: React.FC = () => {
   const dispatch = useAppDispatch();
   const [owners, setOwners] = useState<IOwner[]>();
   
@@ -43,20 +47,16 @@ const GroupList: React.FC = () => {
   useEffect(() => {
     fetchOwnersList();
   }, []);
+  const navigate = useNavigate();
 
-  const handleEditClick = (groupId: string) => {
-    dispatch(
-      changeModalStatus({
-        modalStatus: ModalStatus.EDIT,
-        currentId: groupId,
-      })
-    );
+  const handleViewClick = (groupId: string) => {
+    navigate("/user/singlegroup");
   };
 
-  const handleDeleteClick = (groupId: string) => {
+  const handleJoinClick = (groupId: string) => {
     dispatch(
       changeModalStatus({
-        modalStatus: ModalStatus.REMOVE,
+        modalStatus: ModalStatus.JOIN,
         currentId: groupId,
       })
     );
@@ -66,35 +66,16 @@ const GroupList: React.FC = () => {
   const { data: groups } = useGroupListHook(page);
 
   const columns: GridColDef[] = [
+    { field: "logo", headerName: "Group Logo",headerClassName:"custom-header", flex: 1,
+      renderCell: (params) => (
+        <img src={params.value as string} alt="Group Logo" style={{ width: 50, height: 50 }} />
+      ),
+    },
     { field: "name", headerName: "Group Name",headerClassName:"custom-header", flex: 1 },
     { field: "location", headerName: "Location/Territory",headerClassName:"custom-header", flex: 1 },
     { field: "owner", headerName: "Owner",headerClassName:"custom-header", flex: 1},
-    {
-      field: "profileStatus",
-      headerName: "Profile Status",
-      flex: 1,
-      headerClassName:"custom-header",
-      renderCell: (params) => (
-        <>
-          {" "}
-          <div
-            className={`h-2.5 w-2.5 rounded-full me-2 ${
-              params.value ? "bg-green-500" : "bg-red-500"
-            }`}
-          ></div>
-          <span>{params.value ? "Active" : "Inactive"}</span>
-        </>
-      ),
-    },
-    
-    {
-      field: "dateCreated",
-      headerName: "Data Created",
-      flex: 1,
-      headerClassName:"custom-header",
-      valueFormatter: (params) => dateFormatter.format(params.value),
-    },
     { field: "groupSize", headerName: "# of Members",headerClassName:"custom-header", flex: 1 },
+    { field: "seatRemaining", headerName: "Seats Remaining",headerClassName:"custom-header", flex: 1 },
     {
       field: "actions",
       headerName: "Actions",
@@ -103,18 +84,22 @@ const GroupList: React.FC = () => {
       headerClassName:"custom-header",
       renderCell: (params) => (
         <>
-          <IconButton
-            onClick={() => handleEditClick(params.row.id as string)}
-            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-          >
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            onClick={() => handleDeleteClick(params.row.id as string)}
-            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-          >
-            <DeleteIcon />
-          </IconButton>
+          <Tooltip title="View Group">
+            <IconButton
+              onClick={() => handleViewClick(params.row.id as string)}
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              <VisibilityIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Join Group">
+            <IconButton
+              onClick={() => handleJoinClick(params.row.id as string)}
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              <Diversity3Icon />
+            </IconButton>
+          </Tooltip>
         </>
       ),
     },
@@ -122,11 +107,12 @@ const GroupList: React.FC = () => {
 
   const rows = groups.data.map((group: IGroup) => ({
     id: group._id,
+    logo: imageURL + group.logo,
     name: group.name,
     location: group.location,
     owner: getOwnerName(group.owner),
-    profileStatus: group.profileStatus,
     groupSize: group.groupSize,
+    seatRemaining: group.groupSize - group.counterMember,
     // dateCreated: group.dateCreated,
     // numberOfMembers: group.numberOfMembers,
   }));
@@ -182,4 +168,4 @@ const GroupList: React.FC = () => {
   );
 };
 
-export default GroupList;
+export default UserGroupList;

@@ -13,7 +13,7 @@ const ImageUpload: React.FC<IImageUpload> = ({ _id, register, autoFocus, require
 
     const [previewImage, setPreviewImage] = useState<string>("");
 
-    const _baseURL = "http://localhost:8001/uploads/";
+    const imageURL = "http://localhost:8001/uploads/";
 
     useEffect(() => {
         setPreviewImage("default.png");
@@ -47,7 +47,7 @@ const ImageUpload: React.FC<IImageUpload> = ({ _id, register, autoFocus, require
                         {...register(_id, { value: previewImage })}
                     />
                     <div>
-                        <img className="preview" src={_baseURL + previewImage} alt="" />
+                        <img className="preview" src={imageURL + previewImage} alt="" />
                     </div>
                 </label>
             </div>

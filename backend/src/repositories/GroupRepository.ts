@@ -35,6 +35,10 @@ class GroupRepository {
         return Group.findByIdAndDelete(id);
     }
 
+    async increase(id:string, fieldName: string, inc: number) {
+        return Group.findByIdAndUpdate(id, { $inc: { [fieldName]: inc } }, { new: true });
+    }
+
     async count(): Promise<number> {
         try {
             const totalCount = await Group.countDocuments();

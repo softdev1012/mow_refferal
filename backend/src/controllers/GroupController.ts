@@ -77,9 +77,11 @@ export async function deleteGroup(req: Request, res: Response, next: NextFunctio
 
 export async function addUserToGroup(req: Request, res: Response, next: NextFunction) {
     try {
-        const { userId, groupId } = req.body;
-
+        let { userId, groupId } = req.body;
         // Check if the user and group exist
+        if (userId === "") {
+            userId = req.body.user_id;
+        }
         const userExists = await UserRepository.findById(userId);
         const groupExists = await GroupRepository.findById(groupId);
 
@@ -88,8 +90,13 @@ export async function addUserToGroup(req: Request, res: Response, next: NextFunc
         }
 
         // Create user-group association
+        const dupCheck = await UserGroupRepository.findByUserAndGroup(userId, groupId);
+        if (dupCheck) {
+            return res.status(400).json({ message: 'User already joined to group' });
+        }
+        console.log(dupCheck);
+        const group = await GroupRepository.increase(groupId, "counterMember", 1);
         const userGroup = await UserGroupRepository.create({ group_id:groupId, user_id: userId });
-
         res.status(201).json(userGroup);
     } catch (error) {
         next(error);

@@ -15,8 +15,9 @@ export enum GroupModalStatus {
     name: string;
     location: string;
     owner: string;
-    counterMember:Number;
-    groupSize:Number;
+    logo: string;
+    counterMember:number;
+    groupSize:number;
     profileStatus: boolean;
   }
   

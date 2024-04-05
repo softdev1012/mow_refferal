@@ -4,13 +4,14 @@ import { changeModalStatus } from "../../store";
 import { ModalStatus } from "../../types";
 import { TrushbinIcon } from "../common";
 import OutsideClickHandler from "react-outside-click-handler";
+import Diversity3Icon from '@mui/icons-material/Diversity3';
 
 interface ConfirmModalProps {
   index: string; // Corrected interface definition
 }
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({ index }) => { // Destructure props
-  const { isOpen, dispatch, handleSubmit } = useConfirmModalHook();
+  const { isOpen, modalStatus, dispatch, handleSubmit } = useConfirmModalHook();
 
   return (
     <Modal
@@ -31,9 +32,12 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ index }) => { // Destructur
         }
       >
         <div className="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-          <TrushbinIcon />
+          {
+            modalStatus === "remove" ? <TrushbinIcon /> : <Diversity3Icon />
+          }
+          
           <p className="mb-4 text-gray-500 dark:text-gray-300">
-            Are you sure you want to delete this {index}?
+            Are you sure you want to {modalStatus === "remove" ? "delete" : "join"} this {index}?
           </p>
           <div className="flex items-center justify-center space-x-4">
             <button

@@ -11,6 +11,7 @@ grouprouter.get('/', groupController.getAllGroups);
 grouprouter.get('/:id', groupController.getGroup);
 grouprouter.put('/:id', groupController.updateGroup);
 grouprouter.delete('/:id', groupController.deleteGroup);
+grouprouter.post('/join', verifyToken, groupController.addUserToGroup);
 
 
 export default grouprouter;

@@ -4,7 +4,8 @@ import MainPage from "../components/mainpage/MainPage";
 // import { Box } from "@mui/material";
 import Container from '@mui/material/Container';
 import { MainHeader } from "../components/mainpage";
-import { ReferralList } from "../components/referral";
+import { UserGroupList } from "../components/group";
+import { ConfirmModal } from "../components/group";
 
 const UserViewGroup: React.FC = () =>{
     return(
@@ -14,9 +15,10 @@ const UserViewGroup: React.FC = () =>{
         <MainHeader color={"#38B6FF"} title={"User View Group"} hasPlus={false} />
         <Container maxWidth="xl">
             <MainPage>
-                <ReferralList />
+                <UserGroupList />
             </MainPage>
         </Container>
+        <ConfirmModal index={"Group"} />  
         </>
     );
 }

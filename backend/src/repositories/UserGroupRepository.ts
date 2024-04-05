@@ -26,7 +26,11 @@ class UserGroupRepository {
     }
 
     async deleteByUserAndGroup(userId:string, groupId:string) {
-        return UserGroup.deleteOne({ user: userId, group: groupId });
+        return UserGroup.deleteOne({ user_id: userId, group_id: groupId });
+    }
+
+    async findByUserAndGroup(userId:string, groupId:string) {
+        return UserGroup.findOne({ user_id: userId, group_id: groupId });
     }
 }
 
