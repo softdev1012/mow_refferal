@@ -78,7 +78,7 @@ const GroupModal: React.FC = () => {
           <BaseInputField
             type="text"
             _id="location"
-            placeholder="Enter the group clan name"
+            placeholder="Enter the group location"
             autoFocus={true}
             required={true}
             label="Location/Territory"
@@ -87,13 +87,23 @@ const GroupModal: React.FC = () => {
           />
           <BaseSelectField
             _id="owner"
-            placeholder="Enter the group clan name"
+            placeholder="Select group owner"
             autoFocus={true}
             required={true}
             label="Owner"
             register={register}
             error={errors.owner?.message}
             options={owners? owners : []}
+          />
+          <BaseInputField
+            type="number"
+            _id="groupSize"
+            placeholder="Enter the group size"
+            autoFocus={true}
+            required={true}
+            label="# of Members"
+            register={register}
+            error={errors.groupSize?.message}
           />
           <div className="flex items-start mb-5">
             Profile Status:&nbsp; <BaseToogle register={register} status={"profileStatus"}/>

@@ -70,7 +70,8 @@ export interface IPaginatedTasks {
 
 export interface IImageUpload {
   _id: string;
-  register: any;
-  autoFocus: boolean;
-  required: boolean;
+  register?: any;
+  autoFocus?: boolean;
+  required?: boolean;
+  logo?: string
 }

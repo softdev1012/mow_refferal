@@ -27,6 +27,7 @@ const useGroupModalHook = () => {
         profileStatus: z.boolean(),
         logo: z.string(),
         counterMember: z.number(),
+        groupSize: z.number(),
     });
 
     type ValidationSchema = z.infer<typeof validationSchema>;
@@ -37,7 +38,8 @@ const useGroupModalHook = () => {
         owner:"",
         profileStatus: false,
         logo: "default.png",
-        counterMember: 0
+        counterMember: 1,
+        groupSize: 0,
     }
 
     const {register, handleSubmit, reset, formState: {errors}} = useForm<ValidationSchema>({
@@ -56,13 +58,12 @@ const useGroupModalHook = () => {
             owner: editablegroup.owner,
             profileStatus: editablegroup.profileStatus,
             logo: editablegroup.logo,
-            counterMember: editablegroup.counterMember
+            counterMember: editablegroup.counterMember,
+            groupSize: editablegroup.groupSize,
           });}
       }, [editablegroup, currentId]);
 
-    const onSubmit: SubmitHandler<ValidationSchema> = async (data: ValidationSchema) => {   
-      // console.log("submit", data);
-      // return;
+    const onSubmit: SubmitHandler<ValidationSchema> = async (data: ValidationSchema) => {
       isEdit ? await updateMutation.mutateAsync({updatedGroup: {...data, _id: null}, _id: currentId}) : await createMutation.mutateAsync({...data, _id: null});
       dispatch(
           changeModalStatus({

@@ -98,7 +98,7 @@ const GroupList: React.FC = () => {
       headerClassName:"custom-header",
       valueFormatter: (params) => dateFormatter.format(params.value),
     },
-    
+    { field: "groupSize", headerName: "# of Members",headerClassName:"custom-header", flex: 1 },
     {
       field: "actions",
       headerName: "Actions",
@@ -130,6 +130,7 @@ const GroupList: React.FC = () => {
     location: group.location,
     owner: group.owner,
     profileStatus: group.profileStatus,
+    groupSize: group.groupSize,
     // dateCreated: group.dateCreated,
     // numberOfMembers: group.numberOfMembers,
   }));

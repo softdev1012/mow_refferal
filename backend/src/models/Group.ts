@@ -10,6 +10,7 @@ const groupSchema = new mongoose.Schema({
   },
   profileStatus: Boolean,
   counterMember: Number,
+  groupSize: Number,
   logo: String,
   meetings: [{
     type: mongoose.Schema.Types.ObjectId,
