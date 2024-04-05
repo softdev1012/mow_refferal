@@ -6,7 +6,10 @@ const meetingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Group'
   },
-  groupowner: String,
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Owner'
+  },
   meetingtime: String,
   meetinglink: String,
   meetingStatus: Boolean

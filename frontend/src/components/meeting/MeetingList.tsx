@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {useState, useEffect} from "react";
 import {
   DataGrid,
   GridToolbar,
@@ -14,6 +14,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { changeModalStatus, useAppDispatch } from "../../store";
 import { ModalStatus } from "../../types";
+import { IGroup } from "../../types/group";
+import { IOwner } from "../../types/owner";
+import { fetchGroups, fetchOwners } from "../../services";
 
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -23,6 +26,39 @@ const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
 
 const MeetingList: React.FC = () => {
   const dispatch = useAppDispatch();
+  const [groups, setGroups] = useState<IGroup[]>();
+  const [owners, setOwners] = useState<IOwner[]>();
+  const fetchGroupsList = async () => {
+    try {
+
+      const response =  await fetchGroups(1, 10000000);
+      setGroups(response.data);
+    } catch (error) {
+      console.error("Error fetching owners:", error);
+    }
+  };
+  
+  const fetchOwnersList = async () => {
+    try {
+
+      const response =  await fetchOwners(1, 10000000);
+      setOwners(response.data);
+    } catch (error) {
+      console.error("Error fetching owners:", error);
+    }
+  };
+  useEffect(() => {
+    fetchGroupsList();
+    fetchOwnersList();
+  }, []);
+  const getGroupName = (groupId: string) : string => {
+    const group = groups?.find(group => group._id === groupId);
+    return group?group.name : "";
+  };
+  const getOwnerName = (ownerId: string) : string => {
+    const owner = owners?.find(owner => owner._id === ownerId);
+    return owner?owner.name : "";
+  };
 
   const handleEditClick = (meetingId: string) => {
     dispatch(
@@ -56,15 +92,15 @@ const MeetingList: React.FC = () => {
       headerName: "Meeting Status",
       flex: 1,
       headerClassName:"custom-header",
-      renderCell: () => (
+      renderCell: (params) => (
         <>
           {" "}
           <div
             className={`h-2.5 w-2.5 rounded-full me-2 ${
-              "meeting.profileStatus" ? "bg-green-500" : "bg-red-500"
+              params.value ? "bg-green-500" : "bg-red-500"
             }`}
           ></div>
-          <span>{"meeting.profileStatus" ? "Active" : "Inactive"}</span>
+          <span>{params.value ? "Active" : "Inactive"}</span>
         </>
       ),
     },
@@ -104,8 +140,8 @@ const MeetingList: React.FC = () => {
   const rows = meetings.data.map((meeting: IMeeting) => ({
     id: meeting._id,
     meetingname: meeting.meetingname,
-    groupname: meeting.groupname,
-    groupowner: meeting.groupowner,
+    groupname: getGroupName(meeting.group),
+    groupowner: getOwnerName(meeting.owner),
     meetingtime: meeting.meetingtime,
     meetinglink: meeting.meetinglink,
     meetingStatus: meeting.meetingStatus,

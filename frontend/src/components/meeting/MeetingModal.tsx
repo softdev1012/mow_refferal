@@ -1,14 +1,59 @@
 import Modal from "react-modal";
 import OutsideClickHandler from "react-outside-click-handler";
-import { BaseInputField, BaseToogle } from "../common";
+import { BaseInputField, BaseSelectField, BaseToogle } from "../common";
 import { useMeetingModalHook } from "./hooks";
-import { changeModalStatus } from "../../store";
+import { changeModalStatus, useAppSelector } from "../../store";
 import { ModalStatus } from "../../types";
+import { useState, useEffect} from "react";
+import { IOwner } from "../../types/owner";
+import { fetchGroups, fetchOwners} from "../../services";
+import { IGroup } from "../../types/group";
+import { useGetGroupHook } from "../group";
 
 
 const MeetingModal: React.FC = () => {
-  const { isOpen, register, handleSubmit, onSubmit, dispatch, errors } =
-    useMeetingModalHook();
+  const { isOpen, register, handleSubmit, onSubmit, dispatch, errors } = useMeetingModalHook();
+  const [owners, setOwners] = useState<IOwner[]>();
+  const [groups, setGroups] = useState<IGroup[]>();
+  const [owner, setOwner] = useState("");
+
+  const currentId = useAppSelector(state => state.modalStatus.currentId) as string;
+  const modalStatus = useAppSelector(state => state.modalStatus.modalStatus);
+  const isEdit: boolean = modalStatus === "edit" ? true : false;
+  const { data: editablegroup }  = useGetGroupHook(currentId, isEdit);
+
+  useEffect(() => {
+    fetchOwnersList();
+    fetchGroupList();
+    if (editablegroup) {
+      setOwner(editablegroup.owner);
+    }
+  }, [editablegroup]);
+
+  const fetchOwnersList = async () => {
+    try {
+
+      const response =  await fetchOwners(1, 10000000);
+      setOwners(response.data);
+    } catch (error) {
+      console.error("Error fetching owners:", error);
+    }
+  };
+
+  const fetchGroupList = async () => {
+    try {
+      const response = await fetchGroups(1, 100000000);
+      setGroups(response.data) ;
+    } catch (error) {
+      console.error("Error fetching groups:", error);
+    }
+  }
+
+  const handleOnChange = (value: string) => {
+    const group = groups?.find(group => group._id === value);
+    const owner = group? group.owner : "undefined";
+    setOwner(owner);
+  };
 
   return (
     <Modal
@@ -28,7 +73,7 @@ const MeetingModal: React.FC = () => {
           )
         }
       >
-        <form className="max-w-sm mx-auto" onSubmit={handleSubmit(onSubmit)}>
+        <form className="max-w-sm mx-auto" onSubmit={handleSubmit((data) => onSubmit({ ...data, owner}))}>
           <button
             type="button"
             onClick={() =>
@@ -58,25 +103,27 @@ const MeetingModal: React.FC = () => {
             register={register}
             error={errors.meetingname?.message}
           />
-          <BaseInputField
-            type="text"
-            _id="groupname"
-            placeholder="Enter the meeting clan name"
-            autoFocus={false}
+          <BaseSelectField
+            _id="group"
+            placeholder=""
+            autoFocus={true}
             required={true}
-            label="Group Name"
+            label="Group"
             register={register}
-            error={errors.groupname?.message}
+            error={errors.group?.message}
+            options={groups? groups : []}
+            onChange={handleOnChange}
           />
-          <BaseInputField
-            type="text"
-            _id="groupowner"
-            placeholder="Enter the meeting clan name"
-            autoFocus={false}
-            required={true}
+          <BaseSelectField
+            _id="owner"
+            placeholder=""
+            autoFocus={true}
             label="Owner"
             register={register}
-            error={errors.groupowner?.message}
+            error={errors.owner?.message}
+            value={owner}
+            options={owners? owners : []}
+            readonly={true}
           />
          <BaseInputField
             type="text"
@@ -101,7 +148,7 @@ const MeetingModal: React.FC = () => {
 
           <div className="flex items-start mb-5">
             Meeting Status:&nbsp;{" "}
-            <BaseToogle register={register} status={"meetingstatus"} />
+            <BaseToogle register={register} status={"meetingStatus"} />
           </div>
 
           <div className="flex justify-center">

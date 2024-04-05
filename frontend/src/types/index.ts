@@ -31,13 +31,16 @@ export interface IBaseInputFieldProps {
 
 export interface IBaseSelectFieldProps {
   _id: string;
-  placeholder: string;
-  autoFocus: boolean;
-  required: boolean;
-  label: string;
-  register: any;
-  options: any[];
-  error: string | undefined;
+  placeholder?: string;
+  autoFocus?: boolean;
+  required?: boolean;
+  label?: string;
+  register?: any;
+  options?: any[];
+  error?: string | undefined;
+  readonly?: boolean
+  value?: string
+  onChange?: (value: string) => void
 }
 
 export interface IBaseTextarea {

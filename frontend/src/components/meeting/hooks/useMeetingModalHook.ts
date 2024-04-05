@@ -22,8 +22,8 @@ const useMeetingModalHook = () => {
 
     const validationSchema = z.object({
         meetingname: z.string(),
-        groupname: z.string(),
-        groupowner: z.string(),
+        group: z.string(),
+        owner: z.string(),
         meetingtime: z.string(),
         meetinglink: z.string(),
         meetingStatus: z.boolean(),
@@ -33,11 +33,11 @@ const useMeetingModalHook = () => {
 
     const defaultValues = {
       meetingname: "",
-        groupname: "",
-        groupowner: "",
-        meetingtime: "",
-        meetinglink: "",
-        meetingStatus: false,
+      group: "",
+      owner: "",
+      meetingtime: "",
+      meetinglink: "",
+      meetingStatus: false,
     }
 
     const {register, handleSubmit, reset, formState: {errors}} = useForm<ValidationSchema>({
@@ -51,8 +51,8 @@ const useMeetingModalHook = () => {
         } else if (editablemeeting)
           reset({
             meetingname: editablemeeting.meetingname,
-            groupname: editablemeeting.groupname,
-            groupowner: editablemeeting.meetingowner,
+            group: editablemeeting.group,
+            owner: editablemeeting.owner,
             meetingtime: editablemeeting.meetingtime,
             meetinglink: editablemeeting.meetinglink,
             meetingStatus: editablemeeting.meetingStatus,

@@ -20,7 +20,6 @@ const ImageUpload: React.FC<IImageUpload> = ({ _id, register, autoFocus, require
         if (editablegroup) {
             setPreviewImage(editablegroup.logo);
         }
-        
     }, [editablegroup]);
 
     const upload = (event: React.ChangeEvent<HTMLInputElement>) => {

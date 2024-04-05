@@ -13,8 +13,8 @@ export enum MeetingModalStatus {
   export interface IMeeting {
     _id: string | null;
     meetingname: string;
-    groupname: string;
-    groupowner: string;
+    group: string;
+    owner: string;
     meetingtime: string;
     meetinglink: string;
     meetingStatus: boolean;
