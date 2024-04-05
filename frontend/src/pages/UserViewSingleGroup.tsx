@@ -9,8 +9,27 @@ import { Grid, Typography } from "@mui/material";
 import { MainHeader, MainPage } from "../components/mainpage";
 import { BusinessInfo } from "../components/UserProfileDashboard";
 import { CustomAvatar } from "../components";
+import { useParams } from "react-router-dom";
+import { getGroup } from "../services";
+import { IGroup } from "../types/group";
+import { useEffect, useState } from "react";
 
 const UserViewSingleGroup: React.FC = () => {
+  const { id } = useParams<{ id: string}>();
+  const [groupInfo, setGroupInfo] = useState<IGroup>();
+  const groupId = id? id:"";
+  useEffect(() => {
+    fetchGroupInfo();
+  }, []);
+
+  const fetchGroupInfo = async () => {
+    try {
+      const response =  await getGroup(groupId);
+      setGroupInfo(response);
+    } catch (error) {
+      console.error("Error fetching owners:", error);
+    }
+  };
   return (
     <>
       <ResponsiveAppBar />
@@ -50,7 +69,7 @@ const UserViewSingleGroup: React.FC = () => {
         <Grid container direction="row" sx={{ my: "4rem" }} spacing={2}>
           <Grid item xs={12} md={4}>
             <Typography variant="h3" component="div" fontWeight="bold">
-              Clan/Group Name
+              {groupInfo?.name}
             </Typography>
             <Grid container direction="row" alignItems="center">
               <Grid item xs={12} md={6}>
@@ -95,7 +114,7 @@ const UserViewSingleGroup: React.FC = () => {
           </Grid>
         </Grid>
 
-        <MainPage />
+        {/* <MainPage /> */}
       </Container>
     </>
   );

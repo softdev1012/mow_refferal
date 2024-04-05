@@ -50,7 +50,7 @@ const UserGroupList: React.FC = () => {
   const navigate = useNavigate();
 
   const handleViewClick = (groupId: string) => {
-    navigate("/user/singlegroup");
+    navigate("/user/singlegroup/" + groupId);
   };
 
   const handleJoinClick = (groupId: string) => {

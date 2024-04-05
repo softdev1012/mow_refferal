@@ -95,7 +95,7 @@ function App() {
                         element={<UserViewGroup/>}
                       />
                       <Route
-                        path="/user/singlegroup" 
+                        path="/user/singlegroup/:id" 
                         element={<UserViewSingleGroup/>}
                       />
                       <Route
