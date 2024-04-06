@@ -1,6 +1,6 @@
 import Modal from "react-modal";
 import OutsideClickHandler from "react-outside-click-handler";
-import { BaseInputField, BaseSelectField, BaseToogle } from "../common";
+import { BaseInputField, BaseSelectField, BaseToogle, BaseDateTimePickerField} from "../common";
 import { useMeetingModalHook } from "./hooks";
 import { changeModalStatus, useAppSelector } from "../../store";
 import { ModalStatus } from "../../types";

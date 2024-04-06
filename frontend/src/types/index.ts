@@ -76,3 +76,13 @@ export interface IImageUpload {
   required?: boolean;
   logo?: string
 }
+
+export interface IBaseDateTimePickerFieldProps {
+  _id: string;
+  placeholder?: string;
+  autoFocus?: boolean;
+  required?: boolean;
+  label?: string;
+  register?: any;
+  error?: string | undefined;
+}

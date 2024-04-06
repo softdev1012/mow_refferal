@@ -18,7 +18,7 @@ import Profile from "../pages/Profile";
 import UserViewGroup from "../pages/UserViewGroup";
 import UserViewSingleGroup from "../pages/UserViewSingleGroup";
 import UserViewAllMeetings from "../pages/UserViewAllMeetings";
-import UserViewSingleMeetings from "../pages/UserViewSingleMeeting";
+import UserViewSingleMeetings from "../pages/UserViewSingleMeetings";
 import PrivateRoute from "../components/common/PrivateRoutes";
 import { AuthProvider, useAuth} from "../components/common/AuthProvider";
 import { useEffect } from "react";

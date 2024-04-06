@@ -103,7 +103,7 @@ function App() {
                         element={<UserViewAllMeetings/>}
                       />
                       <Route
-                        path="/user/singlemeeting" 
+                        path="/user/singlemeeting/:id" 
                         element={<UserViewSingleMeetings/>}
                       />
                     </Route>
