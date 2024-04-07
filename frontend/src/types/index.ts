@@ -74,7 +74,9 @@ export interface IImageUpload {
   register?: any;
   autoFocus?: boolean;
   required?: boolean;
-  logo?: string
+  logo?: string;
+  width?: number;
+  height?: number;
 }
 
 export interface IBaseDateTimePickerFieldProps {

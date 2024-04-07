@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 // import { zodResolver } from "@hookform/resolvers/zod";
 import { changeModalStatus, useAppDispatch, useAppSelector } from "../../../store";
 import { useGroupCreateHook, useGroupUpdateHook, useGetGroupHook } from "."; 
 import { ModalStatus } from "../../../types";
+import UploadService from "../../../services/FileUploadService";
 
 const useGroupModalHook = () => {
     const modalStatus = useAppSelector(state => state.modalStatus.modalStatus);
@@ -25,7 +26,7 @@ const useGroupModalHook = () => {
         location: z.string(),
         owner: z.string(),
         profileStatus: z.boolean(),
-        logo: z.string(),
+        logo: z.any(),
         counterMember: z.number(),
         groupSize: z.number(),
     });
@@ -37,7 +38,7 @@ const useGroupModalHook = () => {
         location: "",
         owner:"",
         profileStatus: false,
-        logo: "default.png",
+        logo: undefined,
         counterMember: 1,
         groupSize: 0,
     }
@@ -62,9 +63,23 @@ const useGroupModalHook = () => {
             groupSize: editablegroup.groupSize,
           });}
       }, [editablegroup, currentId]);
+  function isFile(value: any): value is File {
+    return value instanceof File;
+  }
 
     const onSubmit: SubmitHandler<ValidationSchema> = async (data: ValidationSchema) => {
-      isEdit ? await updateMutation.mutateAsync({updatedGroup: {...data, _id: null}, _id: currentId}) : await createMutation.mutateAsync({...data, _id: null});
+      if (data.logo[0] && isFile(data.logo[0])) {
+        const uploadFile = data.logo[0];
+        UploadService.upload(uploadFile, (event: any) => { })
+          .then((response) => {
+              isEdit ? updateMutation.mutateAsync({updatedGroup: {...data, _id: null, logo: response.data.filename}, _id: currentId}) : createMutation.mutateAsync({...data, _id: null, logo: response.data.filename});
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        isEdit ? await updateMutation.mutateAsync({updatedGroup: {...data, _id: null, logo: null}, _id: currentId}) : await createMutation.mutateAsync({...data, _id: null, logo: null});
+      }
       dispatch(
           changeModalStatus({
             modalStatus: ModalStatus.CLOSE,

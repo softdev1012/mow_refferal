@@ -106,19 +106,25 @@ const GroupModal: React.FC = () => {
             error={errors.groupSize?.message}
           />
           <div className="flex items-start mb-5">
-            Profile Status:&nbsp; <BaseToogle register={register} status={"profileStatus"}/>
+            <div className="flex-grow">Profile Status:</div> {/* Align text to left */}
+            <div> {/* Align ImageUpload to right */}
+              <BaseToogle register={register} status={"profileStatus"}/>
+            </div>
           </div>
 
           <div className="flex items-start mb-5">
-            Group Logo
+            <div className="flex-grow">Group Logo:</div> {/* Align text to left */}
+            <div> {/* Align ImageUpload to right */}
+              <ImageUpload
+                _id="logo"
+                register={register}
+                width={100}
+                height={100}
+              />
+            </div>
           </div>
 
-          <ImageUpload
-            _id="logo"
-            autoFocus={true}
-            required={true}
-            register={register}
-          />
+          
 
           <div className="flex justify-center mt-4"> 
             <button

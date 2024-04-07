@@ -30,3 +30,8 @@
   color: white;
   text-align: center;
 }
+.hidden-input {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+}

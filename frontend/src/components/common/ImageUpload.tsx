@@ -1,57 +1,45 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect} from "react";
 import { IImageUpload } from "../../types";
-import UploadService from "../../services/FileUploadService";
 import { useAppSelector } from "../../store";
 import { useGetGroupHook } from "../group";
 
-const ImageUpload: React.FC<IImageUpload> = ({ _id, register, autoFocus, required}) => {
+const ImageUpload: React.FC<IImageUpload> = ({ _id, register, width, height}) => {
 
     const currentId = useAppSelector(state => state.modalStatus.currentId) as string;
     const modalStatus = useAppSelector(state => state.modalStatus.modalStatus);
     const isEdit: boolean = modalStatus === "edit" ? true : false;
     const { data: editablegroup }  = useGetGroupHook(currentId, isEdit);
-
     const [previewImage, setPreviewImage] = useState<string>("");
-
     const imageURL = "http://localhost:8001/uploads/";
 
     useEffect(() => {
-        setPreviewImage("default.png");
-        if (editablegroup) {
-            setPreviewImage(editablegroup.logo);
+        setPreviewImage(imageURL + "default.png");
+        if (editablegroup && editablegroup.logo) {
+            setPreviewImage(imageURL + editablegroup.logo);
         }
     }, [editablegroup]);
 
-    const upload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleUploadedFile = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = event.target.files as FileList;
         const uploadFile = selectedFiles?.[0];
-        if (!uploadFile) return;
-        UploadService.upload(uploadFile, (event: any) => { })
-            .then((response) => {
-                setPreviewImage(response.data.filename);
-            })
-            .catch((err) => {
+        const imageUrl = URL.createObjectURL(uploadFile);
+        setPreviewImage(imageUrl);
+    }
 
-            });
-    };
     return (
-        <div>
-            <div className="row">
-                <label className="btn btn-default p-0">
-                    <input type="file" accept="image/*" onChange={upload} style={{ display: "none" }} />
-                    <input
-                        type="hidden"
-                        id={_id}
-                        autoFocus={autoFocus}
-                        required={required}
-                        {...register(_id, { value: previewImage })}
-                    />
-                    <div>
-                        <img className="preview" src={imageURL + previewImage} alt="" />
-                    </div>
-                </label>
+        <label className="btn btn-default p-0">
+            <input
+                type="file" 
+                accept="image/*"
+                className="hidden-input"
+                name={_id}
+                {...register(_id)}
+                onChange={handleUploadedFile}
+            />
+            <div>
+                <img className="preview" src={previewImage} alt="" width={width} height={height}/>
             </div>
-        </div>
+        </label>
     );
 };
 
