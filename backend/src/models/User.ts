@@ -9,7 +9,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  businessname: {
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
     type: String,
     required: true,
   },
@@ -39,6 +43,34 @@ const userSchema = new mongoose.Schema({
     default: false,
   },
   password: {
+    type: String,
+    required: true,
+  },
+  businessName: {
+    type: String,
+    required: true,
+  },
+  bussinessPhone: {
+    type: String,
+    required: true,
+  },
+  businessEmail: {
+    type: String,
+    required: true,
+  },
+  businessWebsite: {
+    type: String,
+    required: true,
+  },
+  googleLink: {
+    type: String,
+    required: true,
+  },
+  profilePhoto: {
+    type: String,
+    required: true,
+  },
+  businessLogo: {
     type: String,
     required: true,
   },

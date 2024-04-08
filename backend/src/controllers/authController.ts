@@ -13,11 +13,12 @@ import {
 } from "../config";
 import { sendEmail } from "../utils/sendEmail";
 import Token from "../models/token";
+import uploadFile from '../middleware/uploadMiddleware';
 
 const signup = async (req: Request, res: Response) => {
   try {
-    const { username, email, password, businessname, phone, street, city, zipcode} = req.body;
-    console.log(req.body);
+    const { firstName, lastName, email, password, phone, street, city, zipcode, businessName, bussinessPhone, businessEmail, businessWebsite, googleLink, profilePhoto, businessLogo} = req.body;
+    await uploadFile(req, res);
 
     const userExists = await User.findOne({ email });
 
@@ -25,13 +26,21 @@ const signup = async (req: Request, res: Response) => {
     if (userExists) res.status(StatusCodes.BAD_REQUEST).send();
 
     const user = new User({
-      name: username,
+      name: firstName + ' ' + lastName,
+      firstName: firstName,
+      lastName: lastName,
       email: email,
-      businessname:businessname,
       phone: phone,
       zipcode:zipcode,
       street:street,
       city:city,
+      businessName:businessName,
+      bussinessPhone:bussinessPhone,
+      businessEmail:businessEmail,
+      businessWebsite:businessWebsite,
+      googleLink:googleLink,
+      profilePhoto:profilePhoto,
+      businessLogo:businessLogo,
       password: bcrypt.hashSync(password, 8),
     });
     await user.save();

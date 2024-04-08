@@ -78,7 +78,7 @@ const useGroupModalHook = () => {
             console.log(err);
           });
       } else {
-        isEdit ? await updateMutation.mutateAsync({updatedGroup: {...data, _id: null, logo: null}, _id: currentId}) : await createMutation.mutateAsync({...data, _id: null, logo: null});
+        isEdit ? await updateMutation.mutateAsync({updatedGroup: {...data, _id: null, logo: null}, _id: currentId}) : await createMutation.mutateAsync({...data, _id: null, logo: "default.png"});
       }
       dispatch(
           changeModalStatus({

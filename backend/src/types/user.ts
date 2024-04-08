@@ -8,11 +8,11 @@ export interface IUser extends Document {
     isEmailVerified: boolean;
     password: string;
     roles: string;
-    businessname:string;
+    businessName:string;
     city:string;
     street:string;
     zipcode:string;
-    firstname:string;
-    lastname:string;
+    firstName:string;
+    lastName:string;
 }
   

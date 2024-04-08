@@ -64,8 +64,14 @@ const GroupList: React.FC = () => {
 
   const [page, setPage] = useState<number>(1);
   const { data: groups } = useGroupListHook(page);
+  const imageURL = "http://localhost:8001/uploads/";
 
   const columns: GridColDef[] = [
+    { field: "logo", headerName: "Group Logo",headerClassName:"custom-header", flex: 1,
+      renderCell: (params) => (
+        <img src={params.value as string} alt="Group Logo" style={{ width: 50, height: 50 }} />
+      ),
+    },
     { field: "name", headerName: "Group Name",headerClassName:"custom-header", flex: 1 },
     { field: "location", headerName: "Location/Territory",headerClassName:"custom-header", flex: 1 },
     { field: "owner", headerName: "Owner",headerClassName:"custom-header", flex: 1},
@@ -122,6 +128,7 @@ const GroupList: React.FC = () => {
 
   const rows = groups.data.map((group: IGroup) => ({
     id: group._id,
+    logo: imageURL + group.logo,
     name: group.name,
     location: group.location,
     owner: getOwnerName(group.owner),

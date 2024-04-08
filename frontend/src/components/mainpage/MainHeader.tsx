@@ -35,7 +35,7 @@ const MainHeader: React.FC<MainHeaderProps> = ({ color, title, hasPlus }) => {
       <Container maxWidth="xl">
         <Box
           sx={{
-            height: "10rem",
+            height: "5rem",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",

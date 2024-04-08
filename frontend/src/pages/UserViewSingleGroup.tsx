@@ -1,4 +1,4 @@
-import { RefferalProducerTable, Transfer } from "../components/adminpage";
+// import { RefferalProducerTable, Transfer } from "../components/adminpage";
 import ResponsiveAppBar from "../layouts/ResponsiveAppBar";
 // import PageHeader from "../layouts/PageHeader";
 // import MainPage from "../components/mainpage/MainPage";
@@ -6,20 +6,24 @@ import ResponsiveAppBar from "../layouts/ResponsiveAppBar";
 import Container from "@mui/material/Container";
 import Counter from "../components/mainpage/Counter";
 import { Grid, Typography } from "@mui/material";
-import { MainHeader, MainPage } from "../components/mainpage";
+import { MainHeader } from "../components/mainpage";
 import { BusinessInfo } from "../components/UserProfileDashboard";
 import { CustomAvatar } from "../components";
 import { useParams } from "react-router-dom";
-import { getGroup } from "../services";
+import { fetchOwners, getGroup } from "../services";
 import { IGroup } from "../types/group";
 import { useEffect, useState } from "react";
+import { IOwner } from "../types/owner";
 
 const UserViewSingleGroup: React.FC = () => {
   const { id } = useParams<{ id: string}>();
   const [groupInfo, setGroupInfo] = useState<IGroup>();
   const groupId = id? id:"";
+  const [owners, setOwners] = useState<IOwner[]>();
+  
   useEffect(() => {
     fetchGroupInfo();
+    fetchOwnersList();
   }, []);
 
   const fetchGroupInfo = async () => {
@@ -27,8 +31,21 @@ const UserViewSingleGroup: React.FC = () => {
       const response =  await getGroup(groupId);
       setGroupInfo(response);
     } catch (error) {
+      console.error("Error fetching group:", error);
+    }
+  };
+  const fetchOwnersList = async () => {
+    try {
+
+      const response =  await fetchOwners(1, 10000000);
+      setOwners(response.data);
+    } catch (error) {
       console.error("Error fetching owners:", error);
     }
+  };
+  const getOwnerName = (ownerId: string | undefined) : string => {
+    const owner = owners?.find(owner => owner._id === ownerId);
+    return owner?owner.name : "";
   };
   return (
     <>
@@ -68,7 +85,7 @@ const UserViewSingleGroup: React.FC = () => {
 
         <Grid container direction="row" sx={{ my: "4rem" }} spacing={2}>
           <Grid item xs={12} md={4}>
-            <Typography variant="h3" component="div" fontWeight="bold">
+            <Typography variant="h3" component="div" fontWeight="bold" style={{ textAlign: 'left' }}>
               {groupInfo?.name}
             </Typography>
             <Grid container direction="row" alignItems="center">
@@ -78,7 +95,7 @@ const UserViewSingleGroup: React.FC = () => {
               <Grid item xs={12} md={6}>
                 <Grid container direction="column" spacing={1}>
                   <Typography variant="h6" component="div" fontWeight="bold">
-                    Clan/Owner
+                    {getOwnerName(groupInfo?.owner)}
                   </Typography>
                   <Grid item sx={{ fontWeight: 600 }}>
                     User Name

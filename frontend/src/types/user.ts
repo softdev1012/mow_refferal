@@ -16,6 +16,8 @@ export enum UserModalStatus {
     clan: string;
     clanStatus: boolean;
     profileStatus: boolean;
+    businessLogo: any;
+    profilePhoto: any;
   }
   
   export interface IBaseInputFieldProps {

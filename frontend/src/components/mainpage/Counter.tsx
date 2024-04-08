@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 
 interface CounterProps {
   items: string[];
@@ -8,18 +8,20 @@ interface CounterProps {
 
 const Counter: React.FC<CounterProps> = ({ items, values }) => {
   return (
-    <Grid container spacing={4} justifyContent="space-around" alignItems="center" my={8}>
+    <Grid container spacing={4} justifyContent="space-around" alignItems="center" my={1}>
       {items.map((item, index) => (
-        <Grid item key={index}>
-          <div>
-            <Typography variant="h6" gutterBottom>
-              {item}
-            </Typography>
-            <Typography variant="h3" component="div" fontWeight="bold">
-              {values[index]}
-            </Typography>
-          </div>
-        </Grid>
+        <Box
+          sx={{
+            marginY: 2,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+          key={index}
+        >
+          <Typography variant="h5" marginRight={2}> {item} </Typography>
+          <Typography variant="h4" component="div" fontWeight="bold" color={"#0032f3"}> {values[index]} </Typography>
+        </Box>
       ))}
     </Grid>
   );

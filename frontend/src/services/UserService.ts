@@ -1,4 +1,5 @@
 ;
+import { toast } from 'react-toastify';
 import { IPaginatedUsers, IUser } from '../types/user'; 
 import instance from '../utils/axiosInstance';
 
@@ -18,12 +19,23 @@ export const createUser = async (newUser: IUser) => {
 };
 
 export const register = async (newUser: IUser) => {
-  console.log(newUser);
   try{
-  const response = await instance.post("http://localhost:8001/account/signup", newUser);
-  return response.data;
+    const response = await instance.post("http://localhost:8001/account/signup", newUser);
+    toast.success('Register success.', {
+      hideProgressBar: true,
+      autoClose: 5000,
+      type: "success",
+      position: "top-right",
+  });
+    return response.data;
   }catch(err){
     console.log("err",err);
+    toast.error('Error', {
+      hideProgressBar: true,
+      autoClose: 5000,
+      type: "error",
+      position: "top-right",
+  });
   }
 };
 export const signin = async (User: {email:string,password:string}) => {

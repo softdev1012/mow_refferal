@@ -5,31 +5,31 @@ const signupSchema = yup.object({
   body: yup.object({
       firstName: yup
       .string()
-      .required(validationMessages.required("firstname")),
+      .required(validationMessages.required("firstName")),
       lastName: yup
       .string()
-      .required(validationMessages.required("lastname")),
-      businessname: yup
+      .required(validationMessages.required("lastName")),
+      businessName: yup
       .string()
-      .required(validationMessages.required("Businessname")),
+      .required(validationMessages.required("businessName")),
       city: yup
       .string()
-      .required(validationMessages.required("City")),
+      .required(validationMessages.required("city")),
       street: yup
       .string()
-      .required(validationMessages.required("Street")),
+      .required(validationMessages.required("street")),
       zipcode: yup
       .string()
-      .required(validationMessages.required("Zipcode")),
-    email: yup
+      .required(validationMessages.required("zipcode")),
+      email: yup
       .string()
       .email(validationMessages.email)
-      .required(validationMessages.required("Email")),
+      .required(validationMessages.required("email")),
     password: yup
       .string()
       .min(6, validationMessages.password.min)
       .max(255, validationMessages.password.max)
-      .required(validationMessages.required("Password")),
+      .required(validationMessages.required("password")),
     // clan:yup
     //   .string()
     //   .required(validationMessages.required("ClanName")),  
