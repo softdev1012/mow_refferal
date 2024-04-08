@@ -2,7 +2,7 @@ import { Container, Grid, Button, Stack } from "@mui/material";
 import ResponsiveAppBar from "../layouts/ResponsiveAppBar";
 import { CustomAvatar, Perk } from "../components";
 import { MainHeader } from "../components/mainpage";
-import PerkCard from "../components/common/Card";
+import PerkCard from "../components/perk/Card";
 import {
   AccountInfo,
   BusinessInfo,

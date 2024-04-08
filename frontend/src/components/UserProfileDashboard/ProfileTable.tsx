@@ -21,13 +21,13 @@ function createData(
 }
 
 const rows = [
-  createData('Full Name', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
-  createData('Full Name', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
-  createData('Full Name', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
-  createData('Full Name', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
-  createData('Full Name', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
-  createData('Full Name', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
-  createData('Full Name', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
+  createData('Full Name1', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
+  createData('Full Name2', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
+  createData('Full Name3', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
+  createData('Full Name4', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
+  createData('Full Name5', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
+  createData('Full Name6', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
+  createData('Full Name7', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
   
   
   // Add more rows as needed
@@ -67,9 +67,7 @@ const ProfileTable = () => {
                       '&:not(:last-child)': { marginBottom: '8px' },
                     }}
                   >
-                    <TableCell component="th" scope="row">
-                      {row.name}
-                    </TableCell>
+                    <TableCell component="th" scope="row">{row.name}</TableCell>
                     <TableCell align="center">{row.phone}</TableCell>
                     <TableCell align="center">{row.email}</TableCell>
                     <TableCell align="center">{row.description}</TableCell>

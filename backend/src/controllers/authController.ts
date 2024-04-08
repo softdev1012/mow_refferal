@@ -118,8 +118,6 @@ const fetchMe = async (req: Request, res: Response) => {
   const { user_id } = req.body;
   try {
     const user = await User.findOne({ _id: user_id });
-    console.log(user, user_id);
-
     return res.status(StatusCodes.OK).json(user);
   } catch (err) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Server Error");

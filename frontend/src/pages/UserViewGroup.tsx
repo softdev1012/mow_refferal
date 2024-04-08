@@ -11,7 +11,6 @@ const UserViewGroup: React.FC = () =>{
     return(
         <>
         <ResponsiveAppBar />
-  | 
         <MainHeader color={"#38B6FF"} title={"User View Group"} hasPlus={false} />
         <Container maxWidth="xl">
             <MainPage>

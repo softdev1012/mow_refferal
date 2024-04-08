@@ -2,7 +2,7 @@ import { Container, Grid, Button, Typography } from "@mui/material";
 import ResponsiveAppBar from "../layouts/ResponsiveAppBar";
 import { CustomAvatar } from "../components";
 import { MainHeader } from "../components/mainpage";
-import PerkCard from "../components/common/Card";
+import PerkCard from "../components/perk/Card";
 import { useAuth } from "../components/common/AuthProvider";
 import { useEffect, useState } from "react";
 import {
@@ -11,22 +11,38 @@ import {
   ProfileTable,
   Total,
 } from "../components/UserProfileDashboard";
+import { IPerk } from "../types/perk";
+import { fetchPerks } from "../services";
+import { useAppDispatch, changeModalStatus } from "../store";
+import { ModalStatus } from "../types";
+import PerkModal from "../components/perk/PerkModal";
+import ConfirmModal from "../components/perk/ConfirmModal";
+import PerkList from "../components/perk/PerkList";
 
 
 const UserProfileDashboard: React.FC = () => {
   const {getInfo} = useAuth();
   const [userInfo, setUserInfo] = useState<any>(null);
+  const dispatch = useAppDispatch();
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const userData = await getInfo();
-        setUserInfo(userData);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
     fetchData();
   }, []);
+  const fetchData = async () => {
+    try {
+      const userData = await getInfo();
+      setUserInfo(userData);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+  const handleOpenPerkModal = () => {
+    dispatch(
+      changeModalStatus({
+        modalStatus: ModalStatus.OPEN,
+        currentId: undefined,
+      })
+    );
+  };
   return (
     <>
       <ResponsiveAppBar />
@@ -64,7 +80,7 @@ const UserProfileDashboard: React.FC = () => {
                 spacing={1}
               >
                 <Grid item sx={{ fontWeight: 600 }}>
-                  {userInfo == null? "Name": userInfo.businessName}
+                  {userInfo == null? "Name": userInfo.name}
                 </Grid>
                 <Grid item sx={{ fontWeight: 600 }}>
                   {userInfo == null? "Phone": userInfo.phone}
@@ -98,11 +114,9 @@ const UserProfileDashboard: React.FC = () => {
                 spacing={1}
               >
                 <Grid item sx={{ fontWeight: 600 }}>
-                  Add Perk
+                  <Button onClick={handleOpenPerkModal}> Add Perk </Button>
                 </Grid>
-                <PerkCard />
-                <PerkCard />
-                <PerkCard />
+                <PerkList user_id={userInfo?._id}/>
               </Grid>
             </Grid>
           </Grid>
@@ -278,6 +292,8 @@ const UserProfileDashboard: React.FC = () => {
           </Grid>
         </Grid>
       </Container>
+      <PerkModal />
+      <ConfirmModal index={"Perk"} />  
     </>
   );
 };
