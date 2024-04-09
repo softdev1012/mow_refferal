@@ -12,14 +12,14 @@ const Counter: React.FC<CounterProps> = ({ items, values }) => {
       {items.map((item, index) => (
         <Box
           sx={{
-            marginY: 2,
+            marginY: 3,
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "column",
             alignItems: "center",
           }}
           key={index}
         >
-          <Typography variant="h5" marginRight={2}> {item} </Typography>
+          <Typography variant="h5" marginBottom={2}> {item} </Typography>
           <Typography variant="h4" component="div" fontWeight="bold" color={"#0032f3"}> {values[index]} </Typography>
         </Box>
       ))}

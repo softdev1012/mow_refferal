@@ -14,6 +14,7 @@ import { fetchOwners, getGroup } from "../services";
 import { IGroup } from "../types/group";
 import { useEffect, useState } from "react";
 import { IOwner } from "../types/owner";
+import GroupMemberList from "../components/group/GroupMemberList";
 
 const UserViewSingleGroup: React.FC = () => {
   const { id } = useParams<{ id: string}>();
@@ -131,7 +132,7 @@ const UserViewSingleGroup: React.FC = () => {
           </Grid>
         </Grid>
 
-        {/* <MainPage /> */}
+        {/* <GroupMemberList /> */}
       </Container>
     </>
   );

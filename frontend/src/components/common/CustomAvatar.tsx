@@ -5,14 +5,16 @@ import LogoImg from "../../assets/img/Avatar.png";
 interface CustomAvatarProps {
   width: string;
   height: string;
+  url?: string;
 }
 
-const CustomAvatar: React.FC<CustomAvatarProps> = ({ width, height }) => {
+const CustomAvatar: React.FC<CustomAvatarProps> = ({ width, height, url }) => {
+  const imgUrl = url && url != "" ? url : LogoImg
   return (
     <Stack direction="row" spacing={2}>
       <MuiAvatar
         alt="User Name"
-        src={LogoImg}
+        src={imgUrl}
         sx={{ marginTop: "2rem" }}
         style={{
           width: width,

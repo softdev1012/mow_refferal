@@ -63,7 +63,7 @@ function App() {
                         element={<AdminDashboard />}
                       />
                       <Route
-                        path="/user/dashboard" 
+                        path="/users"
                         element={<UsersDashboard />}
                       />
                       <Route

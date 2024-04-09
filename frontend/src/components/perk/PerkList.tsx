@@ -6,7 +6,6 @@ import { useState } from "react";
 const PerkList: React.FC<IPerkListProps> = ({user_id}) => {
 
   const {data: perks} = usePerkListHook(user_id);
-  console.log("eeee", perks);
   return (
     <div style={{ width: "100%" }}>
         {
