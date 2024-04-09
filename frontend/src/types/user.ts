@@ -13,9 +13,19 @@ export enum UserModalStatus {
   export interface IUser {
     _id: string | null;
     name: string;
-    clan: string;
-    clanStatus: boolean;
-    profileStatus: boolean;
+    firstName?: string;
+    lastName?: string;
+    city?: string;
+    street?: string;
+    zipcode?: string;
+    phone?: string;
+    email?: string;
+    businessName?: string;
+    businessEmail?: string;
+    businessWebsite?: string;
+    googleLink?: string;
+    profilePhoto?: string;
+    businessLogo?: string;
   }
   
   export interface IBaseInputFieldProps {

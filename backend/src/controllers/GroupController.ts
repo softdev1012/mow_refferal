@@ -131,3 +131,19 @@ export async function totalGroup(req: Request, res: Response, next: NextFunction
         next(error);
     }
 }
+
+export async function getGroupMembers(req: Request, res: Response, next: NextFunction) {
+    try {
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+
+        const { paginatedData, nextPage } = await GroupService.fetchPaginatedMembers(req.params.id, page, limit);
+        
+        res.status(200).send({
+            data: paginatedData,
+            pageNumber: nextPage
+        });
+    } catch (error) {
+        next(error);
+    }
+}

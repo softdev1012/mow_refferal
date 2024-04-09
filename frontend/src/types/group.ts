@@ -1,3 +1,5 @@
+import { IUser } from "./user";
+
 export enum GroupModalStatus {
     OPEN = "open",
     EDIT = "edit",
@@ -52,6 +54,17 @@ export enum GroupModalStatus {
   
   export interface IPaginatedGroups {
     data: IGroup[];
+    pageNumber: number | null;
+  }
+
+  export interface IMember {
+    _id: string | null;
+    group_id: IGroup;
+    user_id: IUser;
+  }
+  
+  export interface IPaginatedGroupMembers {
+    data: IMember[];
     pageNumber: number | null;
   }
   

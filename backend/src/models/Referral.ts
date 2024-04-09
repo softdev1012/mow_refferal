@@ -2,11 +2,22 @@ import mongoose from 'mongoose';
 import { IReferral } from '../types/referral';
 
 const referralSchema = new mongoose.Schema({
-  groupname: String,
-  fullname: String,
-  phone: String,
-  from: String,
-  value: String,
+  group: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Group'
+  },
+  sender: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  receiver: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  refDate: String,
+  status: String,
+  desc: String,
+  price: Number,
   payStatus: Boolean,
 });
 

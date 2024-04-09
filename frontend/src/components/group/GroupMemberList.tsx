@@ -7,16 +7,16 @@ import {
 } from "@mui/x-data-grid";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-
-import { IUser } from "../../types/user";
 import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import OutboxIcon from '@mui/icons-material/Outbox';
 import { changeModalStatus, useAppDispatch } from "../../store";
 import { ModalStatus } from "../../types";
 import { CustomAvatar } from "..";
-import { Grid } from "@mui/material";
-import { useUserListHook } from "../user";
+import { Grid, Tooltip, Typography } from "@mui/material";
+import useGroupMemberListHook from "./hooks/useGroupMemberListHook";
+import { useParams } from "react-router-dom";
+import { IMember } from "../../types/group";
 
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -26,7 +26,8 @@ const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
 
 const GroupMemberList: React.FC = () => {
   const dispatch = useAppDispatch();
-
+  const { id } = useParams<{ id: string}>();
+  const groupId = id? id:"";
   const handleEditClick = (userId: string) => {
     dispatch(
       changeModalStatus({
@@ -46,13 +47,14 @@ const GroupMemberList: React.FC = () => {
   };
 
   const [page, setPage] = React.useState<number>(1);
-  const { data: users } = useUserListHook(page);
+  const { data: members } = useGroupMemberListHook(groupId, page);
+  const imageURL = "http://localhost:8001/uploads/";
 
   const columns: GridColDef[] = [
     {
       field: "name",
-      headerName: "Name",
-      flex: 1,
+      headerName: "Clan Members",
+      flex: 2,
       headerClassName:"custom-header",
       renderCell: (params) => (
         <div
@@ -62,118 +64,60 @@ const GroupMemberList: React.FC = () => {
           }}
         >
           <Grid item xs={12} md={6}>
-            <CustomAvatar width="3rem" height="3rem" />
+            <CustomAvatar width="5rem" height="5rem" url={params.row.profilePhoto? imageURL + params.row.profilePhoto : ""}/>
           </Grid>{" "}
-          <Grid item xs={12} md={6}>
-            <span>&nbsp;&nbsp;{params.value}</span>
+          <Grid item xs={12} md={6} marginLeft={2}>
+            <div>
+              <Typography variant="body1" align="left">{params.row.name}</Typography>
+              <Typography variant="body2" align="left">{params.row.businessName}</Typography>
+              <Typography variant="body2" align="left">{params.row.phone}</Typography>
+              <Typography variant="body2" align="left">{params.row.email}</Typography>
+            </div>
           </Grid>
         </div>
       ),
     },
     { field: "clan", headerName: "Clan Name", flex: 1,headerClassName:"custom-header"},
-   
+    { field: "rank", headerName: "Clan Rank", flex: 1,headerClassName:"custom-header"},
+    { field: "seat", headerName: "Seat", flex: 1,headerClassName:"custom-header"},
     {
-      field: "clanStatus",
-      headerName: "Clan Status",
-      flex: 1,
-      headerClassName:"custom-header",
-      renderCell: (params) => (
-        <>
-          {" "}
-          <div
-            className={`h-2.5 w-2.5 rounded-full me-2 ${
-              params.value ? "bg-green-500" : "bg-red-500"
-            }`}
-          ></div>
-          <span>{params.value ? "Active" : "Inactive"}</span>
-        </>
-      ),
-    },
-    {
-      field: "profileStatus",
-      headerName: "Profile Status",
-      flex: 1,
-      headerClassName:"custom-header",
-      renderCell: (params) => (
-        <>
-          {" "}
-          <div
-            className={`h-2.5 w-2.5 rounded-full me-2 ${
-              params.value ? "bg-green-500" : "bg-red-500"
-            }`}
-          ></div>
-          <span>{params.value ? "Active" : "Inactive"}</span>
-        </>
-      ),
-    },
-    {
-      field: "dateCreated",
-      headerName: "Data Created",
-      flex: 1,
-      headerClassName:"custom-header",
-      valueFormatter: (params) => dateFormatter.format(params.value),
-    },
-    
-    {
-      field: "actions",
-      headerName: "Actions",
-      sortable: false,
-      width: 120,
-      headerClassName:"custom-header",
-      renderCell: (params) => (
-        <>
-          <IconButton
-            onClick={() => handleEditClick(params.row.id as string)}
-            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-          >
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            onClick={() => handleDeleteClick(params.row.id as string)}
-            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-          >
-            <DeleteIcon />
-          </IconButton>
-        </>
-      ),
-    },
-    {
-        field: "aa",
-        headerName: "",
+        field: "actions",
+        headerName: "Actions",
         sortable: false,
         width: 120,
         headerClassName:"custom-header",
         renderCell: (params) => (
           <>
-            <IconButton
-              onClick={() => handleEditClick(params.row.id as string)}
-              className="text-blue-600 dark:text-blue-500 hover:underline"
-              sx={{fontSize:"1rem"}}
-            >
-              pass
-            </IconButton>
-            <IconButton
-              onClick={() => handleDeleteClick(params.row.id as string)}
-              className="text-blue-600 font-small dark:text-blue-500 hover:underline"
-              sx={{fontSize:"1rem"}}
-            >
-              reset
-            </IconButton>
+            <Tooltip title="View Member Profile">
+              <IconButton
+                onClick={() => handleEditClick(params.row.id as string)}
+                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              >
+                <VisibilityIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Send Referral">
+              <IconButton
+                onClick={() => handleDeleteClick(params.row.id as string)}
+                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              >
+                <OutboxIcon />
+              </IconButton>
+            </Tooltip>
           </>
         ),
-      },
+    },
   ];
 
-  const rows = users.data.map((user: IUser) => ({
-    id: user._id,
-    name: user.name,
-    clan: user.clan,
-    clanStatus: user.clanStatus,
-    profileStatus: user.profileStatus,
-    // dateCreated: user.dateCreated,
-    // numberOfMembers: user.numberOfMembers,
-  }));
-
+  const rows = members?.data.map((member: IMember) => ({
+    id: member._id,
+    name: member.user_id?.name,
+    businessName: member.user_id?.businessName,
+    profilePhoto: member.user_id?.profilePhoto,
+    phone: member.user_id?.phone,
+    email: member.user_id?.email,
+    clan: member.group_id?.name,
+  }))||[];
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [],
     quickFilterValues: [],
@@ -190,7 +134,7 @@ const GroupMemberList: React.FC = () => {
         control={<Switch />}
         label="Ignore diacritics"
       />
-      <div style={{ height: 400, width: "100%" }}>
+      <div style={{ height: 500, width: "100%" }}>
         <DataGrid
           key={ignoreDiacritics.toString()}
           rows={rows}
@@ -203,6 +147,7 @@ const GroupMemberList: React.FC = () => {
           slots={{ toolbar: GridToolbar }}
           slotProps={{ toolbar: { showQuickFilter: true } }}
           ignoreDiacritics={ignoreDiacritics}
+          rowHeight={90}
         />
       </div>
       <div className="flex justify-between mt-4" aria-label="Table navigation">
@@ -215,7 +160,7 @@ const GroupMemberList: React.FC = () => {
         </button>
         <button
           onClick={() => setPage(page + 1)}
-          disabled={!users.pageNumber}
+        //   disabled={!users.pageNumber}
           className="p-2 text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
         >
           Next

@@ -1,5 +1,5 @@
 
-import { IPaginatedGroups, IGroup } from '../types/group'; 
+import { IPaginatedGroups, IGroup, IPaginatedGroupMembers } from '../types/group'; 
 import instance from '../utils/axiosInstance';
 import { fetchMe } from './UserService';
 
@@ -46,5 +46,10 @@ export const joinGroup = async (_id: string) => {
 export const fetchTotals = async () => {
   const url = baseUrl + "total/";
   const response = await instance.get(url);
+  return response.data;
+};
+
+export const fetchGroupMembers = async (_id: string, page: number, limit: number = 10): Promise<IPaginatedGroupMembers> => {
+  const response = await instance.get(`${baseUrl}${_id}` + "/members", {params: { page, limit }});
   return response.data;
 };

@@ -1,10 +1,12 @@
 export interface IReferral extends Document {
     _id: string | null;
-    groupname: string;
-    fullname: string;
-    phone: string;
-    from: string;
-    value: string;
+    group: string | null;
+    sender: string;
+    receiver: string;
+    refDate: string;
+    status: string;
+    desc: string;
+    price: number;
     paystatus: boolean;
 }
   

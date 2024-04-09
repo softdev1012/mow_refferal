@@ -17,7 +17,7 @@ import uploadFile from '../middleware/uploadMiddleware';
 
 const signup = async (req: Request, res: Response) => {
   try {
-    const { firstName, lastName, email, password, phone, street, city, zipcode, businessName, bussinessPhone, businessEmail, businessWebsite, googleLink, profilePhoto, businessLogo} = req.body;
+    const { firstName, lastName, email, password, phone, street, city, zipcode, businessName, businessPhone, businessEmail, businessWebsite, googleLink, profilePhoto, businessLogo} = req.body;
     await uploadFile(req, res);
 
     const userExists = await User.findOne({ email });
@@ -35,7 +35,7 @@ const signup = async (req: Request, res: Response) => {
       street:street,
       city:city,
       businessName:businessName,
-      bussinessPhone:bussinessPhone,
+      businessPhone:businessPhone,
       businessEmail:businessEmail,
       businessWebsite:businessWebsite,
       googleLink:googleLink,

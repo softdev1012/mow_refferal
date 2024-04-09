@@ -18,8 +18,8 @@ import GroupMemberList from "../components/group/GroupMemberList";
 
 const UserViewSingleGroup: React.FC = () => {
   const { id } = useParams<{ id: string}>();
-  const [groupInfo, setGroupInfo] = useState<IGroup>();
   const groupId = id? id:"";
+  const [groupInfo, setGroupInfo] = useState<IGroup>();
   const [owners, setOwners] = useState<IOwner[]>();
   
   useEffect(() => {
@@ -132,7 +132,7 @@ const UserViewSingleGroup: React.FC = () => {
           </Grid>
         </Grid>
 
-        {/* <GroupMemberList /> */}
+        <GroupMemberList />
       </Container>
     </>
   );

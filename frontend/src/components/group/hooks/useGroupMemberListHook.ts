@@ -1,17 +1,17 @@
 import {
-    useSuspenseQuery,
+    useQuery,
   } from "@tanstack/react-query";
-  import { fetchGroups } from "../../../services/GroupService";
-  import { IPaginatedGroups } from "../../../types/group";
+  import { fetchGroupMembers } from "../../../services/GroupService";
+  import { IPaginatedGroupMembers } from "../../../types/group";
   
-  const useGroupListHook = (page: number = 1) => {
-        const queryKey = ["getAllGroupMembers", page];
-        return useSuspenseQuery({
+  const useGroupMemberListHook = (group_id: string, page: number = 1) => {
+        const queryKey = ["getAllGroupMembers", group_id, page];
+        return useQuery({
             queryKey,
-            queryFn: async (): Promise<IPaginatedGroups> =>
-            await fetchGroups(page),
+            queryFn: async (): Promise<IPaginatedGroupMembers> =>
+            await fetchGroupMembers(group_id, page),
         });
     }
   
-  export default useGroupListHook;
+  export default useGroupMemberListHook;
   

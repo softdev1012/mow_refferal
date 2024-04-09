@@ -239,10 +239,10 @@ const SignUp = () => {
                   </Grid>
                   <Grid item xs={12}>
                   <MuiTelInput
-                    {...register("bussinessPhone")}
+                    {...register("businessPhone")}
                     required
                     label="Business Phone Number"
-                    id="bussinessPhone"
+                    id="businessPhone"
                     fullWidth
                     autoFocus
                     defaultCountry="US"
