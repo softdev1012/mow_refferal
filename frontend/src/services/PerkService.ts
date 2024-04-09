@@ -8,11 +8,7 @@ const tokenHeader =  {
 
 
 export const fetchPerks = async (userId: string): Promise<IPerk[]> => {
-  const param = {
-    userId: userId,
-    headers: tokenHeader
-  };
-  const response = await axios.get(baseUrl, param);
+  const response = await axios.get(baseUrl, {params: { userId }, headers: tokenHeader});
   return response.data;
 };
 

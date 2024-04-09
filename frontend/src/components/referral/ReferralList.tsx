@@ -41,25 +41,25 @@ const ReferralList: React.FC = () => {
   const { data: referrals } = useReferralListHook(page);
 
   const columns: GridColDef[] = [
-    { field: "groupname", headerName: "Group Name", flex: 1,headerClassName:"custom-header", },
+    { field: "groupname", headerName: "Group", flex: 1,headerClassName:"custom-header", },
     { field: "fullname", headerName: "Full Name", headerClassName:"custom-header",flex: 1 },
     { field: "phone", headerName: "Phone", headerClassName:"custom-header",flex: 1 },
     { field: "from", headerName: "From", headerClassName:"custom-header",flex: 1 },
-    { field: "value", headerName: "Estimated Value", headerClassName:"custom-header",flex: 1 },
+    { field: "price", headerName: "Estimated Value", headerClassName:"custom-header",flex: 1 },
     {
       field: "paidStatus",
       headerName: "Paid / Unpaid",
       flex: 1,
       headerClassName:"custom-header",
-      renderCell: () => (
+      renderCell: (params) => (
         <>
           {" "}
           <div
             className={`h-2.5 w-2.5 rounded-full me-2 ${
-              "referral.paidStatus" ? "bg-green-500" : "bg-red-500"
+              params.value ? "bg-green-500" : "bg-red-500"
             }`}
           ></div>
-          <span>{"referral.paidStatus" ? "Active" : "Inactive"}</span>
+          <span>{params.value ? "Paid" : "Unpaid"}</span>
         </>
       ),
     },
@@ -91,14 +91,12 @@ const ReferralList: React.FC = () => {
 
   const rows = referrals.data.map((referral: IReferral) => ({
     id: referral._id,
-    groupname: referral.groupname,
-    fullname: referral.fullname,
-    phone: referral.phone,
-    from: referral.from,
-    value: referral.value,
-    paidStatus: referral.paidStatus,
-    // dateCreated: referral.dateCreated,
-    // numberOfMembers: referral.numberOfMembers,
+    groupname: referral.group?.name,
+    fullname: referral.receiver?.name,
+    phone: referral.receiver?.phone,
+    from: referral.sender?.name,
+    price: "$" + referral.price,
+    payStatus: referral.payStatus,
   }));
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({

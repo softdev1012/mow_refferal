@@ -1,11 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import ReferralRepository from '../repositories/ReferralRepository';
 import { ReferralService } from '../service';
+import { UserGroupRepository } from '../repositories';
 
 
 export async function createReferral(req: Request, res: Response, next: NextFunction) {
     try {
-      const referral = await ReferralRepository.create(req.body);
+      const group = await UserGroupRepository.findOneByUser(req.body.user_id);
+      const data = {...req.body, sender: req.body.user_id, status: "Pending", payStatus: false, group: group?.group_id}
+      const referral = await ReferralRepository.create(data);
       res.status(201).send(referral);
     } catch (error) {
       next(error);

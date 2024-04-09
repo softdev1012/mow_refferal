@@ -1,16 +1,54 @@
-import { Container, Grid, Button, Stack } from "@mui/material";
+import { Container, Grid, Button, Stack, Typography } from "@mui/material";
 import ResponsiveAppBar from "../layouts/ResponsiveAppBar";
 import { CustomAvatar, Perk } from "../components";
 import { MainHeader } from "../components/mainpage";
-import PerkCard from "../components/perk/Card";
 import {
-  AccountInfo,
-  BusinessInfo,
-  ProfileTable,
-  Total,
+  BusinessInfo
 } from "../components/UserProfileDashboard";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { fetchPerks, getUser } from "../services";
+import { IUser } from "../types/user";
+import { IPerk } from "../types/perk";
+import { ReferralModal } from "../components/referral";
+import { changeModalStatus, useAppDispatch } from "../store";
+import { ModalStatus } from "../types";
 
 const Profile: React.FC = () => {
+  const { id } = useParams<{ id: string}>();
+  const userId = id? id:"";
+  const [userInfo, setUserInfo] = useState<IUser>();
+  const [perks, setPerks] = useState<IPerk[]>();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    fetchData();
+    fetchPerkData();
+  }, []);
+  const fetchData = async () => {
+    try {
+      const userData = await getUser(userId);
+      setUserInfo(userData);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+  const fetchPerkData = async () => {
+    try {
+      const response = await fetchPerks(userId);
+      setPerks(response);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+  const handleSendReferral = () => {
+    dispatch(
+      changeModalStatus({
+        modalStatus: ModalStatus.OPEN,
+        currentId: userId,
+      })
+    );
+  };
   return (
     <>
       <ResponsiveAppBar />
@@ -34,7 +72,7 @@ const Profile: React.FC = () => {
               }}
             >
               <Grid container item alignItems="center" justifyContent="center">
-                <CustomAvatar width="15rem" height="15rem"/>
+                <CustomAvatar width="15rem" height="15rem" url={userInfo?.profilePhoto}/>
               </Grid>
               <Grid
                 container
@@ -44,17 +82,17 @@ const Profile: React.FC = () => {
                 spacing={1}
               >
                 <Grid item sx={{ fontWeight: 600 }}>
-                  User Name
+                  {userInfo?.name}
                 </Grid>
                 <Grid item sx={{ fontWeight: 600 }}>
-                  Phone
+                  {userInfo?.phone}
                 </Grid>
                 <Grid item sx={{ fontWeight: 600 }}>
-                  Email
+                  {userInfo?.email}
                 </Grid>
-                <Grid item sx={{ fontWeight: 600 }}>
+                {/* <Grid item sx={{ fontWeight: 600 }}>
                   <Button>Edit Profile</Button>
-                </Grid>
+                </Grid> */}
               </Grid>
             </Grid>
           </Grid>
@@ -73,29 +111,38 @@ const Profile: React.FC = () => {
               }}
             >
               <Grid container direction="row">
-                <Grid item xs={12} md={6} >
-                  <BusinessInfo />
+                <BusinessInfo url={userInfo?.businessLogo}/>
+                <Grid item xs={12} md={6} marginLeft={2}>
+                  
+                  <Grid container direction="column" justifyContent="end" alignItems="begin" marginTop={2}>
+                    <Typography variant="h5" align="left">{userInfo?.businessName}</Typography>
+                    <Typography variant="body1" align="left">{userInfo?.businessWebsite}</Typography>
+                    <Typography variant="body1" align="left">{userInfo?.businessPhone}</Typography>
+                    <Typography variant="body1" align="left">{userInfo?.googleLink}</Typography>
+                  </Grid>
                 </Grid>
               </Grid>
               <Stack spacing={2} direction="row" sx={{ marginTop: 2 }}>
                 {" "}
                 {/* Add marginTop style here */}
-                <Button variant="contained" size="large">
+                <Button variant="contained" size="large" onClick={handleSendReferral}>
                   Send Refferal
                 </Button>{" "}
                 {/* Increase size to large */}
               </Stack>
 
               <Grid container direction="row" justifyContent="space-around">
-                <Perk />
-                <Perk />
-                <Perk />
-                <Perk />
+                {
+                  perks && Array.isArray(perks) && perks.map((perk, index) => (
+                    <Perk perk = {perk} key={index}/>
+                ))
+                }
               </Grid>
             </Grid>
           </Grid>
         </Grid>
       </Container>
+      <ReferralModal/>
     </>
   );
 };

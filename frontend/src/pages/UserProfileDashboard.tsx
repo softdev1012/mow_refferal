@@ -24,7 +24,6 @@ const UserProfileDashboard: React.FC = () => {
   const {getInfo} = useAuth();
   const [userInfo, setUserInfo] = useState<any>(null);
   const dispatch = useAppDispatch();
-  const imageURL = "http://localhost:8001/uploads/";
   useEffect(() => {
     fetchData();
   }, []);
@@ -71,7 +70,7 @@ const UserProfileDashboard: React.FC = () => {
               }}
             >
               <Grid container item alignItems="center" justifyContent="center">
-                <CustomAvatar height="15rem" width="15rem" url={imageURL + userInfo?.profilePhoto} />
+                <CustomAvatar height="15rem" width="15rem" url={userInfo?.profilePhoto} />
               </Grid>
               <Grid
                 container

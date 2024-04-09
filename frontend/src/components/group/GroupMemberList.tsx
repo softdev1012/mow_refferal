@@ -15,26 +15,16 @@ import { ModalStatus } from "../../types";
 import { CustomAvatar } from "..";
 import { Grid, Tooltip, Typography } from "@mui/material";
 import useGroupMemberListHook from "./hooks/useGroupMemberListHook";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IMember } from "../../types/group";
-
-const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
 
 const GroupMemberList: React.FC = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string}>();
   const groupId = id? id:"";
-  const handleEditClick = (userId: string) => {
-    dispatch(
-      changeModalStatus({
-        modalStatus: ModalStatus.EDIT,
-        currentId: userId,
-      })
-    );
+  const navigate = useNavigate();
+  const handleViewClick = (userId: string) => {
+    navigate("/user/profile/" + userId);
   };
 
   const handleDeleteClick = (userId: string) => {
@@ -64,7 +54,7 @@ const GroupMemberList: React.FC = () => {
           }}
         >
           <Grid item xs={12} md={6}>
-            <CustomAvatar width="5rem" height="5rem" url={params.row.profilePhoto? imageURL + params.row.profilePhoto : ""}/>
+            <CustomAvatar width="5rem" height="5rem" url={params.row.profilePhoto}/>
           </Grid>{" "}
           <Grid item xs={12} md={6} marginLeft={2}>
             <div>
@@ -90,7 +80,7 @@ const GroupMemberList: React.FC = () => {
           <>
             <Tooltip title="View Member Profile">
               <IconButton
-                onClick={() => handleEditClick(params.row.id as string)}
+                onClick={() => handleViewClick(params.row.user_id as string)}
                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
               >
                 <VisibilityIcon />
@@ -98,7 +88,7 @@ const GroupMemberList: React.FC = () => {
             </Tooltip>
             <Tooltip title="Send Referral">
               <IconButton
-                onClick={() => handleDeleteClick(params.row.id as string)}
+                onClick={() => handleDeleteClick(params.row.user_id as string)}
                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
               >
                 <OutboxIcon />
@@ -111,6 +101,7 @@ const GroupMemberList: React.FC = () => {
 
   const rows = members?.data.map((member: IMember) => ({
     id: member._id,
+    user_id: member.user_id?._id,
     name: member.user_id?.name,
     businessName: member.user_id?.businessName,
     profilePhoto: member.user_id?.profilePhoto,

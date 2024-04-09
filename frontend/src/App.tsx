@@ -83,7 +83,7 @@ function App() {
                         element={<Meeting/>}
                       />
                        <Route
-                        path="/user/profile" 
+                        path="/user/profile/:id" 
                         element={<Profile/>}
                       />
                       <Route

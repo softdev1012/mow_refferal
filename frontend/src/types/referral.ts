@@ -13,12 +13,14 @@ export enum ModalStatus {
   
   export interface IReferral {
     _id: string | null;
-    groupname: string;
-    fullname: string;
-    phone: string;
-    from: string;
-    value: string;
-    paidStatus: boolean;
+    group?: any;
+    sender?: any;
+    receiver?: any;
+    refDate?: string;
+    status?: string;
+    desc?: string;
+    price?: number;
+    payStatus?: boolean;
   }
   
   export interface IBaseInputFieldProps {

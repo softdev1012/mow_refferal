@@ -22,6 +22,7 @@ export enum UserModalStatus {
     email?: string;
     businessName?: string;
     businessEmail?: string;
+    businessPhone?: string;
     businessWebsite?: string;
     googleLink?: string;
     profilePhoto?: string;

@@ -1,7 +1,6 @@
 import { usePerkListHook } from "./hook";
-import { IPerk, IPerkListProps } from "../../types/perk";
+import { IPerkListProps } from "../../types/perk";
 import PerkCard from "./Card";
-import { useState } from "react";
 
 const PerkList: React.FC<IPerkListProps> = ({user_id}) => {
 

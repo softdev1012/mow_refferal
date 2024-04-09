@@ -1,14 +1,13 @@
 import Modal from "react-modal";
 import OutsideClickHandler from "react-outside-click-handler";
-import { BaseInputField, BaseToogle } from "../common";
-import { useReferralModalHook } from "./hooks";
+import { BaseInputField, BaseTextarea } from "../common";
+import { useReferralCreateModalHook } from "./hooks";
 import { changeModalStatus } from "../../store";
 
 import { ModalStatus } from "../../types";
 
-const ReferralModal: React.FC = () => {
-  const { isOpen, register, handleSubmit, onSubmit, dispatch, errors } =
-    useReferralModalHook();
+const ReferralCreateModal: React.FC = () => {
+  const { isOpen, register, handleSubmit, onSubmit, dispatch, errors } = useReferralCreateModalHook();
 
   return (
     <Modal
@@ -45,42 +44,35 @@ const ReferralModal: React.FC = () => {
           </button>
           <div className="mb-5">
             <h1 className="flex justify-center mb-4 text-3xl font-bold text-gray-500 dark:text-gray-300">
-              Create a new referral
+              Send a new referral
             </h1>
           </div>
           <BaseInputField
-            type="text"
-            _id="name"
-            placeholder="Enter the referral name"
+            type="number"
+            _id="price"
+            placeholder="Enter the Estimated Value"
             autoFocus={true}
             required={true}
-            label="Referral Name"
+            label="Estimated Value"
             register={register}
-            error={errors.name?.message}
+            error={errors.price?.message}
           />
-          <BaseInputField
-            type="text"
-            _id="clan"
-            placeholder="Enter the referral clan name"
-            autoFocus={false}
+          <BaseTextarea
+            _id="desc"
+            placeholder="Enter the Description"
+            row={5}
             required={true}
-            label="Clan Name"
+            label="Description"
             register={register}
-            error={errors.clan?.message}
+            error={errors.desc?.message}
           />
-          <div className="flex items-start mb-5">
-            Clan status:&nbsp;<BaseToogle register={register} status={"clanstatus"}/>
-          </div>
-          <div className="flex items-start mb-5">
-            Profile Status:&nbsp; <BaseToogle register={register} status={"profileStatus"} />
-          </div>
 
           <div className="flex justify-center"> 
             <button
               type="submit"
               className="w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
             >
-              Create
+              Send
             </button>
           </div>
         </form>
@@ -89,4 +81,4 @@ const ReferralModal: React.FC = () => {
   );
 };
 
-export default ReferralModal;
+export default ReferralCreateModal;

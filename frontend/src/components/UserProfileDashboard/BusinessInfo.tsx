@@ -1,13 +1,20 @@
 import MuiAvatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import LogoImg from "../../assets/img/business.png";
+import React from 'react';
 
-const BusinessInfo = () => {
+interface BusinessInfoProps {
+  url?: string;
+}
+
+const BusinessInfo: React.FC<BusinessInfoProps> = ({ url }) => {
+  const baseURL = "http://localhost:8001/uploads/";
+  const imgUrl = url && url != "" ? baseURL + url : LogoImg
   return (
     <Stack direction="row" spacing={2}>
       <MuiAvatar
         alt="Business Logo"
-        src={LogoImg}
+        src={imgUrl}
         sx={{
           marginTop: "2rem",
           width: "10rem",

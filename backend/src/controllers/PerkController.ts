@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { PerkRepository } from '../repositories';
+import { log } from 'console';
 
 export async function createPerk(req: Request, res: Response, next: NextFunction) {
     try {

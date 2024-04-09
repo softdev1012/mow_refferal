@@ -1,6 +1,6 @@
 import Modal from "react-modal";
 import OutsideClickHandler from "react-outside-click-handler";
-import { BaseInputField } from "../common";
+import { BaseInputField, BaseTextarea } from "../common";
 import { usePerkModalHook } from "./hook";
 import { changeModalStatus } from "../../store";
 
@@ -67,11 +67,10 @@ const PerkModal: React.FC = () => {
             register={register}
             error={errors.price?.message}
           />
-          <BaseInputField
-            type="text"
+          <BaseTextarea
             _id="desc"
-            placeholder="Description"
-            autoFocus={false}
+            placeholder="Enter the Description"
+            row={5}
             required={true}
             label="Description"
             register={register}

@@ -9,7 +9,8 @@ interface CustomAvatarProps {
 }
 
 const CustomAvatar: React.FC<CustomAvatarProps> = ({ width, height, url }) => {
-  const imgUrl = url && url != "" ? url : LogoImg
+  const baseURL = "http://localhost:8001/uploads/";
+  const imgUrl = url && url != "" ? baseURL + url : LogoImg
   return (
     <Stack direction="row" spacing={2}>
       <MuiAvatar

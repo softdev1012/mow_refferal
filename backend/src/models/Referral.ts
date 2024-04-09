@@ -14,12 +14,11 @@ const referralSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
-  refDate: String,
   status: String,
   desc: String,
   price: Number,
   payStatus: Boolean,
-});
+}, { timestamps: true });
 
 const Referral = mongoose.model<IReferral>('Referral', referralSchema);
 

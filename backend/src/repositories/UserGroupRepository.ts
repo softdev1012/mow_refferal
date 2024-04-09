@@ -38,6 +38,10 @@ class UserGroupRepository {
     async findByGroup(groupId:string) {
         return UserGroup.find({group_id: groupId }).populate('user_id').populate('group_id');
     }
+    async findOneByUser(userId:string) {
+        return UserGroup.findOne({ user_id: userId});
+    }
+
 }
 
 export default new UserGroupRepository();

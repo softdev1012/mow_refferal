@@ -9,7 +9,7 @@ class ReferralRepository {
     }
 
     async findAll(): Promise<IReferral[]> {
-        return Referral.find();
+        return Referral.find().populate('group').populate('sender').populate('receiver');
     }
 
     async findById(id: string): Promise<IReferral | null> {

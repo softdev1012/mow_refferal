@@ -3,7 +3,6 @@ export interface IReferral extends Document {
     group: string | null;
     sender: string;
     receiver: string;
-    refDate: string;
     status: string;
     desc: string;
     price: number;
