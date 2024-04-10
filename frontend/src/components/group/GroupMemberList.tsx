@@ -27,10 +27,10 @@ const GroupMemberList: React.FC = () => {
     navigate("/user/profile/" + userId);
   };
 
-  const handleDeleteClick = (userId: string) => {
+  const handleSendClick = (userId: string) => {
     dispatch(
       changeModalStatus({
-        modalStatus: ModalStatus.REMOVE,
+        modalStatus: ModalStatus.OPEN,
         currentId: userId,
       })
     );
@@ -87,7 +87,7 @@ const GroupMemberList: React.FC = () => {
             </Tooltip>
             <Tooltip title="Send Referral">
               <IconButton
-                onClick={() => handleDeleteClick(params.row.user_id as string)}
+                onClick={() => handleSendClick(params.row.user_id as string)}
                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
               >
                 <OutboxIcon />

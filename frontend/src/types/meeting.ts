@@ -18,6 +18,7 @@ export enum MeetingModalStatus {
     meetingtime: string;
     meetinglink: string;
     meetingStatus: boolean;
+    createdAt?: string | number | Date
   }
   
   export interface IBaseInputFieldProps {

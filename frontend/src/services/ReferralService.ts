@@ -32,8 +32,10 @@ export const deleteReferral = async (_id: string) => {
   return response.data;
 };
 
-export const fetchReferralTotals = async () => {
+export const fetchReferralTotals = async (group_id?:string) => {
+  let params = {};
+  if (group_id) params = {...params, group_id: group_id};
   const url = baseUrl + "total/";
-  const response = await instance.get(url);
+  const response = await instance.get(url, {params: params});
   return response.data;
 };

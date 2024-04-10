@@ -10,14 +10,29 @@ import { Grid } from "@mui/material";
 import { MainHeader } from "../components/mainpage";
 import CustomTable from "../components/common/Table";
 import ReferralProducerTable from "../components/common/ReferralProducerTable";
+import { useEffect, useState } from "react";
+import { fetchReferralTotals } from "../services";
 const AdminDashboard: React.FC = () => {
+  const [totals, setTotals] = useState<any>();
+  const totArr = [totals?.totReferral, totals?.totClosedReferral, totals?.totgenerated, totals?.totClosedReferral, totals?.totUnclosedReferral]
+  useEffect(() => {
+    fetchRefTotal();
+  }, []);
+  const fetchRefTotal = async () => {
+    try {
+      const response =  await fetchReferralTotals();
+      setTotals(response);
+    } catch (error) {
+      console.error("Error fetching group:", error);
+    }
+  };
   return (
     <>
       <ResponsiveAppBar />
       <MainHeader color={"#D9D9D9"} title={"Admin Dashboard"} hasPlus={false} />
       <Container maxWidth="xl">
         <Transfer />
-        <Counter items={["Total Referrals", "Total Closed Referrals", "Total Revenue Generated  Referrals", "Total Perks Received","Total Unclosed Referrals"]} values={["200","75","$500,000","75","125"]}/>
+        <Counter items={["Total Referrals", "Total Closed Referrals", "Total Revenue Generated  Referrals", "Total Perks Received","Total Unclosed Referrals"]} values={totArr}/>
         <Grid container spacing={2}>
             <Grid item xs={12} md={4}>
             <CustomTable />

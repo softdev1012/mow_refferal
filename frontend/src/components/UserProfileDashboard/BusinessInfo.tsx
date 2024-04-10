@@ -5,7 +5,7 @@ import React from 'react';
 import { IMAGE_URL } from '../../utils/constants';
 
 interface BusinessInfoProps {
-  url?: string;
+  url?: string | null;
 }
 
 const BusinessInfo: React.FC<BusinessInfoProps> = ({ url }) => {

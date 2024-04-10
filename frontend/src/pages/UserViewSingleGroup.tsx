@@ -10,27 +10,50 @@ import { MainHeader } from "../components/mainpage";
 import { BusinessInfo } from "../components/UserProfileDashboard";
 import { CustomAvatar } from "../components";
 import { useParams } from "react-router-dom";
-import { fetchOwners, getGroup } from "../services";
+import { fetchOwners, fetchReferralTotals, getGroup, recentMeeting } from "../services";
 import { IGroup } from "../types/group";
 import { useEffect, useState } from "react";
 import { IOwner } from "../types/owner";
 import GroupMemberList from "../components/group/GroupMemberList";
+import { ReferralCreateModal } from "../components/referral";
+import { IMeeting } from "../types/meeting";
 
 const UserViewSingleGroup: React.FC = () => {
   const { id } = useParams<{ id: string}>();
   const groupId = id? id:"";
   const [groupInfo, setGroupInfo] = useState<IGroup>();
   const [owners, setOwners] = useState<IOwner[]>();
+  const [totals, setTotals] = useState<any>();
+  const [meeting, setMeeting] = useState<IMeeting>();
+  const totArr = [totals?.totReferral, totals?.totClosedReferral, totals?.totgenerated, totals?.totClosedReferral]
   
   useEffect(() => {
     fetchGroupInfo();
     fetchOwnersList();
+    fetchRefTotal();
+    fetchRecentMeeting();
   }, []);
 
   const fetchGroupInfo = async () => {
     try {
       const response =  await getGroup(groupId);
       setGroupInfo(response);
+    } catch (error) {
+      console.error("Error fetching group:", error);
+    }
+  };
+  const fetchRefTotal = async () => {
+    try {
+      const response =  await fetchReferralTotals(groupId);
+      setTotals(response);
+    } catch (error) {
+      console.error("Error fetching group:", error);
+    }
+  };
+  const fetchRecentMeeting = async () => {
+    try {
+      const response =  await recentMeeting(groupId);
+      setMeeting(response);
     } catch (error) {
       console.error("Error fetching group:", error);
     }
@@ -67,7 +90,7 @@ const UserViewSingleGroup: React.FC = () => {
             justifyContent="center"
             alignItems= "center" // Align the content to the center on medium screens
           >
-            <BusinessInfo />
+            <BusinessInfo url={groupInfo?.logo}/>
           </Grid>
 
           {/* Counter component */}
@@ -79,7 +102,7 @@ const UserViewSingleGroup: React.FC = () => {
                 "Total Revenue Generated Referrals",
                 "Total Perks Received",
               ]}
-              values={["200", "75", "$500,000", "75"]}
+              values={totArr}
             />
           </Grid>
         </Grid>
@@ -113,10 +136,10 @@ const UserViewSingleGroup: React.FC = () => {
           </Grid>
           <Grid item xs={12} md={8}>
             <Typography variant="h6" component="div" fontWeight="bold">
-              Meeting Time: *******
+              Meeting Time: {meeting?.meetingtime}
             </Typography>
             <Typography variant="h6" component="div" fontWeight="bold">
-              Meeting Link: *******
+              Meeting Link: {meeting?.meetinglink}
             </Typography>
             <Grid item sx={{ textAlign: "left", mt: "3rem" }}>
               <Typography variant="h6" component="div" fontWeight="bold">
@@ -134,6 +157,7 @@ const UserViewSingleGroup: React.FC = () => {
 
         <GroupMemberList />
       </Container>
+      <ReferralCreateModal />
     </>
   );
 };

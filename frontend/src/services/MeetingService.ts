@@ -28,3 +28,11 @@ export const deleteMeeting = async (_id: string) => {
   const response = await instance.delete(`${baseUrl}${_id}`);
   return response.data;
 };
+
+export const recentMeeting = async (group_id: string) => {
+  let params = {};
+  if (group_id) params = {...params, group_id: group_id};
+  const url = baseUrl + "recent/";
+  const response = await instance.get(url, {params: params});
+  return response.data;
+};

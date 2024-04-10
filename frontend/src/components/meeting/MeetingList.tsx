@@ -18,7 +18,7 @@ import { IGroup } from "../../types/group";
 import { IOwner } from "../../types/owner";
 import { fetchGroups, fetchOwners } from "../../services";
 
-const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
   month: "long",
   year: "numeric",
@@ -145,7 +145,7 @@ const MeetingList: React.FC = () => {
     meetingtime: meeting.meetingtime,
     meetinglink: meeting.meetinglink,
     meetingStatus: meeting.meetingStatus,
-    // dateCreated: meeting.dateCreated,
+    dateCreated: meeting.createdAt ? new Date(meeting.createdAt) : ""
     // numberOfMembers: meeting.numberOfMembers,
   }));
 
