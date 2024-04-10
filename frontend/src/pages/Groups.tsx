@@ -9,7 +9,7 @@ import GroupList from "../components/group/GroupList";
 import GroupModal from "../components/group/GroupModal";
 import { ConfirmModal } from "../components/group";
 import { useState, useEffect} from "react";
-import { fetchTotals } from "../services";
+import { fetchGroupTotals } from "../services";
 
 const Groups: React.FC = () =>{
 
@@ -18,7 +18,7 @@ const Groups: React.FC = () =>{
 
     const fetchTotalNumber = async () => {
         try {
-            const response =  await fetchTotals();
+            const response =  await fetchGroupTotals();
             setTotGroupNum(response.totGroupNum);
             setTotMemberNum(response.totMemberNum);
         } catch (error) {

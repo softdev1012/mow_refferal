@@ -9,7 +9,7 @@ import UsersDashboard from "../pages/UsersDashboard";
 import Groups from "../pages/Groups";
 import OwnerDashboard from "../pages/OwnerDashboard";
 import Meeting from "../pages/Meeting";
-import RefferalDashboard from "../pages/RefferalDashboard";
+import ReferralDashboard from "../pages/ReferralDashboard";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import LandingPage from "../pages/LandingPage";
@@ -105,8 +105,8 @@ const rootRouter = createBrowserRouter(
 //         element: <Groups />
 //     },
 //     {
-//         path:'/refferal/dashboard',
-//         element: <RefferalDashboard />
+//         path:'/referral/dashboard',
+//         element: <ReferralDashboard />
 //     }
 // ]);
 

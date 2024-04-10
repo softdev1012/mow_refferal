@@ -1,6 +1,6 @@
 import Modal from "react-modal";
 import OutsideClickHandler from "react-outside-click-handler";
-import { BaseInputField, BaseSelectField, BaseToogle, BaseDateTimePickerField} from "../common";
+import { BaseInputField, BaseSelectField, BaseToogle} from "../common";
 import { useMeetingModalHook } from "./hooks";
 import { changeModalStatus, useAppSelector } from "../../store";
 import { ModalStatus } from "../../types";
@@ -9,6 +9,7 @@ import { IOwner } from "../../types/owner";
 import { fetchGroups, fetchOwners} from "../../services";
 import { IGroup } from "../../types/group";
 import { useGetGroupHook } from "../group";
+import GoogleMeeting from "../common/GoogleMeeting";
 
 
 const MeetingModal: React.FC = () => {
@@ -135,6 +136,7 @@ const MeetingModal: React.FC = () => {
             register={register}
             error={errors.meetingtime?.message}
           />
+          <GoogleMeeting />
           <BaseInputField
             type="text"
             _id="meetinglink"

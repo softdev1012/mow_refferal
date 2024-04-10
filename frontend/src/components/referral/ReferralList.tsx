@@ -47,7 +47,7 @@ const ReferralList: React.FC = () => {
     { field: "from", headerName: "From", headerClassName:"custom-header",flex: 1 },
     { field: "price", headerName: "Estimated Value", headerClassName:"custom-header",flex: 1 },
     {
-      field: "paidStatus",
+      field: "payStatus",
       headerName: "Paid / Unpaid",
       flex: 1,
       headerClassName:"custom-header",

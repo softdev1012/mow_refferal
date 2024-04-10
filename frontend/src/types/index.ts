@@ -57,6 +57,8 @@ export interface IBaseTextarea {
 export interface IBaseToogleProps {
   register: any;
   status: string;
+  trueText?: string;
+  falseText?: string;
 }
 
 export interface ITaskItemProps {

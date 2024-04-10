@@ -1,4 +1,4 @@
-// import { RefferalProducerTable, Transfer } from "../components/adminpage";
+// import { ReferralProducerTable, Transfer } from "../components/adminpage";
 import ResponsiveAppBar from "../layouts/ResponsiveAppBar";
 // import PageHeader from "../layouts/PageHeader";
 // import MainPage from "../components/mainpage/MainPage";
@@ -74,8 +74,8 @@ const UserViewSingleGroup: React.FC = () => {
           <Grid item xs={12} md={9}>
             <Counter
               items={[
-                "Total Refferals",
-                "Total Closed Refferals",
+                "Total Referrals",
+                "Total Closed Referrals",
                 "Total Revenue Generated Referrals",
                 "Total Perks Received",
               ]}

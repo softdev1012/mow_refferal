@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Chart from 'react-apexcharts';
 
-const RefferalChart: React.FC = () => {
+const ReferralChart: React.FC = () => {
     useEffect(() => {
         const options = {
             series: [{
@@ -22,7 +22,7 @@ const RefferalChart: React.FC = () => {
                 curve: 'straight'
             },
             title: {
-                text: 'Refferals',
+                text: 'Referrals',
                 align: 'left'
             },
             grid: {
@@ -36,20 +36,20 @@ const RefferalChart: React.FC = () => {
             }
         };
 
-        const chart_refferal = new ApexCharts(document.querySelector("#chart_refferal"), options);
-        chart_refferal.render();
+        const chart_referral = new ApexCharts(document.querySelector("#chart_referral"), options);
+        chart_referral.render();
 
         // Cleanup function
         return () => {
-            chart_refferal.destroy();
+            chart_referral.destroy();
         };
     }, []);
 
     return (
-        <div id="chart_refferal">
+        <div id="chart_referral">
             <Chart options={{}} series={[]} type="line" height={350} />
         </div>
     );
 };
 
-export default RefferalChart;
+export default ReferralChart;

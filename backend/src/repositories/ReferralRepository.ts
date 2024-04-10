@@ -30,6 +30,15 @@ class ReferralRepository {
       }
       return result as unknown as IReferral;
     }
+    async count(filter?:any): Promise<number> {
+        try {
+            const totalCount = await Referral.countDocuments(filter);
+            return totalCount;
+        } catch (error) {
+            console.error("Error getting total count of documents:", error);
+            throw error; // Rethrow the error to handle it at a higher level
+        }
+    }
 }
 
 export default new ReferralRepository();

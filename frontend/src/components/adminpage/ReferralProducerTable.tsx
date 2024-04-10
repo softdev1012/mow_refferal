@@ -17,7 +17,7 @@ const rows = [
   createData('Gingerbread', 356, 16.0),
 ];
 
-const RefferalProducerTable = () => {
+const ReferralProducerTable = () => {
   return (
     <Sheet
       variant="solid"
@@ -62,4 +62,4 @@ const RefferalProducerTable = () => {
   );
 }
 
-export default RefferalProducerTable;
+export default ReferralProducerTable;

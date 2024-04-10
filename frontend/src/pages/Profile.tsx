@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { fetchPerks, getUser } from "../services";
 import { IUser } from "../types/user";
 import { IPerk } from "../types/perk";
-import { ReferralModal } from "../components/referral";
+import { ReferralCreateModal } from "../components/referral";
 import { changeModalStatus, useAppDispatch } from "../store";
 import { ModalStatus } from "../types";
 
@@ -126,7 +126,7 @@ const Profile: React.FC = () => {
                 {" "}
                 {/* Add marginTop style here */}
                 <Button variant="contained" size="large" onClick={handleSendReferral}>
-                  Send Refferal
+                  Send Referral
                 </Button>{" "}
                 {/* Increase size to large */}
               </Stack>
@@ -142,7 +142,7 @@ const Profile: React.FC = () => {
           </Grid>
         </Grid>
       </Container>
-      <ReferralModal/>
+      <ReferralCreateModal/>
     </>
   );
 };

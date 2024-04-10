@@ -250,7 +250,7 @@ const UserProfileDashboard: React.FC = () => {
                 </Grid>
                 <Grid item xs={6} md={4}>
                   <Total
-                    items={["Refferals", "Perks"]}
+                    items={["Referrals", "Perks"]}
                     sent={["29", "69"]}
                     receive={["52", "32"]}
                     position={["left"]}

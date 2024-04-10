@@ -43,7 +43,7 @@ export const joinGroup = async (_id: string) => {
   return response.data;
 };
 
-export const fetchTotals = async () => {
+export const fetchGroupTotals = async () => {
   const url = baseUrl + "total/";
   const response = await instance.get(url);
   return response.data;

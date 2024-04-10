@@ -4,7 +4,7 @@ import ResponsiveAppBar from "../layouts/ResponsiveAppBar";
 // import MainPage from "../components/mainpage/MainPage";
 // import { Box } from "@mui/material";
 import Container from "@mui/material/Container";
-import RefferalChart from "../components/adminpage/RefferalChart";
+import ReferralChart from "../components/adminpage/ReferralChart";
 import Counter from "../components/mainpage/Counter";
 import { Grid } from "@mui/material";
 import { MainHeader } from "../components/mainpage";
@@ -17,7 +17,7 @@ const AdminDashboard: React.FC = () => {
       <MainHeader color={"#D9D9D9"} title={"Admin Dashboard"} hasPlus={false} />
       <Container maxWidth="xl">
         <Transfer />
-        <Counter items={["Total Refferals", "Total Closed Refferals", "Total Revenue Generated  Referrals", "Total Perks Received","Total Unclosed Referrals"]} values={["200","75","$500,000","75","125"]}/>
+        <Counter items={["Total Referrals", "Total Closed Referrals", "Total Revenue Generated  Referrals", "Total Perks Received","Total Unclosed Referrals"]} values={["200","75","$500,000","75","125"]}/>
         <Grid container spacing={2}>
             <Grid item xs={12} md={4}>
             <CustomTable />
@@ -35,7 +35,7 @@ const AdminDashboard: React.FC = () => {
                 <GroupChart />
             </Grid>
             <Grid item xs={12} md={12} sx={{ marginTop: 10 }}>
-                <RefferalChart />
+                <ReferralChart />
             </Grid>
         </Grid>
       </Container>

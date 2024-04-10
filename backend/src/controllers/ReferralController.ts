@@ -66,3 +66,19 @@ export async function deleteReferral(req: Request, res: Response, next: NextFunc
         next(error);
   }
 }
+export async function totalReferral(req: Request, res: Response, next: NextFunction) {
+    
+    try {
+        const total = await ReferralRepository.count();
+        const closed = await ReferralRepository.count({status: { $in: ["Declined", "Completed"] } });
+        const unclosed = await ReferralRepository.count({status: { $in: ["Accepted", "Pending"] } });
+        const result = {
+            totReferral: total.toString(),
+            totClosedReferral: closed.toString(),
+            totUnclosedReferral: unclosed.toString()
+        };
+        res.status(200).send(result);
+    } catch (error) {
+        next(error);
+    }
+}
