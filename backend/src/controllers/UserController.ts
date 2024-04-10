@@ -63,3 +63,20 @@ export async function deleteUser(req: Request, res: Response, next: NextFunction
         next(error);
   }
 }
+
+export async function totalUser(req: Request, res: Response, next: NextFunction) {
+    
+    try {
+        const total = await UserRepository.count();
+        const totalActive = await UserRepository.count({profileStatus: true});
+        const totalInactive = await UserRepository.count({profileStatus: false});
+        const result = {
+            total: total.toString(),
+            totalActive: totalActive.toString(),
+            totalInactive: totalInactive.toString(),
+        };
+        res.status(200).send(result);
+    } catch (error) {
+        next(error);
+    }
+}

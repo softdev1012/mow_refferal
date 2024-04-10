@@ -1,5 +1,6 @@
 export { default as BaseInputField } from './BaseInputField';
 export { default as BaseSelectField } from './BaseSelectField';
+export { default as BaseSelect2Field } from './BaseSelect2Field';
 export { default as BaseTextarea } from './BaseTextarea';
 export { default as BaseToogle } from './BaseToogle';
 export { default as TrushbinIcon } from './TrushbinIcon';

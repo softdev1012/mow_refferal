@@ -12,13 +12,14 @@ import { IUser } from "../../types/user";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import LockResetIcon from '@mui/icons-material/LockReset';
 import { changeModalStatus, useAppDispatch } from "../../store";
 import { ModalStatus } from "../../types";
 import { CustomAvatar } from "..";
-import { Grid } from "@mui/material";
+import { Grid, Tooltip } from "@mui/material";
 import { useUserListHook } from "../user";
 
-const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
   month: "long",
   year: "numeric",
@@ -62,7 +63,7 @@ const UserList: React.FC = () => {
           }}
         >
           <Grid item xs={12} md={6}>
-            <CustomAvatar width="3rem" height="3rem" />
+            <CustomAvatar width="3rem" height="3rem" url={params.row.photo}/>
           </Grid>{" "}
           <Grid item xs={12} md={6}>
             <span>&nbsp;&nbsp;{params.value}</span>
@@ -118,59 +119,47 @@ const UserList: React.FC = () => {
       field: "actions",
       headerName: "Actions",
       sortable: false,
-      width: 120,
+      width: 150,
       headerClassName:"custom-header",
       renderCell: (params) => (
         <>
-          <IconButton
-            onClick={() => handleEditClick(params.row.id as string)}
-            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-          >
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            onClick={() => handleDeleteClick(params.row.id as string)}
-            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-          >
-            <DeleteIcon />
-          </IconButton>
-        </>
-      ),
-    },
-    {
-        field: "aa",
-        headerName: "",
-        sortable: false,
-        width: 120,
-        headerClassName:"custom-header",
-        renderCell: (params) => (
-          <>
+          <Tooltip title="Edit User">
             <IconButton
               onClick={() => handleEditClick(params.row.id as string)}
-              className="text-blue-600 dark:text-blue-500 hover:underline"
-              sx={{fontSize:"1rem"}}
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
             >
-              pass
+              <EditIcon />
             </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete User">
             <IconButton
               onClick={() => handleDeleteClick(params.row.id as string)}
-              className="text-blue-600 font-small dark:text-blue-500 hover:underline"
-              sx={{fontSize:"1rem"}}
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
             >
-              reset
+              <DeleteIcon />
             </IconButton>
-          </>
-        ),
-      },
+          </Tooltip>
+          <Tooltip title="Reset password">
+            <IconButton
+              onClick={() => handleDeleteClick(params.row.id as string)}
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              <LockResetIcon />
+            </IconButton>
+          </Tooltip>
+        </>
+      ),
+    }
   ];
 
   const rows = users.data.map((user: IUser) => ({
     id: user._id,
     name: user.name,
+    photo: user.profilePhoto,
     clan: user.clan,
-    clanStatus: user.clanStatus,
+    clanStatus: user.clan?.clanStatus,
     profileStatus: user.profileStatus,
-    // dateCreated: user.dateCreated,
+    dateCreated: user.createdAt ? new Date(user.createdAt) : ""
     // numberOfMembers: user.numberOfMembers,
   }));
 

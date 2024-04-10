@@ -80,11 +80,15 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: Roles.DEFAULT,
   },
+  profileStatus: {  
+    type: Boolean,
+    default: false,
+  },
   referrals: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Referral'
   }]
-});
+}, { timestamps: true });
 
 const User = mongoose.model<IUser>('User', userSchema);
 

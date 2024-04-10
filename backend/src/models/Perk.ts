@@ -10,7 +10,7 @@ const perkSchema = new mongoose.Schema({
   price: Number,
   desc: String,
   terms: String
-});
+}, { timestamps: true });
 
 const Perk = mongoose.model<IPerk>('Perk', perkSchema);
 

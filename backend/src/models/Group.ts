@@ -6,7 +6,7 @@ const groupSchema = new mongoose.Schema({
   location: String,
   owner:  {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Owner'
+    ref: 'User'
   },
   profileStatus: Boolean,
   counterMember: Number,
@@ -16,7 +16,7 @@ const groupSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Meeting'
   }]
-});
+}, { timestamps: true });
 
 const Group = mongoose.model<IGroup>('Group', groupSchema);
 

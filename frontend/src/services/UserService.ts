@@ -71,3 +71,9 @@ export const deleteUser = async (_id: string) => {
   const response = await instance.delete(`${baseUrl}${_id}`, {headers: tokenHeader});
   return response.data;
 };
+
+export const fetchUserTotals = async () => {
+  const url = baseUrl + "total/";
+  const response = await instance.get(url);
+  return response.data;
+};

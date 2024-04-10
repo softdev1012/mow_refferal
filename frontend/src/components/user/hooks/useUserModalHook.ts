@@ -22,18 +22,54 @@ const useUserModalHook = () => {
 
     const validationSchema = z.object({
         name: z.string().min(5, {message: "User Name must be at least 5 letters."}),
-        clan: z.string().min(5, {message: "Clan Name must be at least 5 letters."}),
+        clan: z.any(),
         clanStatus: z.boolean(),
         profileStatus: z.boolean(),
+        firstName: z.string(),
+        lastName: z.string(),
+        phone: z.string(),
+        city: z.string(),
+        street: z.string(),
+        zipcode: z.string(),
+        email: z.string(),
+        password: z.string(),
+        confirmpassword: z.string(),
+        businessName: z.string(),
+        businessPhone: z.string(),
+        businessEmail: z.string(),
+        businessWebsite: z.string(),
+        googleLink: z.string(),
+        profilePhoto: z.string(),
+        businessLogo: z.string(),
+        group: z.string(),
+        seat: z.string(),
     });
 
     type ValidationSchema = z.infer<typeof validationSchema>;
 
     const defaultValues = {
-        name: "",
-        clan: "",
-        clanStatus: false,
-        profileStatus:false,
+      name: "",
+      clan: "",
+      clanStatus: false,
+      profileStatus: false,
+      firstName: "",
+      lastName: "",
+      phone: "",
+      city: "",
+      street: "",
+      zipcode: "",
+      email: "",
+      password: "",
+      confirmpassword: "",
+      businessName: "",
+      businessPhone: "",
+      businessEmail: "",
+      businessWebsite: "",
+      googleLink: "",
+      profilePhoto: "",
+      businessLogo: "",
+      group: "",
+      seat: "",
     }
 
     const {register, handleSubmit, reset, formState: {errors}} = useForm<ValidationSchema>({
@@ -47,14 +83,31 @@ const useUserModalHook = () => {
         } else if (editableuser)
           reset({
             name: editableuser.name,
-            clan: editableuser.clan,
+            clan: editableuser.group?.name,
             clanStatus: editableuser.clanStatus,
             profileStatus: editableuser.profileStatus,
+            firstName: editableuser.firstName,
+            lastName: editableuser.lastName,
+            phone: editableuser.phone,
+            city: editableuser.city,
+            street: editableuser.street,
+            zipcode: editableuser.zipcode,
+            email: editableuser.email,
+            password: editableuser.password,
+            confirmpassword: editableuser.confirmpassword,
+            businessName: editableuser.businessName,
+            businessPhone: editableuser.businessName,
+            businessEmail: editableuser.businessEmail,
+            businessWebsite: editableuser.businessWebsite,
+            googleLink: editableuser.googleLink,
+            profilePhoto: editableuser.profilePhoto,
+            businessLogo: editableuser.businessLogo,
+            group: editableuser.group?._id,
+            seat: editableuser.group?.seat,
           });
       }, [editableuser, currentId]);
 
     const onSubmit: SubmitHandler<ValidationSchema> = async (data: ValidationSchema) => {
-      console.log(data);
         isEdit ? await updateMutation.mutateAsync({updatedUser: {...data, _id: null}, _id: currentId}) : await createMutation.mutateAsync({...data, _id: null});
         dispatch(
             changeModalStatus({

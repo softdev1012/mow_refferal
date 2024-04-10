@@ -3,21 +3,31 @@ import { IImageUpload } from "../../types";
 import { useAppSelector } from "../../store";
 import { useGetGroupHook } from "../group";
 import { IMAGE_URL } from "../../utils/constants";
+import { useGetUserHook } from "../user";
 
 const ImageUpload: React.FC<IImageUpload> = ({ _id, register, width, height}) => {
 
     const currentId = useAppSelector(state => state.modalStatus.currentId) as string;
     const modalStatus = useAppSelector(state => state.modalStatus.modalStatus);
     const isEdit: boolean = modalStatus === "edit" ? true : false;
-    const { data: editablegroup }  = useGetGroupHook(currentId, isEdit);
+    console.log("_id", _id);
+    const { data: editable }  = _id === "profilePhoto" || _id === "businessLogo" ? useGetUserHook(currentId, isEdit) : useGetGroupHook(currentId, isEdit);
+    console.log("tet", editable);
     const [previewImage, setPreviewImage] = useState<string>("");
 
     useEffect(() => {
         setPreviewImage(IMAGE_URL + "default.png");
-        if (editablegroup && editablegroup.logo) {
-            setPreviewImage(IMAGE_URL + editablegroup.logo);
+        if (editable) {
+            if (_id === "profilePhoto") {
+                setPreviewImage(IMAGE_URL + editable.profilePhoto);
+            } else if (_id === "businessLogo") {
+                setPreviewImage(IMAGE_URL + editable.businessLogo);
+            } else {
+                setPreviewImage(IMAGE_URL + editable.businessLogo);
+            }
+            
         }
-    }, [editablegroup]);
+    }, [editable]);
 
     const handleUploadedFile = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = event.target.files as FileList;

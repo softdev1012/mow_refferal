@@ -13,8 +13,13 @@ const userGroupSchema = new mongoose.Schema({
   group_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Group'
-  }
-});
+  },
+  seat: String,
+  clanStatus: {  
+    type: Boolean,
+    default: false,
+  },
+}, { timestamps: true });
 
 const UserGroup = mongoose.model<IUserGroup>('UserGroup', userGroupSchema);
 

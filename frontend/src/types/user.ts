@@ -27,6 +27,10 @@ export enum UserModalStatus {
     googleLink?: string;
     profilePhoto?: string;
     businessLogo?: string;
+    clan?: any;
+    profileStatus?: boolean;
+    createdAt?: string;
+    updatedAt?: string;
   }
   
   export interface IBaseInputFieldProps {

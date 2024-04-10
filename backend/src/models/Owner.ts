@@ -7,7 +7,7 @@ const ownerSchema = new mongoose.Schema({
   rank: String,
   clanStatus: Boolean,
   profileStatus: Boolean,
-});
+}, { timestamps: true });
 
 const Owner = mongoose.model<IOwner>('Owner', ownerSchema);
 
