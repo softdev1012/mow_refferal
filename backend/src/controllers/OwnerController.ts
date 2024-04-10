@@ -60,7 +60,7 @@ export async function getOwner(req: Request, res: Response, next: NextFunction) 
 
 export async function updateOwner(req: Request, res: Response, next: NextFunction) {
     try {
-        req.body.isOwner = true;
+        if (req.body.isOwner === null || req.body.isOwner === undefined) req.body.isOwner = true;
         const user = await UserRepository.update(req.params.id, req.body);
         if (!user) {
             return res.status(404).send({ message: 'User not found' });

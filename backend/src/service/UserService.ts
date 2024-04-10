@@ -9,11 +9,10 @@ export const fetchPaginatedData = async (page: number, limit: number, isOwner: b
     let paginatedData = users.slice(startIndex, endIndex);
     for (var i in paginatedData) {
         if (paginatedData[i]._id) {
-            
-        }
-        const ugroup = await UserGroupRepository.findOneWithGroupByUser(paginatedData[i]._id);
-        if (ugroup) {
-            paginatedData[i] = {...ugroup, ...paginatedData[i]}
+            const ugroup = await UserGroupRepository.findOneWithGroupByUser(paginatedData[i]._id);
+            if (ugroup) {
+                paginatedData[i] = {...ugroup, ...paginatedData[i]}
+            }   
         }
         
     }

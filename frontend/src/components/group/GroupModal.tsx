@@ -95,7 +95,7 @@ const GroupModal: React.FC = () => {
             error={errors.owner?.message}
             options={owners? owners : []}
           />
-          <BaseInputField
+          {/* <BaseInputField
             type="number"
             _id="groupSize"
             placeholder="Enter the group size"
@@ -104,7 +104,7 @@ const GroupModal: React.FC = () => {
             label="# of Members"
             register={register}
             error={errors.groupSize?.message}
-          />
+          /> */}
           <div className="flex items-start mb-5">
             <div className="flex-grow">Profile Status:</div> {/* Align text to left */}
             <div> {/* Align ImageUpload to right */}

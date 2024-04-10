@@ -13,11 +13,28 @@ export enum ModalStatus {
   
   export interface IOwner {
     _id: string | null;
-    name: string;
-    clan: string;
-    rank:string;
-    clanStatus: boolean;
-    profileStatus: boolean;
+    name?: string;
+    firstName?: string;
+    lastName?: string;
+    city?: string;
+    street?: string;
+    zipcode?: string;
+    phone?: string;
+    email?: string;
+    businessName?: string;
+    businessEmail?: string;
+    businessPhone?: string;
+    businessWebsite?: string;
+    googleLink?: string;
+    profilePhoto?: string;
+    businessLogo?: string;
+    clan?: any;
+    profileStatus?: boolean;
+    createdAt?: string;
+    updatedAt?: string;
+    group_id?: any;
+    clanStatus?: boolean;
+    isOwner?: boolean;
   }
   
   export interface IBaseInputFieldProps {

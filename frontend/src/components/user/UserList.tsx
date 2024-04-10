@@ -174,7 +174,7 @@ const UserList: React.FC = () => {
     id: user._id,
     name: user.name,
     photo: user.profilePhoto,
-    clan: user.group_id.name,
+    clan: user.group_id?.name,
     clanStatus: user.clanStatus,
     profileStatus: user.profileStatus,
     dateCreated: user.createdAt ? new Date(user.createdAt) : ""

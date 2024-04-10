@@ -17,8 +17,7 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
+  const handleOpenNavMenu = () => {
   };
 
   const handleCloseNavMenu = () => {
@@ -83,10 +82,8 @@ function ResponsiveAppBar() {
                 sx={{ display: { xs: "block", md: "none" } }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Box align="center" sx={{ fontSize: 30 }}>
-                      {page}
-                    </Box>
+                  <MenuItem key={page} onClick={handleOpenNavMenu}>
+                    {page}
                   </MenuItem>
                 ))}
               </Menu>

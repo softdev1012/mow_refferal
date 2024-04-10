@@ -8,14 +8,15 @@ import {
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { useOwnerListHook } from "./hooks";
-import { IOwner } from "../../types/owner";
+// import { IOwner } from "../../types/owner";
 import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
+// import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { changeModalStatus, useAppDispatch } from "../../store";
 import { ModalStatus } from "../../types";
 import { CustomAvatar } from "..";
 import { Grid } from "@mui/material";
+import { IUser } from "../../types/user";
 
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -49,7 +50,7 @@ const OwnerList: React.FC = () => {
 
   const columns: GridColDef[] = [
     {
-      field: "owner",
+      field: "name",
       headerName: "Owner",
       flex: 1,
       headerClassName:"custom-header",
@@ -61,7 +62,7 @@ const OwnerList: React.FC = () => {
           }}
         >
           <Grid item xs={12} md={6}>
-            <CustomAvatar width="3rem" height="3rem" />
+            <CustomAvatar width="3rem" height="3rem" url={params.row.photo} />
           </Grid>{" "}
           <Grid item xs={12} md={6}>
             <span>&nbsp;&nbsp;{params.value}</span>
@@ -121,12 +122,12 @@ const OwnerList: React.FC = () => {
       headerClassName:"custom-header",
       renderCell: (params) => (
         <>
-          <IconButton
+          {/* <IconButton
             onClick={() => handleEditClick(params.row.id as string)}
             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
           >
             <EditIcon />
-          </IconButton>
+          </IconButton> */}
           <IconButton
             onClick={() => handleDeleteClick(params.row.id as string)}
             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
@@ -137,16 +138,15 @@ const OwnerList: React.FC = () => {
       ),
     },
   ];
-
-  const rows = owners.data.map((owner: IOwner) => ({
+  const rows = owners.data.map((owner: IUser) => ({
     id: owner._id,
-    owner: owner.name,
-    clan: owner.clan,
-    rank: owner.rank,
+    name: owner.name,
+    rank: owner.group_id?.groupSize,
+    photo: owner.profilePhoto,
+    clan: owner.group_id?.name,
     clanStatus: owner.clanStatus,
     profileStatus: owner.profileStatus,
-    // dateCreated: owner.dateCreated,
-    // numberOfMembers: owner.numberOfMembers,
+    dateCreated: owner.createdAt ? new Date(owner.createdAt) : ""
   }));
 
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({

@@ -39,7 +39,7 @@ const GroupList: React.FC = () => {
   };
   const getOwnerName = (ownerId: string) : string => {
     const owner = owners?.find(owner => owner._id === ownerId);
-    return owner?owner.name : "";
+    return owner && owner.name ? owner.name : "";
   };
   useEffect(() => {
     fetchOwnersList();
@@ -100,7 +100,7 @@ const GroupList: React.FC = () => {
       headerClassName:"custom-header",
       valueFormatter: (params) => dateFormatter.format(params.value),
     },
-    { field: "groupSize", headerName: "# of Members",headerClassName:"custom-header", flex: 1 },
+    { field: "counterMember", headerName: "# of Members",headerClassName:"custom-header", flex: 1 },
     {
       field: "actions",
       headerName: "Actions",
@@ -133,7 +133,7 @@ const GroupList: React.FC = () => {
     location: group.location,
     owner: getOwnerName(group.owner),
     profileStatus: group.profileStatus,
-    groupSize: group.groupSize,
+    counterMember: group.counterMember,
     // dateCreated: group.dateCreated,
     // numberOfMembers: group.numberOfMembers,
   }));

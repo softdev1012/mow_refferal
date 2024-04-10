@@ -6,23 +6,18 @@ import { MenuItem as BaseMenuItem, menuItemClasses } from "@mui/base/MenuItem";
 import { styled } from "@mui/system";
 import { CssTransition } from "@mui/base/Transitions";
 import { PopupContext } from "@mui/base/Unstable_Popup";
-import { Link } from "react-router-dom";
-import { Avatar } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { Avatar, Divider } from "@mui/material";
 import { useAuth } from "./AuthProvider";
 
 const MenuIntroduction = () => {
 
   const {logOut} = useAuth();
+  const navigate = useNavigate()
 
   const createHandleMenuClick = (menuItem: string) => {
     return () => {
-      switch (menuItem) {
-        case "Profile":
-          return "/user/profile";
-        // Add cases for other menu items
-        default:
-          return "/";
-      }
+      navigate(menuItem);
     };
   };
 
@@ -32,60 +27,35 @@ const MenuIntroduction = () => {
         <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
       </AvatarMenuButton>
       <Menu slots={{ listbox: AnimatedListbox }}> 
-        <MenuItem onClick={createHandleMenuClick("Profile")}>
-          <Link
-            to="/user/profile"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            Profile
-          </Link>
+        <MenuItem onClick={createHandleMenuClick("/profile")} >
+          Profile
         </MenuItem>
-        <MenuItem onClick={createHandleMenuClick("profile_dashboard")}>
-          <Link
-            to="/admin/profiledashboard"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            Profile Dashboard
-          </Link>
+        <Divider />
+        <MenuItem onClick={createHandleMenuClick("/user/group")}>
+          User-Groups
         </MenuItem>
-        <MenuItem onClick={createHandleMenuClick("group")}>
-          {" "}
-          <Link
-            to="/user/group"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            Group
-          </Link>
+        <MenuItem onClick={createHandleMenuClick("/user/meeting")}>
+          User-Meetings
         </MenuItem>
-        <MenuItem onClick={createHandleMenuClick("single_group")}>
-          <Link
-            to="/user/singlegroup"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            Single Group
-          </Link>
+        <Divider />
+        <MenuItem onClick={createHandleMenuClick("/groups")}>
+          Groups
         </MenuItem>
-        <MenuItem onClick={createHandleMenuClick("all_meeting")}>
-          <Link
-            to="/user/allmeeting"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            All Meeting
-          </Link>
+        <MenuItem onClick={createHandleMenuClick("/meetings")}>
+          Meetings
         </MenuItem>
-        <MenuItem onClick={createHandleMenuClick("single_meeting ")}>
-          <Link
-            to="/user/singlemeeting"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            Single Meeting
-          </Link>
+        <MenuItem onClick={createHandleMenuClick("/referrals")}>
+          Referrals
         </MenuItem>
-        <MenuItem onClick={createHandleMenuClick("Log out")}>
-          {" "}
-          <Link to="#" style={{ textDecoration: "none", color: "inherit" }} onClick={logOut}>
-            Log out
-          </Link>
+        <MenuItem onClick={createHandleMenuClick("/users")}>
+          Users
+        </MenuItem>
+        <MenuItem onClick={createHandleMenuClick("/owners")}>
+          Owners
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={logOut}>
+          Log out
         </MenuItem>
       </Menu>
     </Dropdown>

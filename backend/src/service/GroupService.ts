@@ -7,7 +7,15 @@ export const fetchPaginatedData = async (page: number, limit: number) => {
     // const groups = await GroupRepository.findAll();
     const groups = await GroupRepository.findAll();
 
-    const paginatedData = groups.slice(startIndex, endIndex);
+    let paginatedData = groups.slice(startIndex, endIndex);
+    for (var i in paginatedData) {
+        if (paginatedData[i]._id) {
+            const ugroup = await UserGroupRepository.count({group_id: paginatedData[i]._id});
+            if (ugroup) {
+                paginatedData[i].counterMember = ugroup;
+            }    
+        }
+    }
     const nextPage = endIndex < groups.length ? page + 1 : null;
 
     return { paginatedData, nextPage };

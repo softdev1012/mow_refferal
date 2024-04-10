@@ -11,7 +11,7 @@ const OwnerDashboard: React.FC = () =>{
     return(
         <>
         <ResponsiveAppBar />
-        <MainHeader color={"#FFDE59"} title={"Owners/Clan Leaders Dashboard"} hasPlus={true} />
+        <MainHeader color={"#FFDE59"} title={"Owners/Clan Leaders Dashboard"} hasPlus={false} />
         <Container maxWidth="xl">
         <Counter items={["Total Users", "Total Active Users", "Total Inactive Users"]} values={["200","75","125"]}/>
         <MainPage>

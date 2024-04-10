@@ -67,7 +67,7 @@ function App() {
                         element={<UsersDashboard />}
                       />
                       <Route
-                        path="/referral/dashboard" 
+                        path="/referrals" 
                         element={<ReferralDashboard />}
                       />
                       <Route
@@ -79,7 +79,7 @@ function App() {
                         element={<OwnerDashboard />}
                       />
                       <Route
-                        path="/meeting" 
+                        path="/meetings" 
                         element={<Meeting/>}
                       />
                        <Route
