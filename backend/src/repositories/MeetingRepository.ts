@@ -1,3 +1,4 @@
+import { log } from "console";
 import { Meeting } from "../models";
 
 
@@ -24,6 +25,10 @@ class MeetingRepository {
 
     async delete(id:any) {
         return Meeting.findByIdAndDelete(id);
+    }
+
+    async findRecent(filter?:any) {
+        return Meeting.findOne(filter).sort({ createdAt: -1 });
     }
 }
 

@@ -39,6 +39,32 @@ class ReferralRepository {
             throw error; // Rethrow the error to handle it at a higher level
         }
     }
+
+    async sum(field: string, ids: any, filter:any): Promise<number> {
+        try {
+            const result = await Referral.aggregate([
+                {
+                    $match: filter
+                },
+                {
+                    $group: {
+                        _id: ids,
+                        total: { $sum: `$${field}` }
+                    }
+                }
+            ]);
+
+            if (result.length > 0) {
+                return result[0].total;
+            } else {
+                return 0;
+            }
+        } catch (error) {
+            console.error(`Error summing up column ${field}:`, error);
+            throw error;
+        }
+    }
+
 }
 
 export default new ReferralRepository();

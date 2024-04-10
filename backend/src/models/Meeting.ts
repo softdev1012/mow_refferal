@@ -13,7 +13,7 @@ const meetingSchema = new mongoose.Schema({
   meetingtime: String,
   meetinglink: String,
   meetingStatus: Boolean
-});
+}, { timestamps: true });
 
 const Meeting = mongoose.model('Meeting', meetingSchema);
 

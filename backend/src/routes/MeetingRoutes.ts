@@ -3,6 +3,7 @@ import * as meetingController from '../controllers';
 
 const meetingrouter: Router = express.Router();
 
+meetingrouter.get('/recent', meetingController.getRecentMeeting);
 meetingrouter.post('/', meetingController.createMeeting);
 meetingrouter.get('/', meetingController.getAllMeetings);
 meetingrouter.get('/:id', meetingController.getMeeting);

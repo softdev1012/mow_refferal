@@ -69,13 +69,19 @@ export async function deleteReferral(req: Request, res: Response, next: NextFunc
 export async function totalReferral(req: Request, res: Response, next: NextFunction) {
     
     try {
-        const total = await ReferralRepository.count();
-        const closed = await ReferralRepository.count({status: { $in: ["Declined", "Completed"] } });
-        const unclosed = await ReferralRepository.count({status: { $in: ["Accepted", "Pending"] } });
+        let param = {};
+        if (req.query.group_id) param = {...param, group: req.query.group_id}
+        if (req.query.sender_id) param = {...param, sender: req.query.sender_id}
+        if (req.query.receiver_id) param = {...param, receiver: req.query.receiver_id}
+        const total = await ReferralRepository.count(param);
+        const closed = await ReferralRepository.count({...param, status: { $in: ["Declined", "Completed"] } });
+        const unclosed = await ReferralRepository.count({...param, status: { $in: ["Accepted", "Pending"] } });
+        const generated = await ReferralRepository.sum("price", param, {payStatus: true});
         const result = {
             totReferral: total.toString(),
             totClosedReferral: closed.toString(),
-            totUnclosedReferral: unclosed.toString()
+            totUnclosedReferral: unclosed.toString(),
+            totgenerated: generated.toString(),
         };
         res.status(200).send(result);
     } catch (error) {

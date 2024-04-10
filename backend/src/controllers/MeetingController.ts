@@ -63,3 +63,17 @@ export async function deleteMeeting(req: Request, res: Response, next: NextFunct
         next(error);
   }
 }
+
+export async function getRecentMeeting(req: Request, res: Response, next: NextFunction) {
+    try {
+        let param = {};
+        if (req.query.group_id) param = {...param, group: req.query.group_id}
+        const meeting = await MeetingRepository.findRecent(param);
+        if (!meeting) {
+            return res.status(404).send({ message: 'Meeting not found' });
+        }
+        res.status(200).send(meeting);
+    } catch (error) {
+        next(error);
+  }
+}
