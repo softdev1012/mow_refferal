@@ -1,6 +1,7 @@
 import instance from '../utils/axiosInstance';
+import { SERVER_URL } from '../utils/constants';
 
-const baseUrl = 'http://localhost:8001/api/files/';
+const baseUrl = SERVER_URL + 'api/files/';
 
 const upload = (file: File, onUploadProgress: any): Promise<any> => {
   let formData = new FormData();

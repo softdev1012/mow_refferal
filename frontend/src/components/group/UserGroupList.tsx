@@ -18,14 +18,7 @@ import { IOwner } from "../../types/owner";
 import { fetchOwners } from "../../services";
 import { Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
-const dateFormatter = new Intl.DateTimeFormat("en-US", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
-
-const imageURL = "http://localhost:8001/uploads/";
+import { IMAGE_URL } from "../../utils/constants";
 
 const UserGroupList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -107,7 +100,7 @@ const UserGroupList: React.FC = () => {
 
   const rows = groups.data.map((group: IGroup) => ({
     id: group._id,
-    logo: imageURL + group.logo,
+    logo: IMAGE_URL + group.logo,
     name: group.name,
     location: group.location,
     owner: getOwnerName(group.owner),

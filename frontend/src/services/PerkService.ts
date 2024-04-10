@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { IPerk } from '../types/perk'; 
+import { SERVER_URL } from '../utils/constants';
 
-const baseUrl = 'http://localhost:8001/api/perks/';
+const baseUrl = SERVER_URL + 'api/perks/';
 const tokenHeader =  {
   Authorization: `Bearer ${localStorage.getItem("site")}` // Include the token in the request headers
 }

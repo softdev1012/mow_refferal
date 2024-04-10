@@ -16,6 +16,7 @@ import { changeModalStatus, useAppDispatch } from "../../store";
 import { ModalStatus } from "../../types";
 import { IOwner } from "../../types/owner";
 import { fetchOwners } from "../../services";
+import { IMAGE_URL } from "../../utils/constants";
 
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -64,7 +65,6 @@ const GroupList: React.FC = () => {
 
   const [page, setPage] = useState<number>(1);
   const { data: groups } = useGroupListHook(page);
-  const imageURL = "http://localhost:8001/uploads/";
 
   const columns: GridColDef[] = [
     { field: "logo", headerName: "Group Logo",headerClassName:"custom-header", flex: 1,
@@ -128,7 +128,7 @@ const GroupList: React.FC = () => {
 
   const rows = groups.data.map((group: IGroup) => ({
     id: group._id,
-    logo: imageURL + group.logo,
+    logo: IMAGE_URL + group.logo,
     name: group.name,
     location: group.location,
     owner: getOwnerName(group.owner),

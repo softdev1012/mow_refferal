@@ -1,9 +1,10 @@
 
 import { IPaginatedGroups, IGroup, IPaginatedGroupMembers } from '../types/group'; 
 import instance from '../utils/axiosInstance';
+import { SERVER_URL } from '../utils/constants';
 import { fetchMe } from './UserService';
 
-const baseUrl = 'http://localhost:8001/api/groups/';
+const baseUrl = SERVER_URL + 'api/groups/';
 const tokenHeader =  {
   Authorization: `Bearer ${localStorage.getItem("site")}` // Include the token in the request headers
 }

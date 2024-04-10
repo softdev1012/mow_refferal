@@ -1,7 +1,8 @@
 import { IPaginatedReferrals, IReferral } from '../types/referral'; 
 import instance from '../utils/axiosInstance';
+import { SERVER_URL } from '../utils/constants';
 
-const baseUrl = 'http://localhost:8001/api/referrals/';
+const baseUrl = SERVER_URL + 'api/referrals/';
 const tokenHeader =  {
   Authorization: `Bearer ${localStorage.getItem("site")}` // Include the token in the request headers
 }

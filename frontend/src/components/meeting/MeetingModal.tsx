@@ -9,7 +9,6 @@ import { IOwner } from "../../types/owner";
 import { fetchGroups, fetchOwners} from "../../services";
 import { IGroup } from "../../types/group";
 import { useGetGroupHook } from "../group";
-import GoogleMeeting from "../common/GoogleMeeting";
 
 
 const MeetingModal: React.FC = () => {
@@ -136,7 +135,6 @@ const MeetingModal: React.FC = () => {
             register={register}
             error={errors.meetingtime?.message}
           />
-          <GoogleMeeting />
           <BaseInputField
             type="text"
             _id="meetinglink"

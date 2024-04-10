@@ -2,14 +2,14 @@ import MuiAvatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import LogoImg from "../../assets/img/business.png";
 import React from 'react';
+import { IMAGE_URL } from '../../utils/constants';
 
 interface BusinessInfoProps {
   url?: string;
 }
 
 const BusinessInfo: React.FC<BusinessInfoProps> = ({ url }) => {
-  const baseURL = "http://localhost:8001/uploads/";
-  const imgUrl = url && url != "" ? baseURL + url : LogoImg
+  const imgUrl = url && url != "" ? IMAGE_URL + url : LogoImg
   return (
     <Stack direction="row" spacing={2}>
       <MuiAvatar

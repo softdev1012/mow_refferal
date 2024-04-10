@@ -38,7 +38,6 @@ const GroupMemberList: React.FC = () => {
 
   const [page, setPage] = React.useState<number>(1);
   const { data: members } = useGroupMemberListHook(groupId, page);
-  const imageURL = "http://localhost:8001/uploads/";
 
   const columns: GridColDef[] = [
     {

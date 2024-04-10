@@ -1,6 +1,7 @@
 import MuiAvatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import LogoImg from "../../assets/img/Avatar.png";
+import { IMAGE_URL } from '../../utils/constants';
 
 interface CustomAvatarProps {
   width: string;
@@ -9,8 +10,8 @@ interface CustomAvatarProps {
 }
 
 const CustomAvatar: React.FC<CustomAvatarProps> = ({ width, height, url }) => {
-  const baseURL = "http://localhost:8001/uploads/";
-  const imgUrl = url && url != "" ? baseURL + url : LogoImg
+  const imgUrl = url && url != "" ? IMAGE_URL + url : LogoImg;
+  console.log(imgUrl);
   return (
     <Stack direction="row" spacing={2}>
       <MuiAvatar

@@ -1,7 +1,8 @@
 import { IPaginatedMeetings, IMeeting } from '../types/meeting'; 
 import instance from '../utils/axiosInstance';
+import { SERVER_URL } from '../utils/constants';
 
-const baseUrl = 'http://localhost:8001/api/meetings/';
+const baseUrl = SERVER_URL + 'api/meetings/';
 
 export const fetchMeetings = async (page: number, limit: number = 10): Promise<IPaginatedMeetings> => {
   const response = await instance.get(baseUrl, {params: { page, limit }});

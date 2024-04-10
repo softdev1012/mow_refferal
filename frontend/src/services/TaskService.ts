@@ -1,8 +1,9 @@
 
 import { IPaginatedTasks, ITask } from '../types'; 
 import instance from '../utils/axiosInstance';
+import { SERVER_URL } from '../utils/constants';
 
-const baseUrl = 'http://localhost:8001/api/tasks/';
+const baseUrl = SERVER_URL + 'api/tasks/';
 
 export const fetchTasks = async (page: number, limit: number = 10): Promise<IPaginatedTasks> => {
   const response = await instance.get(baseUrl, {params: { page, limit }});

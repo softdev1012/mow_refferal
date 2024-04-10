@@ -2,6 +2,7 @@ import { useState, useEffect} from "react";
 import { IImageUpload } from "../../types";
 import { useAppSelector } from "../../store";
 import { useGetGroupHook } from "../group";
+import { IMAGE_URL } from "../../utils/constants";
 
 const ImageUpload: React.FC<IImageUpload> = ({ _id, register, width, height}) => {
 
@@ -10,12 +11,11 @@ const ImageUpload: React.FC<IImageUpload> = ({ _id, register, width, height}) =>
     const isEdit: boolean = modalStatus === "edit" ? true : false;
     const { data: editablegroup }  = useGetGroupHook(currentId, isEdit);
     const [previewImage, setPreviewImage] = useState<string>("");
-    const imageURL = "http://localhost:8001/uploads/";
 
     useEffect(() => {
-        setPreviewImage(imageURL + "default.png");
+        setPreviewImage(IMAGE_URL + "default.png");
         if (editablegroup && editablegroup.logo) {
-            setPreviewImage(imageURL + editablegroup.logo);
+            setPreviewImage(IMAGE_URL + editablegroup.logo);
         }
     }, [editablegroup]);
 

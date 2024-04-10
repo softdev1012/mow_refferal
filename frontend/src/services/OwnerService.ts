@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { IPaginatedOwners, IOwner } from '../types/owner'; 
+import { SERVER_URL } from '../utils/constants';
 
-const baseUrl = 'http://localhost:8001/api/owners/';
+const baseUrl = SERVER_URL + 'api/owners/';
 
 export const fetchOwners = async (page: number, limit: number = 10): Promise<IPaginatedOwners> => {
   const response = await axios.get(baseUrl, {params: { page, limit }});

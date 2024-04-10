@@ -2,8 +2,9 @@
 import { toast } from 'react-toastify';
 import { IPaginatedUsers, IUser } from '../types/user'; 
 import instance from '../utils/axiosInstance';
+import { SERVER_URL } from '../utils/constants';
 
-const baseUrl = 'http://localhost:8001/api/users/';
+const baseUrl = SERVER_URL + 'api/users/';
 const tokenHeader =  {
   Authorization: `Bearer ${localStorage.getItem("site")}` // Include the token in the request headers
 }
@@ -20,7 +21,7 @@ export const createUser = async (newUser: IUser) => {
 
 export const register = async (newUser: IUser) => {
   try{
-    const response = await instance.post("http://localhost:8001/account/signup", newUser);
+    const response = await instance.post(SERVER_URL + "account/signup", newUser);
     toast.success('Register success.', {
       hideProgressBar: true,
       autoClose: 5000,
@@ -41,7 +42,7 @@ export const register = async (newUser: IUser) => {
 export const signin = async (User: {email:string,password:string}) => {
   console.log(User);
   try{
-  const response = await instance.post("http://localhost:8001/account/login", User);
+  const response = await instance.post(SERVER_URL + "account/login", User);
   return response.data;
   }catch(err){
     console.log("err",err);
@@ -49,7 +50,7 @@ export const signin = async (User: {email:string,password:string}) => {
 };
 export const fetchMe = async () => {
   try{
-  const response = await instance.get("http://localhost:8001/account/me", {headers: tokenHeader});
+  const response = await instance.get(SERVER_URL + "account/me", {headers: tokenHeader});
   return response.data;
   }catch(err){
     console.log("err",err);
