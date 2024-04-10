@@ -1,6 +1,6 @@
 import Modal from "react-modal";
 // import OutsideClickHandler from "react-outside-click-handler";
-import { BaseInputField, BaseSelect2Field, BaseToogle } from "../common";
+import { BaseSelectField, BaseToogle } from "../common";
 import { useUserModalHook } from "./hooks";
 import { changeModalStatus } from "../../store";
 
@@ -161,7 +161,7 @@ const UserModal: React.FC = () => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <BaseSelect2Field
+                <BaseSelectField
                   _id="group"
                   placeholder="Select group"
                   label="Group"

@@ -3,6 +3,9 @@
 import { Document } from 'mongoose';
 
 export interface IUserGroup extends Document {
-  group_id: string; // Group ID
-  user_id: string; // User ID
+  _id: string | null,
+  group_id: string | null; // Group ID
+  user_id: string | null; // User ID
+  seat: string;
+  clanStatus: boolean;
 }

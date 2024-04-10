@@ -14,4 +14,5 @@ export interface IUser extends Document {
     zipcode:string;
     firstName:string;
     lastName:string;
+    isOwner:boolean;
 }

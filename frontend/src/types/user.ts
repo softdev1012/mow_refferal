@@ -12,7 +12,7 @@ export enum UserModalStatus {
   
   export interface IUser {
     _id: string | null;
-    name: string;
+    name?: string;
     firstName?: string;
     lastName?: string;
     city?: string;
@@ -31,6 +31,9 @@ export enum UserModalStatus {
     profileStatus?: boolean;
     createdAt?: string;
     updatedAt?: string;
+    group_id?: any;
+    clanStatus?: boolean;
+    isOwner?: boolean;
   }
   
   export interface IBaseInputFieldProps {

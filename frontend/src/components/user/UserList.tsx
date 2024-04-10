@@ -13,6 +13,7 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LockResetIcon from '@mui/icons-material/LockReset';
+import ReplyIcon from '@mui/icons-material/Reply';
 import { changeModalStatus, useAppDispatch } from "../../store";
 import { ModalStatus } from "../../types";
 import { CustomAvatar } from "..";
@@ -41,6 +42,15 @@ const UserList: React.FC = () => {
     dispatch(
       changeModalStatus({
         modalStatus: ModalStatus.REMOVE,
+        currentId: userId,
+      })
+    );
+  };
+
+  const handleConvertClick = (userId: string) => {
+    dispatch(
+      changeModalStatus({
+        modalStatus: ModalStatus.CONVERT,
         currentId: userId,
       })
     );
@@ -119,7 +129,7 @@ const UserList: React.FC = () => {
       field: "actions",
       headerName: "Actions",
       sortable: false,
-      width: 150,
+      width: 180,
       headerClassName:"custom-header",
       renderCell: (params) => (
         <>
@@ -147,6 +157,14 @@ const UserList: React.FC = () => {
               <LockResetIcon />
             </IconButton>
           </Tooltip>
+          <Tooltip title="Convert to owner">
+            <IconButton
+              onClick={() => handleConvertClick(params.row.id as string)}
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              <ReplyIcon />
+            </IconButton>
+          </Tooltip>
         </>
       ),
     }
@@ -156,8 +174,8 @@ const UserList: React.FC = () => {
     id: user._id,
     name: user.name,
     photo: user.profilePhoto,
-    clan: user.clan,
-    clanStatus: user.clan?.clanStatus,
+    clan: user.group_id.name,
+    clanStatus: user.clanStatus,
     profileStatus: user.profileStatus,
     dateCreated: user.createdAt ? new Date(user.createdAt) : ""
     // numberOfMembers: user.numberOfMembers,

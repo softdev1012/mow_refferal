@@ -30,7 +30,7 @@ class UserGroupRepository {
     }
 
     async findByUserAndGroup(userId:string, groupId:string) {
-        return UserGroup.findOne({ user_id: userId, group_id: groupId });
+        return UserGroup.findOne({ user_id: userId, group_id: groupId }).lean();
     }
     async findByUser(userId:string) {
         return UserGroup.find({ user_id: userId}).populate('user_id').populate('group_id');
@@ -38,8 +38,15 @@ class UserGroupRepository {
     async findByGroup(groupId:string) {
         return UserGroup.find({group_id: groupId }).populate('user_id').populate('group_id');
     }
-    async findOneByUser(userId:string) {
-        return UserGroup.findOne({ user_id: userId});
+    async findOneByUser(userId:string | null) {
+        return UserGroup.findOne({ user_id: userId}).sort({ updatedAt: -1 }).lean();
+    }
+    async findOneWithGroupByUser(userId:string | null) {
+        return UserGroup.findOne({ user_id: userId}).populate('group_id').sort({ updatedAt: -1 }).lean();
+    }
+
+    async deleteByUser(userId:string | null) {
+        return UserGroup.deleteMany({ user_id: userId});
     }
 
 }

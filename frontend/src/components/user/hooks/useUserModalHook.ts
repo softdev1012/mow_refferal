@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {  z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+// import { zodResolver } from "@hookform/resolvers/zod";
 import { changeModalStatus, useAppDispatch, useAppSelector } from "../../../store";
 import { useUserCreateHook, useUserUpdateHook, useGetUserHook } from "."; 
 import { ModalStatus } from "../../../types";
@@ -73,8 +73,8 @@ const useUserModalHook = () => {
     }
 
     const {register, handleSubmit, reset, formState: {errors}} = useForm<ValidationSchema>({
-        defaultValues: defaultValues,
-        resolver: zodResolver(validationSchema)
+        // defaultValues: defaultValues,
+        // resolver: zodResolver(validationSchema)
     });
 
     useEffect(() => {
@@ -102,12 +102,13 @@ const useUserModalHook = () => {
             googleLink: editableuser.googleLink,
             profilePhoto: editableuser.profilePhoto,
             businessLogo: editableuser.businessLogo,
-            group: editableuser.group?._id,
-            seat: editableuser.group?.seat,
+            group: editableuser.group,
+            seat: editableuser.seat,
           });
       }, [editableuser, currentId]);
 
     const onSubmit: SubmitHandler<ValidationSchema> = async (data: ValidationSchema) => {
+      console.log(data);
         isEdit ? await updateMutation.mutateAsync({updatedUser: {...data, _id: null}, _id: currentId}) : await createMutation.mutateAsync({...data, _id: null});
         dispatch(
             changeModalStatus({

@@ -1,4 +1,4 @@
-import { useUserDeleteHook } from ".";
+import { useUserDeleteHook, useUserUpdateHook } from ".";
 import { changeModalStatus, useAppDispatch, useAppSelector } from "../../../store";
 import { ModalStatus } from "../../../types";
 
@@ -8,12 +8,12 @@ const useConfirmModalHook = () => {
 
     const dispatch = useAppDispatch();
 
-    const mutation = useUserDeleteHook();
-
-    const isOpen = modalStatus === "remove" ? true : false;
+    const deleteMutation = useUserDeleteHook();
+    const updateMutation = useUserUpdateHook();
+    const isOpen = modalStatus === "remove" || modalStatus === ModalStatus.CONVERT? true : false;
 
     const handleSubmit = async () => {
-        await mutation.mutateAsync(currentId);
+        modalStatus === "remove" ?  await deleteMutation.mutateAsync(currentId) : await updateMutation.mutateAsync({updatedUser: {_id: null, isOwner : true}, _id: currentId});
         dispatch(changeModalStatus({modalStatus: ModalStatus.CLOSE, currentId: undefined}));
     }
 

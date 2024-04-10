@@ -1,9 +1,6 @@
 import mongoose, { Document } from "mongoose";
+import { IUserGroup } from "../types/usergroup";
 
-export interface IUserGroup extends Document {
-  user_id: string; // User ID
-  group_id: string; // Group ID
-}
 
 const userGroupSchema = new mongoose.Schema({
   user_id: {
@@ -14,7 +11,10 @@ const userGroupSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Group'
   },
-  seat: String,
+  seat: {
+    type: String,
+    default: "test"
+  },
   clanStatus: {  
     type: Boolean,
     default: false,

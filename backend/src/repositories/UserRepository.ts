@@ -8,12 +8,12 @@ class UserRepository {
         return user.save();
     }
 
-    async findAll(): Promise<IUser[]> {
-        return User.find().populate('referrals');;
+    async findAll(filter?: any): Promise<IUser[]> {
+        return User.find(filter).populate('referrals').lean();
     }
 
     async findById(id: string): Promise<IUser | null> {
-        return User.findById(id).populate('referrals');;
+        return User.findById(id).populate('referrals').lean();
     }
 
     async update(id: string, userData: Partial<IUser>): Promise<IUser | null> {      

@@ -1,7 +1,8 @@
 import Modal from "react-modal";
 import useConfirmModalHook from "./hooks/useConfirmModalHook";
-import { changeModalStatus } from "../../store";
+import { changeModalStatus, useAppSelector } from "../../store";
 import { TrushbinIcon } from "../common";
+import CoPresentIcon from '@mui/icons-material/CoPresent';
 import OutsideClickHandler from "react-outside-click-handler";
 import { ModalStatus } from "../../types";
 
@@ -11,6 +12,7 @@ interface ConfirmModalProps {
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({ index }) => { // Destructure props
   const { isOpen, dispatch, handleSubmit } = useConfirmModalHook();
+  const modalStatus = useAppSelector(state => state.modalStatus.modalStatus);
 
   return (
     <Modal
@@ -31,9 +33,11 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ index }) => { // Destructur
         }
       >
         <div className="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-          <TrushbinIcon />
+          {
+            modalStatus === ModalStatus.REMOVE ? <TrushbinIcon /> : <CoPresentIcon />
+          }
           <p className="mb-4 text-gray-500 dark:text-gray-300">
-            Are you sure you want to delete this {index}?
+            Are you sure you want to {modalStatus === ModalStatus.REMOVE ? "delete" : "convert"} this {index}?
           </p>
           <div className="flex items-center justify-center space-x-4">
             <button

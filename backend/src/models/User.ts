@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { IUser } from '../types/user';
 import { Roles } from '../enums/role.enums';
+import { boolean } from 'yup';
 
 
 const userSchema = new mongoose.Schema({
@@ -79,6 +80,10 @@ const userSchema = new mongoose.Schema({
     enum: Roles,
     required: true,
     default: Roles.DEFAULT,
+  },
+  isOwner: {
+    type:Boolean,
+    default: false
   },
   profileStatus: {  
     type: Boolean,

@@ -29,7 +29,8 @@ const BaseSelect2Field: React.FC<IBaseSelect2FieldProps> = ({
         autoFocus={autoFocus}
         required={required}
         fullWidth
-        {...register(_id)}
+        {...register(_id, value)}
+        value={value}
         placeholder={placeholder}
         onChange={handleChange}
       >

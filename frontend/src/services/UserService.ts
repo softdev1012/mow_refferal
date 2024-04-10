@@ -63,6 +63,7 @@ export const getUser = async (_id: string) => {
 };
 
 export const updateUser = async ({_id, updatedUser}: {_id: string, updatedUser: IUser}) => {
+  console.log(updatedUser);
   const response = await instance.put(`${baseUrl}${_id}`, updatedUser, {headers: tokenHeader});
   return response.data;
 };

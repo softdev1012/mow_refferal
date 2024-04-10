@@ -75,7 +75,7 @@ function App() {
                         element={<Groups />}
                       />
                       <Route
-                        path="/owner/dashboard" 
+                        path="/owners" 
                         element={<OwnerDashboard />}
                       />
                       <Route

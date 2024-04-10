@@ -10,9 +10,7 @@ const ImageUpload: React.FC<IImageUpload> = ({ _id, register, width, height}) =>
     const currentId = useAppSelector(state => state.modalStatus.currentId) as string;
     const modalStatus = useAppSelector(state => state.modalStatus.modalStatus);
     const isEdit: boolean = modalStatus === "edit" ? true : false;
-    console.log("_id", _id);
     const { data: editable }  = _id === "profilePhoto" || _id === "businessLogo" ? useGetUserHook(currentId, isEdit) : useGetGroupHook(currentId, isEdit);
-    console.log("tet", editable);
     const [previewImage, setPreviewImage] = useState<string>("");
 
     useEffect(() => {
