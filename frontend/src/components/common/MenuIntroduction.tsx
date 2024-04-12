@@ -6,11 +6,13 @@ import { MenuItem as BaseMenuItem, menuItemClasses } from "@mui/base/MenuItem";
 import { styled } from "@mui/system";
 import { CssTransition } from "@mui/base/Transitions";
 import { PopupContext } from "@mui/base/Unstable_Popup";
-import { Link, useNavigate } from "react-router-dom";
-import { Avatar, Divider } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Avatar, Box, Divider, Typography } from "@mui/material";
 import { useAuth } from "./AuthProvider";
+import { IMAGE_URL } from "../../utils/constants";
 
-const MenuIntroduction = () => {
+const MenuIntroduction = (props: any) => {
+  const info = props?.info;
 
   const {logOut} = useAuth();
   const navigate = useNavigate()
@@ -23,9 +25,13 @@ const MenuIntroduction = () => {
 
   return (
     <Dropdown>
-      <AvatarMenuButton>
-        <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-      </AvatarMenuButton>
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center"}}>
+        <Typography sx={{ mr: 3, color: 'blue', display: 'block'}}>{info && info.name ? info.name : "Name"}</Typography>
+        <AvatarMenuButton>
+          <Avatar alt={info && info.name ? info.name : "Name"} src={info && info.profilePhoto ? IMAGE_URL + info.profilePhoto : "/static/images/avatar/2.jpg"} />
+        </AvatarMenuButton>
+        </Box>
+      
       <Menu slots={{ listbox: AnimatedListbox }}> 
         <MenuItem onClick={createHandleMenuClick("/profile")} >
           Profile
@@ -186,7 +192,7 @@ const AvatarMenuButton = styled(BaseMenuButton)(
   font-weight: 600;
   font-size: 0.875rem;
   line-height: 1.5;
-  padding: 8px;
+  padding: 0px;
   border-radius: 50%;
   transition: all 150ms ease;
   cursor: pointer;
@@ -212,8 +218,8 @@ const AvatarMenuButton = styled(BaseMenuButton)(
   }
 
   .MuiAvatar-root {
-    width: 32px;
-    height: 32px;
+    width: 60px;
+    height: 60px;
   }
   `
 );

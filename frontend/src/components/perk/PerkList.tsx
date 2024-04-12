@@ -2,8 +2,8 @@ import { usePerkListHook } from "./hook";
 import { IPerkListProps } from "../../types/perk";
 import PerkCard from "./Card";
 
-const PerkList: React.FC<IPerkListProps> = ({user_id}) => {
-
+const PerkList: React.FC<IPerkListProps> = (props) => {
+  const user_id = props?.user_id;
   const {data: perks} = usePerkListHook(user_id);
   return (
     <div style={{ width: "100%" }}>
@@ -15,5 +15,4 @@ const PerkList: React.FC<IPerkListProps> = ({user_id}) => {
     </div>
   );
 };
-
 export default PerkList;

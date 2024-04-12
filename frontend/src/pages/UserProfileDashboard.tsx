@@ -2,7 +2,6 @@ import { Container, Grid, Button, Typography } from "@mui/material";
 import ResponsiveAppBar from "../layouts/ResponsiveAppBar";
 import { CustomAvatar } from "../components";
 import { MainHeader } from "../components/mainpage";
-import PerkCard from "../components/perk/Card";
 import { useAuth } from "../components/common/AuthProvider";
 import { useEffect, useState } from "react";
 import {
@@ -11,18 +10,20 @@ import {
   ProfileTable,
   Total,
 } from "../components/UserProfileDashboard";
-import { IPerk } from "../types/perk";
-import { fetchPerks } from "../services";
 import { useAppDispatch, changeModalStatus } from "../store";
 import { ModalStatus } from "../types";
 import PerkModal from "../components/perk/PerkModal";
 import ConfirmModal from "../components/perk/ConfirmModal";
 import PerkList from "../components/perk/PerkList";
+import { getAllReferralsByUser, getGroup } from "../services";
+import { shorDate } from "../utils";
 
 
 const UserProfileDashboard: React.FC = () => {
   const {getInfo} = useAuth();
   const [userInfo, setUserInfo] = useState<any>(null);
+  const [groupInfo, setGroupInfo] = useState<any>(null);
+  const [referrals, setReferrals] = useState<any[]>();
   const dispatch = useAppDispatch();
   useEffect(() => {
     fetchData();
@@ -31,10 +32,20 @@ const UserProfileDashboard: React.FC = () => {
     try {
       const userData = await getInfo();
       setUserInfo(userData);
+      if (userData.groupInfo) {
+        const groupData = await getGroup(userData.groupInfo.group_id._id);
+        setGroupInfo(groupData);
+      }
+      if (userData) {
+        const response = await getAllReferralsByUser(userData._id);
+        setReferrals(response);
+        makeReferralTotal(response, userData._id);
+      }
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   };
+  
   const handleOpenPerkModal = () => {
     dispatch(
       changeModalStatus({
@@ -43,6 +54,31 @@ const UserProfileDashboard: React.FC = () => {
       })
     );
   };
+  const groupAccountContent = [
+    userInfo && userInfo.groupInfo? shorDate(userInfo.groupInfo.createdAt): "",
+    userInfo && userInfo.groupInfo && userInfo.groupInfo.clanStatus? "Active" : "Inactive",
+    userInfo && userInfo.groupInfo && userInfo.groupInfo.seat === 'Owner'? "Owner" : "User",
+    "Amazing Member"
+  ];
+  const [refTotals, setRefTotals] = useState<any>();
+  const makeReferralTotal = (refs: any, user_id: string) => {
+    let temp = {
+      sentNum: 0,
+      receiveNum: 0,
+      sentPrice: 0,
+      receivePrice: 0
+    };
+    refs?.map((ref: any) => {
+      if (ref.sender && ref.sender._id === user_id) {
+        temp.sentNum ++;
+        temp.sentPrice += parseInt(ref?.price);
+      } else {
+        temp.receiveNum ++;
+        temp.receivePrice += parseInt(ref?.price);
+      }
+    });
+    setRefTotals(temp);
+  }
   return (
     <>
       <ResponsiveAppBar />
@@ -147,34 +183,34 @@ const UserProfileDashboard: React.FC = () => {
                   {/* Removed extra Grid item */}
                   Clan/Group:
                 </Grid>
-                <Grid item sx={{ fontWeight: 600 }}>
+                <Grid item sx={{ fontWeight: 600, color:'blue'}}>
                   {" "}
                   {/* Removed extra Grid item */}
-                  ****
+                  {groupInfo?.name}
                 </Grid>
                 <Grid item sx={{ fontWeight: 600 }}>
                   Seat:
                 </Grid>
-                <Grid item sx={{ fontWeight: 600 }}>
-                  ****
+                <Grid item sx={{ fontWeight: 600, color:'blue'}}>
+                  {userInfo?.groupInfo?.seat}
                 </Grid>
                 <Grid item sx={{ fontWeight: 600 }}>
                   Meeting Time:
                 </Grid>
-                <Grid item sx={{ fontWeight: 600 }}>
-                  *******
+                <Grid item sx={{ fontWeight: 600, color:'blue'}}>
+                  {groupInfo?.meetingInfo?.meetingtime}
                 </Grid>
                 <Grid item sx={{ fontWeight: 600 }}>
                   Meeting Link:
                 </Grid>
-                <Grid item sx={{ fontWeight: 600 }}>
-                  ******
+                <Grid item sx={{ fontWeight: 600, color:'blue'}}>
+                  <a href={groupInfo?.meetingInfo?.meetinglink}>{groupInfo?.meetingInfo?.meetinglink}</a>
                 </Grid>
               </Grid>
               <Grid container direction="row">
                 <Grid container item xs={12} md={4} alignItems="center">
                   <Grid container item xs={12} md={6} alignContent="center">
-                    <BusinessInfo />
+                    <BusinessInfo url={groupInfo?.logo}/>
                   </Grid>
                   <Grid
                     container
@@ -186,13 +222,13 @@ const UserProfileDashboard: React.FC = () => {
                     spacing={3}
                   >
                     <Grid item sx={{ fontWeight: 600 }}>
-                      User Name
+                      {groupInfo?.ownerInfo?.name}
                     </Grid>
                     <Grid item sx={{ fontWeight: 600 }}>
-                      Phone
+                      {groupInfo?.ownerInfo?.phone}
                     </Grid>
                     <Grid item sx={{ fontWeight: 600 }}>
-                      Email
+                      {groupInfo?.ownerInfo?.email}
                     </Grid>
                   </Grid>
                 </Grid>
@@ -204,12 +240,7 @@ const UserProfileDashboard: React.FC = () => {
                       "User Level",
                       "Activity Rank",
                     ]}
-                    content={[
-                      "23/03/2023",
-                      "Active",
-                      "Group Member",
-                      "Amazing Member",
-                    ]}
+                    content={groupAccountContent}
                   />
                 </Grid>
               </Grid>
@@ -251,8 +282,8 @@ const UserProfileDashboard: React.FC = () => {
                 <Grid item xs={6} md={4}>
                   <Total
                     items={["Referrals", "Perks"]}
-                    sent={["29", "69"]}
-                    receive={["52", "32"]}
+                    sent={[refTotals?.sentNum.toString(), (refTotals?.sentNum * 3).toString()]}
+                    receive={[refTotals?.receiveNum.toString(), (refTotals?.receiveNum * 3).toString()]}
                     position={["left"]}
                   />
                 </Grid>
@@ -280,15 +311,16 @@ const UserProfileDashboard: React.FC = () => {
                 <Grid item xs={6} md={5}>
                   <Total
                     items={["Estimated Revenue"]}
-                    sent={["$125,000"]}
-                    receive={["$25,000"]}
+                    sent={["$" + refTotals?.sentPrice.toString()]}
+                    receive={["$" + refTotals?.receivePrice.toString()]}
                     position={["right"]}
                   />
                 </Grid>
               </Grid>
             </Grid>
 
-            <ProfileTable />
+            <ProfileTable referrals={referrals} user_id={userInfo?._id} />
+            {""}
           </Grid>
         </Grid>
       </Container>

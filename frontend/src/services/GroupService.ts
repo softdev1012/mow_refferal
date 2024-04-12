@@ -2,7 +2,6 @@
 import { IPaginatedGroups, IGroup, IPaginatedGroupMembers } from '../types/group'; 
 import instance from '../utils/axiosInstance';
 import { SERVER_URL } from '../utils/constants';
-import { fetchMe } from './UserService';
 
 const baseUrl = SERVER_URL + 'api/groups/';
 const tokenHeader =  {

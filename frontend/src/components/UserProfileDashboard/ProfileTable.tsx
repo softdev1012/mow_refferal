@@ -6,39 +6,41 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Grid, Typography, Divider } from '@mui/material';
+import { IReferral } from '../../types/referral';
 
 function createData(
   name: string,
   phone: string,
   email: string,
   description: string,
-  sentreceived: string,
-  tofrom: string,
-  pay: string,
+  sentreceived: boolean,
+  tofrom: boolean,
+  pay: boolean,
   value: string,
 ) {
   return { name, phone, email, description, sentreceived, tofrom, pay, value };
 }
 
-const rows = [
-  createData('Full Name1', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
-  createData('Full Name2', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
-  createData('Full Name3', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
-  createData('Full Name4', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
-  createData('Full Name5', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
-  createData('Full Name6', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
-  createData('Full Name7', 'phone', 'email', 'description', 'sent', 'from', 'paid', 'estimated value'),
-  
-  
-  // Add more rows as needed
-];
 
 
-
-const ProfileTable = () => {
+const ProfileTable = (props: any) => {
+  const referrals = props?.referrals;
+  const user_id = props?.user_id;
+  const rows = referrals && referrals.map((referral: IReferral) => ({
+    id: referral._id,
+    name: referral.sender._id !== user_id ? referral.sender?.name: referral.receiver?.name,
+    phone: referral.sender._id !== user_id ? referral.sender?.phone: referral.receiver?.phone,
+    email: referral.sender._id !== user_id ? referral.sender?.email: referral.receiver?.email,
+    description: referral?.desc,
+    sentreceived: referral.sender._id === user_id ? "Sent" : "Received",
+    tofrom: referral.sender._id === user_id ? "To" : "From",
+    pay: referral.payStatus? "Paid":"Unpaid",
+    price: referral?.price
+    // numberOfMembers: user.numberOfMembers,
+  }));
   return (
     <>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} sx={{paddingBottom: "100px"}}>
         <Grid item xs={12} sx={{ textAlign: 'left' }}>
           <Typography variant="h6">Referral</Typography>
           <Divider sx={{ borderTop: '2px solid #000' }} />
@@ -59,9 +61,9 @@ const ProfileTable = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
+                {rows && rows.map((row: any) => (
                   <TableRow
-                    key={row.name}
+                    key={row.id}
                     sx={{
                       '&:last-child td, &:last-child th': { border: 0 },
                       '&:not(:last-child)': { marginBottom: '8px' },
@@ -74,7 +76,7 @@ const ProfileTable = () => {
                     <TableCell align="center">{row.sentreceived}</TableCell>
                     <TableCell align="center">{row.tofrom}</TableCell>
                     <TableCell align="center">{row.pay}</TableCell>
-                    <TableCell align="center">{row.value}</TableCell>
+                    <TableCell align="center">${row.price}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

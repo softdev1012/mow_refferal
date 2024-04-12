@@ -88,3 +88,17 @@ export async function totalReferral(req: Request, res: Response, next: NextFunct
         next(error);
     }
 }
+
+
+export async function getAllByUser(req: Request, res: Response, next: NextFunction) {
+    try {
+        const user_id = req.query.user_id as string;
+        if (!user_id) {
+            res.status(500).send({ message: `user_is is missing`});
+        }
+        const referrals = await ReferralRepository.findByUser(user_id);
+        res.status(200).send(referrals);
+    } catch (error) {
+        next(error);
+    }
+}

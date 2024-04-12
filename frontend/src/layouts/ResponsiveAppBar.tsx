@@ -1,32 +1,74 @@
-import React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
-import MenuIcon from "@mui/icons-material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import Tooltip from "@mui/material/Tooltip";
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
 import LogoImg from "../assets/img/largelogo.png";
 import { MenuIntroduction } from "../components";
-
-const pages = ["Learn More", "Apply For Clan Owner"];
+import { useNavigate } from 'react-router-dom';
+import { IPages } from '../types';
+import { fetchMe } from '../services';
+import { hasRole } from '../utils';
+import { IUser } from '../types/user';
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-  const handleOpenNavMenu = () => {
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+  const navigate = useNavigate()
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElNav(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const [pages, setPages] = React.useState<IPages[]>();
+  const [myInfo, setMyInfo] = React.useState<IUser>();
+  
+  const makePages = (roles: string[]) => {
+    if (hasRole("SUPERADMIN", roles)) {
+      setPages([
+        {name: "Groups", url: "/groups"},
+        {name: "Meetings", url: "/meetings"},
+        {name: "Referrals", url: "/referrals"},
+        {name: "Users", url: "/users"},
+        {name: "Owners", url: "/owners"},
+      ]);
+    } else if (hasRole("ADMIN", roles)) {
+      setPages([
+        {name: "Groups", url: "/owner/group"},
+        {name: "Meetings", url: "/owner/meeting"}
+      ]);
+    } else {
+      setPages([
+        {name: "Groups", url: "/user/group"},
+        {name: "Meetings", url: "/user/meeting"}
+      ]);
+    }
+  }
+
+  const fetchPages = async () => {
+    try {
+      const response = await fetchMe();
+      setMyInfo(response);
+      makePages(response.roles);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
   };
+  React.useEffect(() => {
+    fetchPages();
+  }, []);
+
+  const handleMenuItemClick = (page: string) => {
+    handleCloseNavMenu();
+    navigate(page);
+  }
 
   return (
     <AppBar position="static">
@@ -39,75 +81,76 @@ function ResponsiveAppBar() {
               alignItems: "center",
             }}
           >
-            <Box
-              component="a"
-              href="/admin/dashboard"
+            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
               sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-                alignItems: "center",
+                display: { xs: 'block', md: 'none' },
               }}
             >
-              <img
-                alt="Logo"
-                src={LogoImg}
-                style={{ width: "9rem", height: "5rem", marginRight: "8px" }}
-              />
-            </Box>
-
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                keepMounted
-                transformOrigin={{ vertical: "top", horizontal: "left" }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{ display: { xs: "block", md: "none" } }}
-              >
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleOpenNavMenu}>
-                    {page}
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-
-            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "black", display: "block" }}
-                >
-                  {page}
-                </Button>
+              {pages && pages.map((page) => (
+                <MenuItem key={page.name} onClick={() => handleMenuItemClick(page.url)}>
+                  <Typography textAlign="center">{page.name}</Typography>
+                </MenuItem>
               ))}
-            </Box>
+            </Menu>
+          </Box>
+          <Box
+            component="a"
+            href="/admin/dashboard"
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+              alignItems: "center",
+            }}
+          >
+            <img
+              alt="Logo"
+              src={LogoImg}
+              style={{ width: "9rem", height: "5rem", marginRight: "8px" }}
+            />
+          </Box>
+          <Box sx={{ flexGrow: 1, ml:6, display: { xs: 'none', md: 'flex' } }}>
+            {pages && pages.map((page) => (
+              <Button
+                key={page.name}
+                onClick={() => handleMenuItemClick(page.url)}
+                sx={{ mx: 1, my: 2, display: 'block' }}
+              >
+                {page.name}
+              </Button>
+            ))}
+          </Box>
 
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenNavMenu} sx={{ p: 0 }}>
-                  {/* Add your settings icon here */}
-                </IconButton>
-              </Tooltip>
-              <MenuIntroduction />
+              <MenuIntroduction info={myInfo}/>
             </Box>
           </Box>
         </Container>

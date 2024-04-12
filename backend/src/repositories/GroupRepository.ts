@@ -17,11 +17,11 @@ class GroupRepository {
     }
 
     async findAll() {
-        return Group.find().populate('meetings');
+        return Group.find().populate('meetings').lean();
     }
 
     async findById(id:string) {
-        return Group.findById(id).populate('meetings');
+        return Group.findById(id).populate('meetings').lean();
     }
 
     async update(id:string, groupData:any) {      

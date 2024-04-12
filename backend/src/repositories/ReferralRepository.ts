@@ -1,4 +1,5 @@
 
+import mongoose from 'mongoose';
 import Referral from '../models/Referral';
 import { IReferral } from '../types/referral';
 
@@ -63,6 +64,16 @@ class ReferralRepository {
             console.error(`Error summing up column ${field}:`, error);
             throw error;
         }
+    }
+
+    async findByUser(user_id: string): Promise<IReferral[] | null> {
+        const query = {
+            $or: [
+                { sender: user_id },
+                { receiver: user_id }
+            ]
+        };
+        return Referral.find(query).populate('group').populate('sender').populate('receiver').lean();
     }
 
 }

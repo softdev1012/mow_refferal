@@ -106,3 +106,8 @@ export interface IBaseSelect2FieldProps {
   value?: string
   onChange?: (value: string) => void
 }
+
+export interface IPages {
+  name: string;
+  url: string;
+}

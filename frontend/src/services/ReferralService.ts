@@ -39,3 +39,10 @@ export const fetchReferralTotals = async (group_id?:string) => {
   const response = await instance.get(url, {params: params});
   return response.data;
 };
+
+export const getAllReferralsByUser = async (user_id?: string) => {
+  let params = {};
+  if (user_id) params = {...params, user_id: user_id};
+  const response = await instance.get(`${baseUrl}` + "/byuser", {params: params});
+  return response.data;
+}

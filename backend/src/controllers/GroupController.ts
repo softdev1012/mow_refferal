@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { GroupRepository, UserGroupRepository, UserRepository } from '../repositories';
+import { GroupRepository, MeetingRepository, UserGroupRepository, UserRepository } from '../repositories';
 import { GroupService } from '../service';
 
 export async function createGroup(req: Request, res: Response, next: NextFunction) {
@@ -41,11 +41,13 @@ export async function getAllGroups(req: Request, res: Response, next: NextFuncti
 
 export async function getGroup(req: Request, res: Response, next: NextFunction) {
     try {
-        const group = await GroupRepository.findById(req.params.id);
+        let group = await GroupRepository.findById(req.params.id);
         if (!group) {
             return res.status(404).send({ message: 'Group not found' });
         }
-        res.status(200).send(group);
+        const owner = await UserRepository.findById(group.owner);
+        const meeting = await MeetingRepository.findRecent({group: group._id})
+        res.status(200).send({...group, ownerInfo: owner, meetingInfo: meeting});
     } catch (error) {
         next(error);
     }

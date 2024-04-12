@@ -35,7 +35,8 @@ const UserGroupList: React.FC = () => {
   };
   const getOwnerName = (ownerId: string) : string => {
     const owner = owners?.find(owner => owner._id === ownerId);
-    return owner?owner.name : "";
+    if (owner && owner.name) return owner.name;
+    return "";
   };
   useEffect(() => {
     fetchOwnersList();

@@ -5,6 +5,7 @@ import { verifyToken } from '../middleware/authMiddleware';
 const referralrouter: Router = express.Router();
 
 referralrouter.get('/total', referralController.totalReferral);
+referralrouter.get('/byuser', referralController.getAllByUser);
 referralrouter.post('/', verifyToken, referralController.createReferral);
 referralrouter.get('/', referralController.getAllReferrals);
 referralrouter.get('/:id', verifyToken, referralController.getReferral);

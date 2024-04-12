@@ -14,6 +14,8 @@ import {
 import { sendEmail } from "../utils/sendEmail";
 import Token from "../models/token";
 import uploadFile from '../middleware/uploadMiddleware';
+import { UserGroup } from "../models";
+import { UserGroupRepository } from "../repositories";
 
 const signup = async (req: Request, res: Response) => {
   try {
@@ -117,8 +119,12 @@ const fetchMe = async (req: Request, res: Response) => {
   // const email = req.body?.decoded?.email;
   const { user_id } = req.body;
   try {
-    const user = await User.findOne({ _id: user_id });
-    return res.status(StatusCodes.OK).json(user);
+    const user = await User.findOne({ _id: user_id }).lean();
+    if (!user) {
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Server Error");
+    }
+    const group = await UserGroupRepository.findOneWithGroupByUser(user?._id);
+    return res.status(StatusCodes.OK).json({...user, groupInfo: group});
   } catch (err) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Server Error");
   }
