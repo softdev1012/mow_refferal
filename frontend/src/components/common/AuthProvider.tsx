@@ -1,6 +1,6 @@
 
 import { useContext, createContext, useState } from "react";
-import { signin as signinFn, fetchMe} from "../../services";
+import { signin as signinFn} from "../../services";
 
 import { useNavigate } from "react-router-dom";
 const AuthContext = createContext<any>(null);
@@ -9,7 +9,7 @@ interface AuthProviderProps{
   children:React.ReactNode;
 }
 export const AuthProvider = ({ children }:AuthProviderProps) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(sessionStorage.getItem("user")?JSON.parse(sessionStorage.getItem("user") as string):null);
   const [token, setToken] = useState(localStorage.getItem("site") || "");
   const navigate = useNavigate();
 
@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }:AuthProviderProps) => {
         setUser(res.data);
         setToken(res.accessToken);
         localStorage.setItem("site", res.accessToken);
+        sessionStorage.setItem("user", JSON.stringify(res.data));
         navigate("/admin/dashboard");
         return;
       }
@@ -30,30 +31,17 @@ export const AuthProvider = ({ children }:AuthProviderProps) => {
     }
   };
 
-  const getInfo = async () => {
-    try {
-      const res = await fetchMe();
-      // console.log("res",res);
-      if (res) {
-        return res;
-      }
-    } catch (err) {
-      // throw new Error(res.message);
-      console.error(err);
-      return null;
-    }
-  };
-
   const logOut = () => {
 
     setUser(null);
     setToken("");
     localStorage.removeItem("site");
+    sessionStorage.removeItem("user");
     navigate("/signin");
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, loginAction, getInfo, logOut}}>
+    <AuthContext.Provider value={{ token, user, loginAction, logOut}}>
       {children}
     </AuthContext.Provider>
   );

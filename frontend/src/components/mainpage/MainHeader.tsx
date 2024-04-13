@@ -1,8 +1,10 @@
 import React from "react";
 import { IconButton, AppBar, Typography, Box, Container } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useAppDispatch, changeModalStatus } from "../../store";
 import { ModalStatus } from "../../types";
+import { useNavigate } from "react-router-dom";
 
 type ColorType =
   | "#C1FF72"
@@ -16,9 +18,10 @@ interface MainHeaderProps {
   color: ColorType;
   title: string;
   hasPlus: boolean;
+  hasBack?: boolean;
 }
 
-const MainHeader: React.FC<MainHeaderProps> = ({ color, title, hasPlus }) => {
+const MainHeader: React.FC<MainHeaderProps> = ({ color, title, hasPlus, hasBack}) => {
   const dispatch = useAppDispatch();
 
   const handleOpenModal = () => {
@@ -28,6 +31,10 @@ const MainHeader: React.FC<MainHeaderProps> = ({ color, title, hasPlus }) => {
         currentId: undefined,
       })
     );
+  };
+  const navigate = useNavigate();
+  const handleBackPage = () => {
+    navigate(-1);
   };
 
   return (
@@ -41,10 +48,23 @@ const MainHeader: React.FC<MainHeaderProps> = ({ color, title, hasPlus }) => {
             justifyContent: "space-between",
           }}
         >
+          {hasBack && (
+            <IconButton
+              onClick={handleBackPage}
+              color="inherit"
+              aria-label="Add Task"
+            >
+              <ArrowBackIcon style={{ color: "black" }} fontSize="large" />
+            </IconButton>
+          )}
+
+          {!hasBack && (
+            <Typography ></Typography>
+          )}
+
           <Typography variant="h3" component="div" style={{ color: "black" }}>
             {title}
           </Typography>
-
           {hasPlus && (
             <IconButton
               onClick={handleOpenModal}
@@ -53,6 +73,9 @@ const MainHeader: React.FC<MainHeaderProps> = ({ color, title, hasPlus }) => {
             >
               <AddIcon style={{ color: "black" }} fontSize="large" />
             </IconButton>
+          )}
+          {!hasPlus && (
+            <Typography ></Typography>
           )}
         </Box>
       </Container>

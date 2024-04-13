@@ -11,9 +11,8 @@ import { Avatar, Box, Divider, Typography } from "@mui/material";
 import { useAuth } from "./AuthProvider";
 import { IMAGE_URL } from "../../utils/constants";
 
-const MenuIntroduction = (props: any) => {
-  const info = props?.info;
-
+const MenuIntroduction = () => {
+  const {user} = useAuth();
   const {logOut} = useAuth();
   const navigate = useNavigate()
 
@@ -26,9 +25,9 @@ const MenuIntroduction = (props: any) => {
   return (
     <Dropdown>
       <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center"}}>
-        <Typography sx={{ mr: 3, color: 'blue', display: 'block'}}>{info && info.name ? info.name : "Name"}</Typography>
+        <Typography sx={{ mr: 3, color: 'blue', display: 'block'}}>{user && user.name ? user.name : "Name"}</Typography>
         <AvatarMenuButton>
-          <Avatar alt={info && info.name ? info.name : "Name"} src={info && info.profilePhoto ? IMAGE_URL + info.profilePhoto : "/static/images/avatar/2.jpg"} />
+          <Avatar alt={user && user.name ? user.name : "Name"} src={user && user.profilePhoto ? IMAGE_URL + user.profilePhoto : "/static/images/avatar/2.jpg"} />
         </AvatarMenuButton>
         </Box>
       

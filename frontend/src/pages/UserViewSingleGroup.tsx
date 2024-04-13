@@ -13,7 +13,6 @@ import { useParams } from "react-router-dom";
 import { fetchOwners, fetchReferralTotals, getGroup, recentMeeting } from "../services";
 import { IGroup } from "../types/group";
 import { useEffect, useState } from "react";
-import { IOwner } from "../types/owner";
 import GroupMemberList from "../components/group/GroupMemberList";
 import { ReferralCreateModal } from "../components/referral";
 import { IMeeting } from "../types/meeting";
@@ -22,16 +21,12 @@ const UserViewSingleGroup: React.FC = () => {
   const { id } = useParams<{ id: string}>();
   const groupId = id? id:"";
   const [groupInfo, setGroupInfo] = useState<IGroup>();
-  const [owners, setOwners] = useState<IOwner[]>();
   const [totals, setTotals] = useState<any>();
-  const [meeting, setMeeting] = useState<IMeeting>();
   const totArr = [totals?.totReferral, totals?.totClosedReferral, totals?.totgenerated, totals?.totClosedReferral]
   
   useEffect(() => {
     fetchGroupInfo();
-    fetchOwnersList();
     fetchRefTotal();
-    fetchRecentMeeting();
   }, []);
 
   const fetchGroupInfo = async () => {
@@ -50,36 +45,23 @@ const UserViewSingleGroup: React.FC = () => {
       console.error("Error fetching group:", error);
     }
   };
-  const fetchRecentMeeting = async () => {
-    try {
-      const response =  await recentMeeting(groupId);
-      setMeeting(response);
-    } catch (error) {
-      console.error("Error fetching group:", error);
-    }
-  };
-  const fetchOwnersList = async () => {
-    try {
 
-      const response =  await fetchOwners(1, 10000000);
-      setOwners(response.data);
-    } catch (error) {
-      console.error("Error fetching owners:", error);
-    }
-  };
-  const getOwnerName = (ownerId: string | undefined) : string => {
-    const owner = owners?.find(owner => owner._id === ownerId);
-    return owner?owner.name : "";
-  };
   return (
     <>
       <ResponsiveAppBar />
-      <MainHeader
-        color={"#38B6FF"}
-        title={"User Single Group"}
-        hasPlus={false}
-      />
+      <MainHeader color={"#38B6FF"} title={"Group Infomation"} hasPlus={false} hasBack={true}/>
       <Container maxWidth="xl">
+        <Grid container direction="row" sx={{ my: "1rem" }} spacing={2} justifyContent="space-around" alignItems="center">
+          <Typography variant="h3" component="div" fontWeight="bold" style={{ textAlign: 'left' }}>
+            {groupInfo?.name}
+          </Typography>
+          <Typography variant="h6" component="div" fontWeight="bold">
+            Meeting Time: {groupInfo?.meetingInfo?.meetingtime}
+          </Typography>
+          <Typography variant="h6" component="div" fontWeight="bold">
+            Meeting Link: {groupInfo?.meetingInfo?.meetinglink}
+          </Typography>
+        </Grid>
         <Grid container direction="row" spacing={2}>
           {/* BusinessInfo component */}
           <Grid
@@ -107,40 +89,31 @@ const UserViewSingleGroup: React.FC = () => {
           </Grid>
         </Grid>
 
-        <Grid container direction="row" sx={{ my: "4rem" }} spacing={2}>
+        <Grid container direction="row" sx={{ my: "1rem" }} spacing={2}>
           <Grid item xs={12} md={4}>
-            <Typography variant="h3" component="div" fontWeight="bold" style={{ textAlign: 'left' }}>
-              {groupInfo?.name}
-            </Typography>
             <Grid container direction="row" alignItems="center">
               <Grid item xs={12} md={6}>
-                <CustomAvatar width="15rem" height="15rem" />
+                <CustomAvatar width="12rem" height="12rem" url={groupInfo?.ownerInfo?.profilePhoto}/>
               </Grid>
               <Grid item xs={12} md={6}>
                 <Grid container direction="column" spacing={1}>
                   <Typography variant="h6" component="div" fontWeight="bold">
-                    {getOwnerName(groupInfo?.owner)}
+                    {groupInfo?.ownerInfo?.name}
                   </Typography>
                   <Grid item sx={{ fontWeight: 600 }}>
-                    User Name
+                    {groupInfo?.ownerInfo?.businessName}
                   </Grid>
                   <Grid item sx={{ fontWeight: 600 }}>
-                    Phone
+                    {groupInfo?.ownerInfo?.phone}
                   </Grid>
                   <Grid item sx={{ fontWeight: 600 }}>
-                    Email
+                    {groupInfo?.ownerInfo?.email}
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12} md={8}>
-            <Typography variant="h6" component="div" fontWeight="bold">
-              Meeting Time: {meeting?.meetingtime}
-            </Typography>
-            <Typography variant="h6" component="div" fontWeight="bold">
-              Meeting Link: {meeting?.meetinglink}
-            </Typography>
             <Grid item sx={{ textAlign: "left", mt: "3rem" }}>
               <Typography variant="h6" component="div" fontWeight="bold">
                 Owner Message

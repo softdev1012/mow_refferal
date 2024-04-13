@@ -28,6 +28,7 @@ import UserViewSingleMeetings from "./pages/UserViewSingleMeeting";
 import PrivateRoute from "./components/common/PrivateRoutes";
 import { AuthProvider } from "./components/common/AuthProvider";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ProfileEdit from "./pages/ProfileEdit";
 function App() {
   const queryClient = new QueryClient();
   return (
@@ -89,6 +90,10 @@ function App() {
                       <Route
                         path="/profile" 
                         element={<UserProfileDashboard/>}
+                      />
+                      <Route
+                        path="/profile/edit" 
+                        element={<ProfileEdit/>}
                       />
                       <Route
                         path="/user/group" 

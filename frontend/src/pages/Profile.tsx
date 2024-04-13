@@ -52,7 +52,7 @@ const Profile: React.FC = () => {
   return (
     <>
       <ResponsiveAppBar />
-      <MainHeader color={"#C1FF72"} title={"User Profile"} hasPlus={false} />
+      <MainHeader color={"#C1FF72"} title={"User Profile"} hasPlus={false} hasBack = {true} />
       <Container maxWidth="xl" sx={{ marginTop: "3rem" }}>
         <Grid container direction="row">
           {" "}

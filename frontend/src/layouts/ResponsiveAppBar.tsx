@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { IPages } from '../types';
 import { fetchMe } from '../services';
 import { hasRole } from '../utils';
-import { IUser } from '../types/user';
+import { useAuth } from '../components/common/AuthProvider';
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -28,7 +28,7 @@ function ResponsiveAppBar() {
   };
 
   const [pages, setPages] = React.useState<IPages[]>();
-  const [myInfo, setMyInfo] = React.useState<IUser>();
+  const {user} = useAuth();
   
   const makePages = (roles: string[]) => {
     if (hasRole("SUPERADMIN", roles)) {
@@ -52,17 +52,8 @@ function ResponsiveAppBar() {
     }
   }
 
-  const fetchPages = async () => {
-    try {
-      const response = await fetchMe();
-      setMyInfo(response);
-      makePages(response.roles);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
   React.useEffect(() => {
-    fetchPages();
+    makePages(user?.roles);
   }, []);
 
   const handleMenuItemClick = (page: string) => {
@@ -150,7 +141,7 @@ function ResponsiveAppBar() {
           </Box>
 
             <Box sx={{ flexGrow: 0 }}>
-              <MenuIntroduction info={myInfo}/>
+              <MenuIntroduction />
             </Box>
           </Box>
         </Container>

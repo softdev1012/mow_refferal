@@ -15,22 +15,23 @@ import { ModalStatus } from "../types";
 import PerkModal from "../components/perk/PerkModal";
 import ConfirmModal from "../components/perk/ConfirmModal";
 import PerkList from "../components/perk/PerkList";
-import { getAllReferralsByUser, getGroup } from "../services";
+import { fetchMe, getAllReferralsByUser, getGroup } from "../services";
 import { shorDate } from "../utils";
+import { useNavigate } from "react-router-dom";
 
 
 const UserProfileDashboard: React.FC = () => {
-  const {getInfo} = useAuth();
   const [userInfo, setUserInfo] = useState<any>(null);
   const [groupInfo, setGroupInfo] = useState<any>(null);
   const [referrals, setReferrals] = useState<any[]>();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     fetchData();
   }, []);
   const fetchData = async () => {
     try {
-      const userData = await getInfo();
+      const userData = await fetchMe();
       setUserInfo(userData);
       if (userData.groupInfo) {
         const groupData = await getGroup(userData.groupInfo.group_id._id);
@@ -125,7 +126,7 @@ const UserProfileDashboard: React.FC = () => {
                   {userInfo == null? "Email": userInfo.email}
                 </Grid>
                 <Grid item sx={{ fontWeight: 600 }}>
-                  <Button>Edit Profile</Button>
+                  <Button onClick={() => navigate("/profile/edit")}>Edit Profile</Button>
                 </Grid>
               </Grid>
             </Grid>

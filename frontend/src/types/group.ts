@@ -21,6 +21,8 @@ export enum GroupModalStatus {
     counterMember:number;
     groupSize:number;
     profileStatus: boolean;
+    ownerInfo?: any;
+    meetingInfo?: any;
   }
   
   export interface IBaseInputFieldProps {
