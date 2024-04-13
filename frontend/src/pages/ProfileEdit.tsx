@@ -1,41 +1,68 @@
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
+import SaveIcon from '@mui/icons-material/Save';
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ResponsiveAppBar from "../layouts/ResponsiveAppBar";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { register as registerFn} from "../services";
+import { fetchMe, register as registerFn} from "../services";
 import { MuiTelInput } from 'mui-tel-input'
-import { useState } from "react";
-import ImageUpload from "../components/common/ImageUpload";
+import { useEffect, useState } from "react";
+// import ImageUpload from "../components/common/ImageUpload";
 import UploadService from "../services/FileUploadService";
+import { MainHeader } from "../components/mainpage";
+import AvatarChange from "../components/common/AvatarChange";
+// import { IUser } from "../types/user";
 
 const defaultTheme = createTheme();
 
 const ProfileEdit = () => {
-  const { register, handleSubmit} = useForm();
 
-  const {mutate,isPending} = useMutation({
+  const { register, handleSubmit, reset} = useForm();
+  const {mutate} = useMutation({
     mutationFn:registerFn
   });
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [bphoneNumber, setBphoneNumber] = useState<string>('');
+  const [profilePhoto, setProfilePhoto] = useState<string>('');
+  const [businessLogo, setBusinessLogo] = useState<string>('');
   const handleTelInputChange = (value: string) => {
     setPhoneNumber(value);
   };
   const handleBTelInputChange = (value: string) => {
     setBphoneNumber(value);
   };
+  useEffect(() => {
+    fetchInfo();
+  }, []);
+  const fetchInfo = async () => {
+    try {
+      const response = await fetchMe();
+      const { firstName, lastName, phone, city, street, zipcode, businessName, businessPhone, businessEmail, businessWebsite, googleLink, profilePhoto, businessLogo } = response;
+      reset({
+        firstName,
+        lastName,
+        city,
+        street,
+        zipcode,
+        businessName,
+        businessEmail,
+        businessWebsite,
+        googleLink
+      });
+      setPhoneNumber(phone);
+      setBphoneNumber(businessPhone);
+      setProfilePhoto(profilePhoto);
+      setBusinessLogo(businessLogo);
+    } catch(error) {
+      console.error("Error on fetch info: ", error)
+    }
+  }
+
+  
 
 
   const onSubmit=async (data: any)=>{
@@ -98,9 +125,14 @@ const ProfileEdit = () => {
   return (
     <>
       <ResponsiveAppBar />
+      <MainHeader
+        color={"#D9D9D9"}
+        title={"Edit Profile"}
+        hasPlus={false}
+        hasBack={true}
+      />
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="md">
-          <CssBaseline />
           <Box
             sx={{
               marginTop: 2,
@@ -109,34 +141,64 @@ const ProfileEdit = () => {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign up
-            </Typography>
             <Box
               component="form"
               noValidate
               onSubmit={handleSubmit(onSubmit)}
               sx={{ mt: 3 }}
             >
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "start",
-                }}
-              >
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "start",
+                    }}
+                >
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                          <AvatarChange
+                            _id="profilePhoto"
+                            width={150}
+                            height={150}
+                            btntext="Change Profile Photo"
+                            filename={profilePhoto}
+                            onFileNameChange={setProfilePhoto}
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid width={20}></Grid>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                          <AvatarChange
+                            _id="businessLogo"
+                            width={150}
+                            height={150}
+                            btntext="Change Business Logo"
+                            filename={businessLogo}
+                            onFileNameChange={setBusinessLogo}
+                            />
+                        </Grid>
+                    </Grid>
+                </Box>
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "start",
+                        marginTop:4
+                    }}
+                >
+                
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <TextField
-                      autoComplete="given-name"
+                      autoComplete="firstName"
                       {...register("firstName")}
                       required
                       fullWidth
                       id="firstName"
                       label="First Name"
+                      InputLabelProps={{ shrink: true }}
                       autoFocus
                     />
                   </Grid>
@@ -147,7 +209,8 @@ const ProfileEdit = () => {
                       id="lastName"
                       label="Last Name"
                       {...register("lastName")}
-                      autoComplete="family-name"
+                      autoComplete="lastName"
+                      InputLabelProps={{ shrink: true }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -171,6 +234,7 @@ const ProfileEdit = () => {
                       id="city"
                       label="City"
                       autoFocus
+                      InputLabelProps={{ shrink: true }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -181,6 +245,7 @@ const ProfileEdit = () => {
                       id="street"
                       label="Street"
                       autoFocus
+                      InputLabelProps={{ shrink: true }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -191,37 +256,7 @@ const ProfileEdit = () => {
                       id="zip"
                       label="Zipcode"
                       autoFocus
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="email"
-                      label="Email Address"
-                      {...register("email")}
-                      autoComplete="email"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      {...register("password")}
-                      label="Password"
-                      type="password"
-                      id="password"
-                      autoComplete="new-password"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      {...register("confirmpassword")}
-                      label="Confirm Password"
-                      type="password"
-                      id="confirmpassword"
+                      InputLabelProps={{ shrink: true }}
                     />
                   </Grid>
                 </Grid>
@@ -235,6 +270,7 @@ const ProfileEdit = () => {
                       id="businessName"
                       label="Business Name"
                       autoFocus
+                      InputLabelProps={{ shrink: true }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -258,6 +294,7 @@ const ProfileEdit = () => {
                       label="Business Email"
                       {...register("businessEmail")}
                       autoComplete="email"
+                      InputLabelProps={{ shrink: true }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -267,6 +304,7 @@ const ProfileEdit = () => {
                       id="businessWebsite"
                       label="Business Website"
                       autoFocus
+                      InputLabelProps={{ shrink: true }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -276,58 +314,19 @@ const ProfileEdit = () => {
                       id="googleLink"
                       label="Google Business Link"
                       autoFocus
+                      InputLabelProps={{ shrink: true }}
                     />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <div className="flex-grow">Profile Photo</div>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <div className="flex-grow">Business Logo</div>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center"}}>
-                      <ImageUpload
-                        _id="profilePhoto"
-                        register={register}
-                        width={100}
-                        height={100}
-                      />
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center"}}>
-                      <ImageUpload
-                        _id="businessLogo"
-                        register={register}
-                        width={100}
-                        height={100}
-                      />
-                    </Box>
                   </Grid>
                 </Grid>
               </Box>
-              <Grid item xs={12} sx={{ my: 1 }}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
               <Button
                 type="submit"
                 variant="contained"
-                sx={{ my: 1 }}
+                sx={{ my: 5, px: 4}}
+                startIcon={<SaveIcon/>}
               >
-                Sign Up
+                Save Change
               </Button>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link href="/signin" variant="body2">
-                    Already have an account? Sign in
-                  </Link>
-                </Grid>
-              </Grid>
             </Box>
           </Box>
         </Container>

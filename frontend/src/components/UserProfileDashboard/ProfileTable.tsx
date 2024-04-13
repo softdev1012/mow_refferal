@@ -8,20 +8,6 @@ import Paper from '@mui/material/Paper';
 import { Grid, Typography, Divider } from '@mui/material';
 import { IReferral } from '../../types/referral';
 
-function createData(
-  name: string,
-  phone: string,
-  email: string,
-  description: string,
-  sentreceived: boolean,
-  tofrom: boolean,
-  pay: boolean,
-  value: string,
-) {
-  return { name, phone, email, description, sentreceived, tofrom, pay, value };
-}
-
-
 
 const ProfileTable = (props: any) => {
   const referrals = props?.referrals;

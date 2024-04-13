@@ -9,7 +9,7 @@ interface AuthProviderProps{
   children:React.ReactNode;
 }
 export const AuthProvider = ({ children }:AuthProviderProps) => {
-  const [user, setUser] = useState(sessionStorage.getItem("user")?JSON.parse(sessionStorage.getItem("user") as string):null);
+  const [user, setUser] = useState(localStorage.getItem("user")?JSON.parse(localStorage.getItem("user") as string):null);
   const [token, setToken] = useState(localStorage.getItem("site") || "");
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }:AuthProviderProps) => {
         setUser(res.data);
         setToken(res.accessToken);
         localStorage.setItem("site", res.accessToken);
-        sessionStorage.setItem("user", JSON.stringify(res.data));
+        localStorage.setItem("user", JSON.stringify(res.data));
         navigate("/admin/dashboard");
         return;
       }
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }:AuthProviderProps) => {
     setUser(null);
     setToken("");
     localStorage.removeItem("site");
-    sessionStorage.removeItem("user");
+    localStorage.removeItem("user");
     navigate("/signin");
   };
 

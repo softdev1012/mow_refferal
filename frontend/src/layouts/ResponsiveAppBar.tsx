@@ -12,7 +12,6 @@ import LogoImg from "../assets/img/largelogo.png";
 import { MenuIntroduction } from "../components";
 import { useNavigate } from 'react-router-dom';
 import { IPages } from '../types';
-import { fetchMe } from '../services';
 import { hasRole } from '../utils';
 import { useAuth } from '../components/common/AuthProvider';
 

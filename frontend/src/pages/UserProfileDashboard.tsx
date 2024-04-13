@@ -2,7 +2,6 @@ import { Container, Grid, Button, Typography } from "@mui/material";
 import ResponsiveAppBar from "../layouts/ResponsiveAppBar";
 import { CustomAvatar } from "../components";
 import { MainHeader } from "../components/mainpage";
-import { useAuth } from "../components/common/AuthProvider";
 import { useEffect, useState } from "react";
 import {
   AccountInfo,

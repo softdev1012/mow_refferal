@@ -10,12 +10,11 @@ import { MainHeader } from "../components/mainpage";
 import { BusinessInfo } from "../components/UserProfileDashboard";
 import { CustomAvatar } from "../components";
 import { useParams } from "react-router-dom";
-import { fetchOwners, fetchReferralTotals, getGroup, recentMeeting } from "../services";
+import { fetchReferralTotals, getGroup } from "../services";
 import { IGroup } from "../types/group";
 import { useEffect, useState } from "react";
 import GroupMemberList from "../components/group/GroupMemberList";
 import { ReferralCreateModal } from "../components/referral";
-import { IMeeting } from "../types/meeting";
 
 const UserViewSingleGroup: React.FC = () => {
   const { id } = useParams<{ id: string}>();

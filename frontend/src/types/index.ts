@@ -23,12 +23,12 @@ export interface ITask {
 export interface IBaseInputFieldProps {
   type: string;
   _id: string;
-  placeholder: string;
-  autoFocus: boolean;
-  required: boolean;
-  label: string;
-  register: any;
-  error: string | undefined;
+  placeholder?: string;
+  autoFocus?: boolean;
+  required?: boolean;
+  label?: string;
+  register?: any;
+  error?: string | undefined;
 }
 
 export interface IBaseSelectFieldProps {
@@ -110,4 +110,15 @@ export interface IBaseSelect2FieldProps {
 export interface IPages {
   name: string;
   url: string;
+}
+
+export interface IAvatarChange {
+  _id?: string;
+  register?: any;
+  url?: string;
+  width?: number;
+  height?: number;
+  btntext?: string;
+  filename?: string;
+  onFileNameChange?: any;
 }
