@@ -5,15 +5,17 @@ import MainPage from "../components/mainpage/MainPage";
 import Container from '@mui/material/Container';
 import Counter from '../components/mainpage/Counter';
 import { MainHeader } from "../components/mainpage";
-import {  ConfirmModal} from "../components/owner";
+import {  ConfirmModal, useOwnerTotalHook} from "../components/owner";
 import { OwnerList, OwnerModal } from "../components/owner";
 const OwnerDashboard: React.FC = () =>{
+    const {data: totals} = useOwnerTotalHook();
+    const tots = [totals?.total, totals?.totalActive, totals?.totalInactive];
     return(
         <>
         <ResponsiveAppBar />
         <MainHeader color={"#FFDE59"} title={"Owners/Clan Leaders Dashboard"} hasPlus={false} />
         <Container maxWidth="xl">
-        <Counter items={["Total Users", "Total Active Users", "Total Inactive Users"]} values={["200","75","125"]}/>
+        <Counter items={["Total Owners", "Total Active Owners", "Total Inactive Owners"]} values={tots}/>
         <MainPage>
                 <OwnerList/>
             </MainPage>

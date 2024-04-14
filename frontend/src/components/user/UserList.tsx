@@ -11,7 +11,7 @@ import Switch from "@mui/material/Switch";
 import { IUser } from "../../types/user";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
-// import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from "@mui/icons-material/Delete";
 import LockResetIcon from '@mui/icons-material/LockReset';
 import ReplyIcon from '@mui/icons-material/Reply';
 import { changeModalStatus, useAppDispatch } from "../../store";
@@ -38,14 +38,14 @@ const UserList: React.FC = () => {
     );
   };
 
-  // const handleDeleteClick = (userId: string) => {
-  //   dispatch(
-  //     changeModalStatus({
-  //       modalStatus: ModalStatus.REMOVE,
-  //       currentId: userId,
-  //     })
-  //   );
-  // };
+  const handleDeleteClick = (userId: string) => {
+    dispatch(
+      changeModalStatus({
+        modalStatus: ModalStatus.REMOVE,
+        currentId: userId,
+      })
+    );
+  };
 
   const handlePassResetClick = (userId: string) => {
     dispatch(
@@ -151,14 +151,6 @@ const UserList: React.FC = () => {
               <EditIcon />
             </IconButton>
           </Tooltip>
-          {/* <Tooltip title="Delete User">
-            <IconButton
-              onClick={() => handleDeleteClick(params.row.id as string)}
-              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip> */}
           <Tooltip title="Reset password">
             <IconButton
               onClick={() => handlePassResetClick(params.row.id as string)}
@@ -173,6 +165,14 @@ const UserList: React.FC = () => {
               className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
             >
               <ReplyIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete User">
+            <IconButton
+              onClick={() => handleDeleteClick(params.row.id as string)}
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              <DeleteIcon />
             </IconButton>
           </Tooltip>
         </>

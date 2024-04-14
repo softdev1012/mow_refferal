@@ -10,12 +10,14 @@ import Switch from "@mui/material/Switch";
 import { useOwnerListHook } from "./hooks";
 // import { IOwner } from "../../types/owner";
 import IconButton from "@mui/material/IconButton";
-// import EditIcon from "@mui/icons-material/Edit";
+import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import LockResetIcon from '@mui/icons-material/LockReset';
+import ReplyIcon from '@mui/icons-material/Reply';
 import { changeModalStatus, useAppDispatch } from "../../store";
 import { ModalStatus } from "../../types";
 import { CustomAvatar } from "..";
-import { Grid } from "@mui/material";
+import { Grid, Tooltip } from "@mui/material";
 import { IUser } from "../../types/user";
 
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
@@ -41,6 +43,23 @@ const OwnerList: React.FC = () => {
       changeModalStatus({
         modalStatus: ModalStatus.REMOVE,
         currentId: ownerId,
+      })
+    );
+  };
+  const handlePassResetClick = (userId: string) => {
+    dispatch(
+      changeModalStatus({
+        modalStatus: ModalStatus.RESET,
+        currentId: userId,
+      })
+    );
+  };
+
+  const handleConvertClick = (userId: string) => {
+    dispatch(
+      changeModalStatus({
+        modalStatus: ModalStatus.CONVERT,
+        currentId: userId,
       })
     );
   };
@@ -118,25 +137,45 @@ const OwnerList: React.FC = () => {
       field: "actions",
       headerName: "Actions",
       sortable: false,
-      width: 120,
+      width: 180,
       headerClassName:"custom-header",
       renderCell: (params) => (
         <>
-          {/* <IconButton
-            onClick={() => handleEditClick(params.row.id as string)}
-            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-          >
-            <EditIcon />
-          </IconButton> */}
-          <IconButton
-            onClick={() => handleDeleteClick(params.row.id as string)}
-            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-          >
-            <DeleteIcon />
-          </IconButton>
+          <Tooltip title="Edit User">
+            <IconButton
+              onClick={() => handleEditClick(params.row.id as string)}
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Reset password">
+            <IconButton
+              onClick={() => handlePassResetClick(params.row.id as string)}
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              <LockResetIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Convert to user">
+            <IconButton
+              onClick={() => handleConvertClick(params.row.id as string)}
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              <ReplyIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete User">
+            <IconButton
+              onClick={() => handleDeleteClick(params.row.id as string)}
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
         </>
       ),
-    },
+    }
   ];
   const rows = owners.data.map((owner: IUser) => ({
     id: owner._id,

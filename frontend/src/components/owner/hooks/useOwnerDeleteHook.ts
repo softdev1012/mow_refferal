@@ -16,6 +16,7 @@ const useOwnerDeleteHook = () => {
                 position: "top-right",
             });
             queryClient.invalidateQueries({queryKey: ['getAllOwners']});
+            queryClient.invalidateQueries({queryKey: ['getOwnerTotals']});
         },
         onError: (error: any) => {
             toast.error(`Error: ${error?.response?.data?.message}`, {

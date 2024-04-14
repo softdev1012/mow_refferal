@@ -1,21 +1,18 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateOwner } from "../../../services/OwnerService";
+import { useMutation } from "@tanstack/react-query";
+import { resetPasswordUser } from "../../../services";
 import { toast } from "react-toastify";
 
-const useOwnerUpdateHook = () => {
-    const queryClient = useQueryClient();
+const useOwnerPasswordResetHook = () => {
 
     return useMutation({
-        mutationFn: updateOwner,
+        mutationFn: resetPasswordUser,
         onSuccess: () => {
-            toast.success('Owner updated.', {
+            toast.success('User password is reseted to default one', {
                 hideProgressBar: true,
                 autoClose: 5000,
                 type: "success",
                 position: "top-right",
             });
-            queryClient.invalidateQueries({queryKey: ['getAllOwners']});
-            queryClient.invalidateQueries({queryKey: ['getOwnerTotals']});
         },
         onError: (error: any) => {
             toast.error(`Error: ${error?.response?.data?.message}`, {
@@ -28,4 +25,4 @@ const useOwnerUpdateHook = () => {
     })
 }
 
-export default useOwnerUpdateHook;
+export default useOwnerPasswordResetHook;

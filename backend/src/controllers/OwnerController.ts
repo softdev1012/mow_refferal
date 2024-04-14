@@ -28,7 +28,7 @@ export async function getAllOwners(req: Request, res: Response, next: NextFuncti
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string) || 10;
 
-        const { paginatedData, nextPage } = await UserService.fetchPaginatedData(page, limit, Roles.USER);
+        const { paginatedData, nextPage } = await UserService.fetchPaginatedData(page, limit, Roles.OWNER);
         
         res.status(200).send({
           data: paginatedData,
@@ -90,6 +90,24 @@ export async function deleteOwner(req: Request, res: Response, next: NextFunctio
             return res.status(404).send({ message: 'User not found' });
         }
         res.status(204).send();
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+export async function totalOwner(req: Request, res: Response, next: NextFunction) {
+    
+    try {
+        const total = await UserRepository.count({roles: {$in: [Roles.OWNER]}});
+        const totalActive = await UserRepository.count({profileStatus: true, roles: {$in: [Roles.OWNER]}});
+        const totalInactive = await UserRepository.count({profileStatus: false, roles: {$in: [Roles.OWNER]}});
+        const result = {
+            total: total.toString(),
+            totalActive: totalActive.toString(),
+            totalInactive: totalInactive.toString(),
+        };
+        res.status(200).send(result);
     } catch (error) {
         next(error);
     }

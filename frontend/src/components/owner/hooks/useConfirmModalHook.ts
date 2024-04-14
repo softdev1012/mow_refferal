@@ -1,4 +1,4 @@
-import { useOwnerUpdateHook } from ".";
+import { useOwnerDeleteHook, useOwnerPasswordResetHook, useOwnerUpdateHook } from ".";
 import { changeModalStatus, useAppDispatch, useAppSelector } from "../../../store";
 import { ModalStatus } from "../../../types";
 
@@ -8,13 +8,25 @@ const useConfirmModalHook = () => {
 
     const dispatch = useAppDispatch();
 
-    const mutation = useOwnerUpdateHook();
+    const deleteMutation = useOwnerDeleteHook();
+    const updateMutation = useOwnerUpdateHook();
+    const resetMutation = useOwnerPasswordResetHook();
 
-    const isOpen = modalStatus === "remove" ? true : false;
+    const isOpen = modalStatus === ModalStatus.REMOVE || modalStatus === ModalStatus.CONVERT || modalStatus === ModalStatus.RESET ? true : false;
 
     const handleSubmit = async () => {
-        // await mutation.mutateAsync(currentId);
-        await mutation.mutateAsync({updatedOwner: {_id: null, isOwner : false}, _id: currentId});
+        switch (modalStatus) {
+            case ModalStatus.REMOVE:
+                await deleteMutation.mutateAsync(currentId);
+                break;
+            case ModalStatus.CONVERT:
+                await updateMutation.mutateAsync({updatedOwner: {_id: null, roles : ["USER"]}, _id: currentId});
+                break;
+            case ModalStatus.RESET:
+                await resetMutation.mutateAsync(currentId);
+                break;
+        }
+        ;
         dispatch(changeModalStatus({modalStatus: ModalStatus.CLOSE, currentId: undefined}));
     }
 
