@@ -189,15 +189,18 @@ const verifyUserById = async (req: Request, res: Response) => {
 };
 
 const resetPassword = async (req: Request, res: Response) => {
-  const { id } = req.query;
+  const { user_id, currentpassword, password, confirmpassword} = req.body;
   try {
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: id },
-      { isEmailVerified: true },
-      { new: true }
-    );
-
-    return res.status(StatusCodes.OK).json(updatedUser);
+    const user = await User.findById(user_id);
+    if (!user) {
+      return res.status(404).send();
+    }
+    const isPwdValid = bcrypt.compareSync(currentpassword, user.password);
+    if (!isPwdValid) {
+      return res.status(400).send("Current Password not matches.");
+    }
+    await User.findByIdAndUpdate(user_id, {password: bcrypt.hashSync(password, 8)}, { new: true });
+    return res.status(200).send();
   } catch (err) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Server Error");
   }

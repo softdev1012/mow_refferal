@@ -17,89 +17,34 @@ import { useMutation } from "@tanstack/react-query";
 import { register as registerFn} from "../services";
 import { MuiTelInput } from 'mui-tel-input'
 import { useState } from "react";
-import ImageUpload from "../components/common/ImageUpload";
-import UploadService from "../services/FileUploadService";
 
 const defaultTheme = createTheme();
 
 const SignUp = () => {
   const { register, handleSubmit} = useForm();
 
-  const {mutate,isPending} = useMutation({
+  const {mutate} = useMutation({
     mutationFn:registerFn
   });
   const [phoneNumber, setPhoneNumber] = useState<string>('');
-  const [bphoneNumber, setBphoneNumber] = useState<string>('');
   const handleTelInputChange = (value: string) => {
     setPhoneNumber(value);
-  };
-  const handleBTelInputChange = (value: string) => {
-    setBphoneNumber(value);
   };
 
 
   const onSubmit=async (data: any)=>{
-    if (data.businessLogo[0]) {
-      UploadService.upload(data.businessLogo[0], (event: any) => { })
-      .then((response) => {
-        const logo = response.data.filename;
-
-        if(data.profilePhoto[0]) {
-          UploadService.upload(data.businessLogo[0], (event: any) => { })
-          .then((response) => {
-            const avatar = response.data.filename;
-            try{
-              mutate({...data, businessLogo: logo, profilePhoto: avatar});
-            }
-            catch(err){
-              console.log(err)
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-        } else {
-          try{
-            mutate({...data, businessLogo: logo, profilePhoto: "avatar.png"});
-          }
-          catch(err){
-            console.log(err)
-          }
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    } else {
-      if(data.profilePhoto[0]) {
-        UploadService.upload(data.businessLogo[0], (event: any) => { })
-        .then((response) => {
-          const avatar = response.data.filename;
-          try{
-            mutate({...data, businessLogo: "default.png", profilePhoto: avatar});
-          }
-          catch(err){
-            console.log(err)
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      } else {
-        try{
-          await mutate({...data, businessLogo: "default.png", profilePhoto: "avatar.png"});
-        }
-        catch(err){
-          console.log(err)
-        }
-      }
+    try{
+      await mutate(data);
+    }
+    catch(err){
+      console.log(err)
     }
   }
   return (
     <>
       <ResponsiveAppBar />
       <ThemeProvider theme={defaultTheme}>
-        <Container component="main" maxWidth="md">
+        <Container component="main" maxWidth="sm">
           <CssBaseline />
           <Box
             sx={{
@@ -223,86 +168,6 @@ const SignUp = () => {
                       type="password"
                       id="confirmpassword"
                     />
-                  </Grid>
-                </Grid>
-                <Grid width={20}></Grid>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <TextField
-                      {...register("businessName")}
-                      required
-                      fullWidth
-                      id="businessName"
-                      label="Business Name"
-                      autoFocus
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                  <MuiTelInput
-                    {...register("businessPhone")}
-                    required
-                    label="Business Phone Number"
-                    id="businessPhone"
-                    fullWidth
-                    autoFocus
-                    defaultCountry="US"
-                    value={bphoneNumber}
-                    onChange={handleBTelInputChange}
-                  />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="businessEmail"
-                      label="Business Email"
-                      {...register("businessEmail")}
-                      autoComplete="email"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      {...register("businessWebsite")}
-                      fullWidth
-                      id="businessWebsite"
-                      label="Business Website"
-                      autoFocus
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      {...register("googleLink")}
-                      fullWidth
-                      id="googleLink"
-                      label="Google Business Link"
-                      autoFocus
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <div className="flex-grow">Profile Photo</div>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <div className="flex-grow">Business Logo</div>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center"}}>
-                      <ImageUpload
-                        _id="profilePhoto"
-                        register={register}
-                        width={100}
-                        height={100}
-                      />
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center"}}>
-                      <ImageUpload
-                        _id="businessLogo"
-                        register={register}
-                        width={100}
-                        height={100}
-                      />
-                    </Box>
                   </Grid>
                 </Grid>
               </Box>

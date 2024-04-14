@@ -18,7 +18,7 @@ authRoute.post("/login", validatePayload(signinSchema), authController.login);//
 authRoute.post("/signup", validatePayload(signupSchema), authController.signup);//complete
 authRoute.get("/verifyuserbyid", validatePayload(verifyItemByIdSchema), authController.verifyUserById);//complete
 // authRoute.post("/forgot-password", validatePayload(verifyItemByEmailSchema), authController.forgotPassword);//complete
-// authRoute.get("/password-reset", authController.resetPassword);
+authRoute.post("/password-reset", verifyToken, authController.resetPassword);
 authRoute.get("/me", verifyToken, async (req : Request, res : Response) => {
     await authController.fetchMe(req, res);
 });

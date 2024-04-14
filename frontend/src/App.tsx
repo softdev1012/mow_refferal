@@ -29,6 +29,7 @@ import PrivateRoute from "./components/common/PrivateRoutes";
 import { AuthProvider } from "./components/common/AuthProvider";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProfileEdit from "./pages/ProfileEdit";
+import ResetPassword from "./pages/ResetPassword";
 function App() {
   const queryClient = new QueryClient();
   return (
@@ -94,6 +95,10 @@ function App() {
                       <Route
                         path="/profile/edit" 
                         element={<ProfileEdit/>}
+                      />
+                      <Route
+                        path="/password-reset" 
+                        element={<ResetPassword/>}
                       />
                       <Route
                         path="/user/group" 

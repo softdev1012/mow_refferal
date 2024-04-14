@@ -39,6 +39,15 @@ export const register = async (newUser: IUser) => {
   });
   }
 };
+
+export const resetPassword = async (data:{currentpassword: string, password: string, confirmpassword: string}) => {
+  try{
+    const response = await instance.post(SERVER_URL + "account/password-reset", data);
+    return response.data;
+  } catch(err){
+    console.log("err",err);
+  }
+};
 export const signin = async (User: {email:string,password:string}) => {
   console.log(User);
   try{
@@ -63,7 +72,6 @@ export const getUser = async (_id: string) => {
 };
 
 export const updateUser = async ({_id, updatedUser}: {_id: string, updatedUser: IUser}) => {
-  console.log(updatedUser);
   const response = await instance.put(`${baseUrl}${_id}`, updatedUser, {headers: tokenHeader});
   return response.data;
 };

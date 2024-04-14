@@ -49,31 +49,24 @@ const userSchema = new mongoose.Schema({
   },
   businessName: {
     type: String,
-    required: true,
   },
   businessPhone: {
     type: String,
-    required: true,
   },
   businessEmail: {
     type: String,
-    required: true,
   },
   businessWebsite: {
     type: String,
-    required: true,
   },
   googleLink: {
     type: String,
-    required: true,
   },
   profilePhoto: {
     type: String,
-    required: true,
   },
   businessLogo: {
     type: String,
-    required: true,
   },
   roles: {
     type: [String],

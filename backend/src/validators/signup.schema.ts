@@ -9,9 +9,6 @@ const signupSchema = yup.object({
       lastName: yup
       .string()
       .required(validationMessages.required("lastName")),
-      businessName: yup
-      .string()
-      .required(validationMessages.required("businessName")),
       city: yup
       .string()
       .required(validationMessages.required("city")),

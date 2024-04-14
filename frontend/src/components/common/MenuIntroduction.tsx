@@ -35,6 +35,9 @@ const MenuIntroduction = () => {
         <MenuItem onClick={createHandleMenuClick("/profile")} >
           Profile
         </MenuItem>
+        <MenuItem onClick={createHandleMenuClick("/password-reset")} >
+          Change Password
+        </MenuItem>
         <Divider />
         <MenuItem onClick={createHandleMenuClick("/user/group")}>
           User-Groups

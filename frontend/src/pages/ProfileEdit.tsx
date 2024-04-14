@@ -8,14 +8,12 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ResponsiveAppBar from "../layouts/ResponsiveAppBar";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { fetchMe, register as registerFn} from "../services";
+import { fetchMe, updateUser} from "../services";
 import { MuiTelInput } from 'mui-tel-input'
 import { useEffect, useState } from "react";
-// import ImageUpload from "../components/common/ImageUpload";
-import UploadService from "../services/FileUploadService";
 import { MainHeader } from "../components/mainpage";
 import AvatarChange from "../components/common/AvatarChange";
-// import { IUser } from "../types/user";
+import { toast } from "react-toastify";
 
 const defaultTheme = createTheme();
 
@@ -23,12 +21,29 @@ const ProfileEdit = () => {
 
   const { register, handleSubmit, reset} = useForm();
   const {mutate} = useMutation({
-    mutationFn:registerFn
+    mutationFn:updateUser,
+    onSuccess: () => {
+      toast.success('Profile updated.', {
+          hideProgressBar: true,
+          autoClose: 5000,
+          type: "success",
+          position: "top-right",
+      });
+    },
+    onError: (error:any) => {
+        toast.error(`Error: ${error?.response?.data?.message}`, {
+            hideProgressBar: true,
+            autoClose: 5000,
+            type: "error",
+            position: "top-right",
+        });
+    },
   });
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [bphoneNumber, setBphoneNumber] = useState<string>('');
   const [profilePhoto, setProfilePhoto] = useState<string>('');
   const [businessLogo, setBusinessLogo] = useState<string>('');
+  const [userInfo, setUserInfo] = useState<any>();
   const handleTelInputChange = (value: string) => {
     setPhoneNumber(value);
   };
@@ -57,6 +72,7 @@ const ProfileEdit = () => {
       setBphoneNumber(businessPhone);
       setProfilePhoto(profilePhoto);
       setBusinessLogo(businessLogo);
+      setUserInfo(response);
     } catch(error) {
       console.error("Error on fetch info: ", error)
     }
@@ -66,61 +82,8 @@ const ProfileEdit = () => {
 
 
   const onSubmit=async (data: any)=>{
-    if (data.businessLogo[0]) {
-      UploadService.upload(data.businessLogo[0], (event: any) => { })
-      .then((response) => {
-        const logo = response.data.filename;
-
-        if(data.profilePhoto[0]) {
-          UploadService.upload(data.businessLogo[0], (event: any) => { })
-          .then((response) => {
-            const avatar = response.data.filename;
-            try{
-              mutate({...data, businessLogo: logo, profilePhoto: avatar});
-            }
-            catch(err){
-              console.log(err)
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-        } else {
-          try{
-            mutate({...data, businessLogo: logo, profilePhoto: "avatar.png"});
-          }
-          catch(err){
-            console.log(err)
-          }
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    } else {
-      if(data.profilePhoto[0]) {
-        UploadService.upload(data.businessLogo[0], (event: any) => { })
-        .then((response) => {
-          const avatar = response.data.filename;
-          try{
-            mutate({...data, businessLogo: "default.png", profilePhoto: avatar});
-          }
-          catch(err){
-            console.log(err)
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      } else {
-        try{
-          await mutate({...data, businessLogo: "default.png", profilePhoto: "avatar.png"});
-        }
-        catch(err){
-          console.log(err)
-        }
-      }
-    }
+    const params = {...data, profilePhoto: profilePhoto, businessLogo: businessLogo, phone: phoneNumber, businessPhone: bphoneNumber, _id: null};
+    mutate({_id: userInfo._id, updatedUser: params});
   }
   return (
     <>

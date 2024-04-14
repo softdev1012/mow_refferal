@@ -28,6 +28,9 @@ function ResponsiveAppBar() {
 
   const [pages, setPages] = React.useState<IPages[]>();
   const {user} = useAuth();
+  React.useEffect(() => {
+    if (!user) navigate('/signin');
+  }, [user])
   
   const makePages = (roles: string[]) => {
     if (hasRole("SUPERADMIN", roles)) {
@@ -40,14 +43,16 @@ function ResponsiveAppBar() {
       ]);
     } else if (hasRole("ADMIN", roles)) {
       setPages([
-        {name: "Groups", url: "/owner/group"},
-        {name: "Meetings", url: "/owner/meeting"}
+        {name: "Groups", url: "/user/group"},
+        {name: "Meetings", url: "/user/meeting"}
       ]);
-    } else {
+    } else if(hasRole("USER", roles)) {
       setPages([
         {name: "Groups", url: "/user/group"},
         {name: "Meetings", url: "/user/meeting"}
       ]);
+    } else {
+      setPages([]);
     }
   }
 
@@ -140,7 +145,7 @@ function ResponsiveAppBar() {
           </Box>
 
             <Box sx={{ flexGrow: 0 }}>
-              <MenuIntroduction />
+              {user && <MenuIntroduction />}
             </Box>
           </Box>
         </Container>
