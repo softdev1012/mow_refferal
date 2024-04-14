@@ -6,6 +6,7 @@ export enum ModalStatus {
   REMOVE = "remove",
   JOIN = "join",
   CONVERT = "convert",
+  RESET = "reset",
 }
 
 export interface IModalStatusWithId {

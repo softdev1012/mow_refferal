@@ -34,6 +34,8 @@ export enum UserModalStatus {
     group_id?: any;
     clanStatus?: boolean;
     isOwner?: boolean;
+    seat?: string;
+    roles?: string[];
   }
   
   export interface IBaseInputFieldProps {

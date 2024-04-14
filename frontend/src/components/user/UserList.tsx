@@ -11,7 +11,7 @@ import Switch from "@mui/material/Switch";
 import { IUser } from "../../types/user";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+// import DeleteIcon from "@mui/icons-material/Delete";
 import LockResetIcon from '@mui/icons-material/LockReset';
 import ReplyIcon from '@mui/icons-material/Reply';
 import { changeModalStatus, useAppDispatch } from "../../store";
@@ -38,10 +38,19 @@ const UserList: React.FC = () => {
     );
   };
 
-  const handleDeleteClick = (userId: string) => {
+  // const handleDeleteClick = (userId: string) => {
+  //   dispatch(
+  //     changeModalStatus({
+  //       modalStatus: ModalStatus.REMOVE,
+  //       currentId: userId,
+  //     })
+  //   );
+  // };
+
+  const handlePassResetClick = (userId: string) => {
     dispatch(
       changeModalStatus({
-        modalStatus: ModalStatus.REMOVE,
+        modalStatus: ModalStatus.RESET,
         currentId: userId,
       })
     );
@@ -82,6 +91,7 @@ const UserList: React.FC = () => {
       ),
     },
     { field: "clan", headerName: "Clan Name", flex: 1,headerClassName:"custom-header"},
+    { field: "seat", headerName: "Clan Seat", flex: 1,headerClassName:"custom-header"},
    
     {
       field: "clanStatus",
@@ -141,17 +151,17 @@ const UserList: React.FC = () => {
               <EditIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Delete User">
+          {/* <Tooltip title="Delete User">
             <IconButton
               onClick={() => handleDeleteClick(params.row.id as string)}
               className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
             >
               <DeleteIcon />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
           <Tooltip title="Reset password">
             <IconButton
-              onClick={() => handleDeleteClick(params.row.id as string)}
+              onClick={() => handlePassResetClick(params.row.id as string)}
               className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
             >
               <LockResetIcon />
@@ -175,6 +185,7 @@ const UserList: React.FC = () => {
     name: user.name,
     photo: user.profilePhoto,
     clan: user.group_id?.name,
+    seat: user.seat,
     clanStatus: user.clanStatus,
     profileStatus: user.profileStatus,
     dateCreated: user.createdAt ? new Date(user.createdAt) : ""

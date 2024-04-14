@@ -10,5 +10,6 @@ userrouter.get('/', verifyToken, UserController.getAllUsers);
 userrouter.get('/:id', verifyToken, UserController.getUser);
 userrouter.put('/:id', verifyToken, UserController.updateUser);
 userrouter.delete('/:id', verifyToken, UserController.deleteUser);
+userrouter.put('/:id/reset', verifyToken, UserController.passwordResetUser);
 
 export default userrouter;

@@ -82,6 +82,10 @@ export const deleteUser = async (_id: string) => {
   const response = await instance.delete(`${baseUrl}${_id}`, {headers: tokenHeader});
   return response.data;
 };
+export const resetPasswordUser = async (_id: string) => {
+  const response = await instance.put(`${baseUrl}${_id}` + '/reset', {headers: tokenHeader});
+  return response.data;
+};
 
 export const fetchUserTotals = async () => {
   const url = baseUrl + "total/";

@@ -1,10 +1,10 @@
 import { UserGroupRepository, UserRepository } from "../repositories";
 
-export const fetchPaginatedData = async (page: number, limit: number, isOwner: boolean) => {
+export const fetchPaginatedData = async (page: number, limit: number, role: string) => {
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
 
-    const users = await UserRepository.findAll({isOwner: isOwner});
+    const users = await UserRepository.findAll({roles: {$in: [role]}});
 
     let paginatedData = users.slice(startIndex, endIndex);
     for (var i in paginatedData) {

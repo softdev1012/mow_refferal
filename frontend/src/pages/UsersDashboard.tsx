@@ -5,26 +5,13 @@ import MainPage from "../components/mainpage/MainPage";
 import Container from '@mui/material/Container';
 import Counter from '../components/mainpage/Counter';
 import MainHeader from "../components/mainpage/MainHeader";
-import { ConfirmModal} from "../components/user";
+import { ConfirmModal, useUserTotalHook} from "../components/user";
 import { UserList, UserModal } from "../components/user";
-import { useEffect, useState } from "react";
-import { fetchUserTotals } from "../services";
 
 const UsersDashboard: React.FC = () =>{
-    const [totals, setTotals] = useState<any>();
+    const {data: totals} = useUserTotalHook();
     const tots = [totals?.total, totals?.totalActive, totals?.totalInactive];
-    const fetchTotalNumber = async () => {
-        try {
-            const response =  await fetchUserTotals();
-            setTotals(response);
-        } catch (error) {
-            console.error("Error fetching owners:", error);
-        }
-    };
 
-    useEffect(() => {
-        fetchTotalNumber();
-      }, []);
     return(
         <>
         <ResponsiveAppBar />

@@ -29,8 +29,6 @@ const signup = async (req: Request, res: Response) => {
     if (userExists) res.status(StatusCodes.BAD_REQUEST).send();
     const totCount = await User.countDocuments().lean();
     const roles = totCount < 1 ? [Roles.SUPERADMIN] : [Roles.USER];
-    console.log("totcount", totCount);
-    console.log("roles", roles);
     const user = new User({
       name: firstName + ' ' + lastName,
       firstName: firstName,

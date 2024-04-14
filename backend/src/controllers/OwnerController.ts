@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { OwnerRepository, UserGroupRepository, UserRepository } from '../repositories';
 import { OwnerService, UserService } from '../service';
+import { Roles } from '../enums/role.enums';
 
 export async function createOwner(req: Request, res: Response, next: NextFunction) {
     try {  
@@ -27,7 +28,7 @@ export async function getAllOwners(req: Request, res: Response, next: NextFuncti
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string) || 10;
 
-        const { paginatedData, nextPage } = await UserService.fetchPaginatedData(page, limit, true);
+        const { paginatedData, nextPage } = await UserService.fetchPaginatedData(page, limit, Roles.USER);
         
         res.status(200).send({
           data: paginatedData,

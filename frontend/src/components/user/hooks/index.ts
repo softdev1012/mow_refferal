@@ -5,3 +5,5 @@ export { default as useUserDeleteHook } from './useUserDeleteHook';
 export { default as useUserListHook } from './useUserListHook';
 export { default as useUserModalHook } from './useUserModalHook';
 export { default as useUserUpdateHook } from './useUserUpdateHook';
+export { default as useUserPasswordResetHook } from './useUserPasswordResetHook';
+export { default as useUserTotalHook } from './useUserTotalHook';

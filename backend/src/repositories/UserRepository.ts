@@ -19,7 +19,6 @@ class UserRepository {
     async update(id: string, userData: Partial<IUser>): Promise<IUser | null> {      
         const updatedUserData = { ...userData };
         delete updatedUserData._id;
-      
         return User.findByIdAndUpdate(id, updatedUserData, { new: true });
       }
 

@@ -1,21 +1,18 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateUser } from "../../../services";
+import { useMutation } from "@tanstack/react-query";
+import { resetPasswordUser } from "../../../services";
 import { toast } from "react-toastify";
 
-const useUserUpdateHook = () => {
-    const queryClient = useQueryClient();
+const useUserPasswordResetHook = () => {
 
     return useMutation({
-        mutationFn: updateUser,
+        mutationFn: resetPasswordUser,
         onSuccess: () => {
-            toast.success('User updated.', {
+            toast.success('User password is reseted to default one', {
                 hideProgressBar: true,
                 autoClose: 5000,
                 type: "success",
                 position: "top-right",
             });
-            queryClient.invalidateQueries({queryKey: ['getAllUsers']});
-            queryClient.invalidateQueries({queryKey: ['getUserTotals']});
         },
         onError: (error: any) => {
             toast.error(`Error: ${error?.response?.data?.message}`, {
@@ -28,4 +25,4 @@ const useUserUpdateHook = () => {
     })
 }
 
-export default useUserUpdateHook;
+export default useUserPasswordResetHook;

@@ -37,7 +37,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ index }) => { // Destructur
             modalStatus === ModalStatus.REMOVE ? <TrushbinIcon /> : <CoPresentIcon />
           }
           <p className="mb-4 text-gray-500 dark:text-gray-300">
-            Are you sure you want to {modalStatus === ModalStatus.REMOVE ? "delete" : "convert"} this {index}?
+            Are you sure you want to {modalStatus === ModalStatus.REMOVE ? "delete" : modalStatus === ModalStatus.CONVERT ? "convert":"reset password to default(123456789) for"} this {index}?
           </p>
           <div className="flex items-center justify-center space-x-4">
             <button
