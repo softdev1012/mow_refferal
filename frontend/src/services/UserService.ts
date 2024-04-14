@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { IPaginatedUsers, IUser } from '../types/user'; 
 import instance from '../utils/axiosInstance';
 import { SERVER_URL } from '../utils/constants';
+import { useNavigate } from 'react-router-dom';
 
 const baseUrl = SERVER_URL + 'api/users/';
 const tokenHeader =  {
@@ -22,12 +23,14 @@ export const createUser = async (newUser: IUser) => {
 export const register = async (newUser: IUser) => {
   try{
     const response = await instance.post(SERVER_URL + "account/signup", newUser);
+    const navigate = useNavigate();
     toast.success('Register success.', {
       hideProgressBar: true,
       autoClose: 5000,
       type: "success",
       position: "top-right",
-  });
+    });
+    navigate("/signin");
     return response.data;
   }catch(err){
     console.log("err",err);
@@ -49,7 +52,6 @@ export const resetPassword = async (data:{currentpassword: string, password: str
   }
 };
 export const signin = async (User: {email:string,password:string}) => {
-  console.log(User);
   try{
   const response = await instance.post(SERVER_URL + "account/login", User);
   return response.data;

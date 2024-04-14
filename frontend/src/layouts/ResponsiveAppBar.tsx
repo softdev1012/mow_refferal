@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -13,10 +13,23 @@ import { MenuIntroduction } from "../components";
 import { useNavigate } from 'react-router-dom';
 import { IPages } from '../types';
 import { hasRole } from '../utils';
-import { useAuth } from '../components/common/AuthProvider';
+import { fetchMe } from '../services';
+import { useQuery } from "@tanstack/react-query";
+
+const useUserInfoHook = () =>  {
+    if (localStorage.getItem("site") === null) {
+      return {data:null};
+    }
+    return useQuery({
+        queryKey: ['my-info'],
+        queryFn: async () => await fetchMe(),
+        enabled: localStorage.getItem("site") != null
+      });
+}
+
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const navigate = useNavigate()
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -27,11 +40,13 @@ function ResponsiveAppBar() {
   };
 
   const [pages, setPages] = React.useState<IPages[]>();
-  const {user} = useAuth();
-  React.useEffect(() => {
-    if (!user) navigate('/signin');
-  }, [user])
+  // const [user, setUser] = React.useState<any>(null);
+  const {data: user} = useUserInfoHook();
   
+  useEffect(() => {
+    makePages(user?.roles);
+  }, [user]);
+
   const makePages = (roles: string[]) => {
     if (hasRole("SUPERADMIN", roles)) {
       setPages([
@@ -56,17 +71,13 @@ function ResponsiveAppBar() {
     }
   }
 
-  React.useEffect(() => {
-    makePages(user?.roles);
-  }, []);
-
   const handleMenuItemClick = (page: string) => {
     handleCloseNavMenu();
     navigate(page);
   }
 
   return (
-    <AppBar position="static">
+    <AppBar position='sticky'>
       <Box sx={{ background: `linear-gradient(180deg, #CEE5FD, #FFF)` }}>
         <Container maxWidth="xl">
           <Box
@@ -145,7 +156,7 @@ function ResponsiveAppBar() {
           </Box>
 
             <Box sx={{ flexGrow: 0 }}>
-              {user && <MenuIntroduction />}
+              {user && <MenuIntroduction userinfo = {user} />}
             </Box>
           </Box>
         </Container>

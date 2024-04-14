@@ -28,7 +28,7 @@ const UsersDashboard: React.FC = () =>{
     return(
         <>
         <ResponsiveAppBar />
-        <MainHeader color={"#C1FF72"} title={"Users Dashboard"} hasPlus={true} />
+        <MainHeader color={"#C1FF72"} title={"Users Dashboard"} hasPlus={false} />
         <Container maxWidth="xl">
             <Counter items={["Total Users", "Total Active Users", "Total Inactive Users"]} values={tots}/>
             <MainPage>

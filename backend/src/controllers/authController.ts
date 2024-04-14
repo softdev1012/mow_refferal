@@ -16,17 +16,21 @@ import Token from "../models/token";
 import uploadFile from '../middleware/uploadMiddleware';
 import { UserGroup } from "../models";
 import { UserGroupRepository } from "../repositories";
+import { Roles } from "../enums/role.enums";
 
 const signup = async (req: Request, res: Response) => {
   try {
-    const { firstName, lastName, email, password, phone, street, city, zipcode, businessName, businessPhone, businessEmail, businessWebsite, googleLink, profilePhoto, businessLogo} = req.body;
+    const { firstName, lastName, email, password, phone, street, city, zipcode} = req.body;
     await uploadFile(req, res);
 
     const userExists = await User.findOne({ email });
 
     // return res.status(200).json(userExists).send();
     if (userExists) res.status(StatusCodes.BAD_REQUEST).send();
-
+    const totCount = await User.countDocuments().lean();
+    const roles = totCount < 1 ? [Roles.SUPERADMIN] : [Roles.USER];
+    console.log("totcount", totCount);
+    console.log("roles", roles);
     const user = new User({
       name: firstName + ' ' + lastName,
       firstName: firstName,
@@ -36,13 +40,8 @@ const signup = async (req: Request, res: Response) => {
       zipcode:zipcode,
       street:street,
       city:city,
-      businessName:businessName,
-      businessPhone:businessPhone,
-      businessEmail:businessEmail,
-      businessWebsite:businessWebsite,
-      googleLink:googleLink,
-      profilePhoto:profilePhoto,
-      businessLogo:businessLogo,
+      roles: roles,
+      profileStatus: (totCount < 1),
       password: bcrypt.hashSync(password, 8),
     });
     await user.save();
@@ -85,7 +84,7 @@ const login = async (req: Request, res: Response) => {
       return res.status(400).send();
     }
     if (!user.isEmailVerified) {
-      res.status(202).send({"success:":"pending"});
+      res.status(202).send({status:"Pending. Verify by email."});
       await sendEmail({
         email,
         subject: "Verification",
@@ -100,6 +99,9 @@ const login = async (req: Request, res: Response) => {
         },
       });
       return;
+    }
+    if (!user.profileStatus) {
+      return res.status(202).send({status:"not active or suspended"});
     }
 
     const token = jwt.sign(

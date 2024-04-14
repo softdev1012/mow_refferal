@@ -11,16 +11,15 @@ import { Avatar, Box, Divider, Typography } from "@mui/material";
 import { useAuth } from "./AuthProvider";
 import { IMAGE_URL } from "../../utils/constants";
 
-const MenuIntroduction = () => {
-  const {user} = useAuth();
+const MenuIntroduction = (props: any) => {
   const {logOut} = useAuth();
   const navigate = useNavigate()
-
   const createHandleMenuClick = (menuItem: string) => {
     return () => {
       navigate(menuItem);
     };
   };
+  const user = props.userinfo;
 
   return (
     <Dropdown>
