@@ -10,7 +10,7 @@ const BaseTextarea: React.FC<IBaseTextarea> = ({
   error,
 }) => {
   return (
-    <div className="mb-5">
+    <div className="mb-1">
       <label htmlFor={_id} className="mb-4 text-gray-500 dark:text-gray-300">
         {label}
       </label>

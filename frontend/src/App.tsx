@@ -30,6 +30,7 @@ import { AuthProvider } from "./components/common/AuthProvider";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProfileEdit from "./pages/ProfileEdit";
 import ResetPassword from "./pages/ResetPassword";
+import GroupSeat from "./pages/GroupSeat";
 function App() {
   const queryClient = new QueryClient();
   return (
@@ -75,6 +76,10 @@ function App() {
                       <Route
                         path="/groups" 
                         element={<Groups />}
+                      />
+                      <Route
+                        path="/groups/seat/:id" 
+                        element={<GroupSeat />}
                       />
                       <Route
                         path="/owners" 

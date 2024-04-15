@@ -1,4 +1,4 @@
-import { UserGroup } from "../models";
+import { Group, UserGroup } from "../models";
 import { IUserGroup } from "../types/usergroup";
 
 class UserGroupRepository {
@@ -12,7 +12,7 @@ class UserGroupRepository {
     }
 
     async findById(id:string) {
-        return UserGroup.findById(id);
+        return UserGroup.findById(id).populate('user_id').populate('group_id').lean();
     }
 
     async update(id:string, usergroupData:any) {
@@ -33,10 +33,10 @@ class UserGroupRepository {
         return UserGroup.findOne({ user_id: userId, group_id: groupId }).lean();
     }
     async findByUser(userId:string) {
-        return UserGroup.find({ user_id: userId}).populate('user_id').populate('group_id');
+        return UserGroup.find({ user_id: userId}).populate('user_id').populate('group_id').lean();
     }
-    async findByGroup(groupId:string) {
-        return UserGroup.find({group_id: groupId }).populate('user_id').populate('group_id');
+    async findByGroup(groupId:string, filter: any = {}) {
+        return UserGroup.find({...filter, group_id: groupId }).populate('user_id').populate('group_id').lean();
     }
     async findOneByUser(userId:string | null) {
         return UserGroup.findOne({ user_id: userId}).sort({ updatedAt: -1 }).lean();
@@ -51,14 +51,13 @@ class UserGroupRepository {
 
     async count(filter?:any): Promise<number> {
         try {
-            const totalCount = await UserGroup.countDocuments(filter);
+            const totalCount = await UserGroup.countDocuments(filter).lean();
             return totalCount;
         } catch (error) {
             console.error("Error getting total count of documents:", error);
             throw error; // Rethrow the error to handle it at a higher level
         }
     }
-
 }
 
 export default new UserGroupRepository();

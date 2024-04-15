@@ -14,15 +14,16 @@ export enum GroupModalStatus {
   
   export interface IGroup {
     _id: string | null;
-    name: string;
-    location: string;
-    owner: string;
-    logo: string | null ;
-    counterMember:number;
-    groupSize:number;
-    profileStatus: boolean;
+    name?: string;
+    location?: string;
+    owner?: string;
+    logo?: string | null ;
+    counterMember?:number;
+    groupSize?:number;
+    profileStatus?: boolean;
     ownerInfo?: any;
     meetingInfo?: any;
+    message?: string;
   }
   
   export interface IBaseInputFieldProps {
@@ -61,8 +62,12 @@ export enum GroupModalStatus {
 
   export interface IMember {
     _id: string | null;
-    group_id: IGroup;
-    user_id: IUser;
+    group_id?: any;
+    user_id?: any;
+    seat?: string;
+    clanStatus?: boolean;
+    createdAt?: string;
+    updatedAt?: string;
   }
   
   export interface IPaginatedGroupMembers {

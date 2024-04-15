@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 // import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,6 +20,12 @@ const useGroupModalHook = () => {
     const { data: editablegroup }  = useGetGroupHook(currentId, isEdit);
 
     const isOpen = modalStatus === "open" || modalStatus === "edit" ? true : false;
+    const [logoFile, setLogoFile] = useState<string>("");
+    // const logoFile = editablegroup.logo;
+
+    const onLogoFileChange = (filename: string) => {
+      setLogoFile(filename);
+    }
 
     const validationSchema = z.object({
         name: z.string(),
@@ -27,8 +33,7 @@ const useGroupModalHook = () => {
         owner: z.string(),
         profileStatus: z.boolean(),
         logo: z.any(),
-        counterMember: z.number(),
-        groupSize: z.number(),
+        message: z.string(),
     });
 
     type ValidationSchema = z.infer<typeof validationSchema>;
@@ -39,8 +44,7 @@ const useGroupModalHook = () => {
         owner:"",
         profileStatus: false,
         logo: undefined,
-        counterMember: 1,
-        groupSize: 0,
+        message: "",
     }
 
     const {register, handleSubmit, reset, formState: {errors}} = useForm<ValidationSchema>({
@@ -51,35 +55,22 @@ const useGroupModalHook = () => {
     useEffect(() => {
         if (!currentId) {
           reset(defaultValues);
+          setLogoFile("");
         } else if (editablegroup)
           {
             reset({
-            name: editablegroup.name,
-            location: editablegroup.location,
-            owner: editablegroup.owner,
-            profileStatus: editablegroup.profileStatus,
-            logo: editablegroup.logo,
-            counterMember: editablegroup.counterMember,
-            groupSize: editablegroup.groupSize,
-          });}
+              name: editablegroup.name,
+              location: editablegroup.location,
+              owner: editablegroup.owner,
+              profileStatus: editablegroup.profileStatus,
+              message: editablegroup.message,
+            });
+            setLogoFile(editablegroup.logo);
+        }
       }, [editablegroup, currentId]);
-  function isFile(value: any): value is File {
-    return value instanceof File;
-  }
 
     const onSubmit: SubmitHandler<ValidationSchema> = async (data: ValidationSchema) => {
-      if (data.logo[0] && isFile(data.logo[0])) {
-        const uploadFile = data.logo[0];
-        UploadService.upload(uploadFile, (event: any) => { })
-          .then((response) => {
-              isEdit ? updateMutation.mutateAsync({updatedGroup: {...data, _id: null, logo: response.data.filename}, _id: currentId}) : createMutation.mutateAsync({...data, _id: null, logo: response.data.filename});
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        isEdit ? await updateMutation.mutateAsync({updatedGroup: {...data, _id: null, logo: null}, _id: currentId}) : await createMutation.mutateAsync({...data, _id: null, logo: "default.png"});
-      }
+      isEdit ? updateMutation.mutateAsync({updatedGroup: {...data, _id: null, logo: logoFile}, _id: currentId}) : createMutation.mutateAsync({...data, _id: null, logo: logoFile});
       dispatch(
           changeModalStatus({
             modalStatus: ModalStatus.CLOSE,
@@ -88,7 +79,7 @@ const useGroupModalHook = () => {
         );
         reset(defaultValues);
       };
-    return {isOpen, register, handleSubmit, onSubmit, dispatch, errors}
+    return {isOpen, register, handleSubmit, onSubmit, dispatch, errors, logoFile, onLogoFileChange}
 }
 
 export default useGroupModalHook;

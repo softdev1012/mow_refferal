@@ -46,9 +46,13 @@ export async function getGroup(req: Request, res: Response, next: NextFunction) 
         if (!group) {
             return res.status(404).send({ message: 'Group not found' });
         }
+
+        const counterMember = await UserGroupRepository.count({ group_id: req.params.id, user_id: { $ne: null }});
+        const groupSize = await UserGroupRepository.count({ group_id: req.params.id});
+
         const owner = await UserRepository.findById(group.owner);
         const meeting = await MeetingRepository.findRecent({group: group._id})
-        res.status(200).send({...group, ownerInfo: owner, meetingInfo: meeting});
+        res.status(200).send({...group, ownerInfo: owner, meetingInfo: meeting, counterMember, groupSize});
     } catch (error) {
         next(error);
     }
@@ -124,7 +128,7 @@ export async function totalGroup(req: Request, res: Response, next: NextFunction
     
     try {
         const total = await GroupRepository.count();
-        const member = await GroupRepository.sum("counterMember");
+        const member = await UserGroupRepository.count({user_id: { $ne: null }});
         const result = {
             totGroupNum: total.toString(),
             totMemberNum: member.toString()
@@ -137,15 +141,10 @@ export async function totalGroup(req: Request, res: Response, next: NextFunction
 
 export async function getGroupMembers(req: Request, res: Response, next: NextFunction) {
     try {
-        const page = parseInt(req.query.page as string) || 1;
-        const limit = parseInt(req.query.limit as string) || 10;
-
-        const { paginatedData, nextPage } = await GroupService.fetchPaginatedMembers(req.params.id, page, limit);
-        
-        res.status(200).send({
-            data: paginatedData,
-            pageNumber: nextPage
-        });
+        const cate = req.query.cate as string
+        const filter = cate === 'ALL' ? {} : cate === 'MEMBER' ? {user_id: { $ne: null }} : {user_id : null};
+        const members = await UserGroupRepository.findByGroup(req.params.id, filter);
+        res.status(200).send(members);
     } catch (error) {
         next(error);
     }
@@ -168,6 +167,56 @@ export async function recentGroupTotal(req: Request, res: Response, next: NextFu
             counts.push(cnt);
         }
         res.status(200).send({months: months, counts: counts});
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+export async function createMember(req: Request, res: Response, next: NextFunction) {
+    try {
+        // Create a new member
+        const member = await UserGroupRepository.create(req.body);
+        // Send response
+        res.status(201).json(member);
+    } catch (error) {
+        // Pass the error to the error handling middleware
+        next(error);
+    }
+}
+
+
+export async function getMember(req: Request, res: Response, next: NextFunction) {
+    try {
+        let member = await UserGroupRepository.findById(req.params.id);
+        if (!member) {
+            return res.status(404).send({ message: 'Member not found' });
+        }
+        res.status(200).send(member);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function updateMember(req: Request, res: Response, next: NextFunction) {
+    try {
+        const member = await UserGroupRepository.update(req.params.id, req.body);
+        if (!member) {
+            return res.status(404).send({ message: 'Member not found' });
+        }
+        res.status(200).send(member);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function deleteMember(req: Request, res: Response, next: NextFunction) {
+    try {
+        const member = await UserGroupRepository.delete(req.params.id);
+        if (!member) {
+            return res.status(404).send({ message: 'Seat not found' });
+        }
+        res.status(204).send();
     } catch (error) {
         next(error);
     }

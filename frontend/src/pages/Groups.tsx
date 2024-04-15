@@ -1,7 +1,5 @@
 import ResponsiveAppBar from "../layouts/ResponsiveAppBar";
-// import PageHeader from "../layouts/PageHeader";
 import MainPage from "../components/mainpage/MainPage";
-// import { Box } from "@mui/material";
 import Container from '@mui/material/Container';
 import Counter from '../components/mainpage/Counter';
 import { MainHeader } from "../components/mainpage";

@@ -3,7 +3,7 @@ import { getGroup } from "../../../services/GroupService"
 
 const useGetGroupHook = (_id: string, isEdit: boolean) =>  {
     return useQuery({
-        queryKey: ['projects', isEdit],
+        queryKey: ['getGroup', isEdit],
         queryFn: async () => await getGroup(_id),
         enabled: !!isEdit
       });

@@ -12,17 +12,17 @@ const ReferralItem: React.FC<IReferralItemProps> = ({ referral }) => {
           scope="row"
           className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
-          {referral.title}
+          {referral?.title}
         </th>
-        <td className="px-6 py-4">{truncateSentence(referral.desc)}</td>
+        <td className="px-6 py-4">{truncateSentence(referral?.desc)}</td>
         <td className="px-6 py-4">
           <div className="flex items-center">
             <div
               className={`h-2.5 w-2.5 rounded-full me-2 ${
-                referral.referralStatus ? "bg-green-500" : "bg-red-500"
+                referral?.referralStatus ? "bg-green-500" : "bg-red-500"
               }`}
             ></div>
-            {referral.referralStatus ? "ToDo" : "Done"}
+            {referral?.referralStatus ? "ToDo" : "Done"}
           </div>
         </td>
         <td className="flex gap-5 px-6 py-4">

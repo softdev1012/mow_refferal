@@ -69,7 +69,11 @@ const UserGroupList: React.FC = () => {
     { field: "location", headerName: "Location/Territory",headerClassName:"custom-header", flex: 1 },
     { field: "owner", headerName: "Owner",headerClassName:"custom-header", flex: 1},
     { field: "counterMember", headerName: "# of Members",headerClassName:"custom-header", flex: 1 },
-    { field: "seatRemaining", headerName: "Seats Remaining",headerClassName:"custom-header", flex: 1 },
+    { field: "seatRemaining", headerName: "Seats Remaining",headerClassName:"custom-header", flex: 1,
+      renderCell: (params) => (
+        params.row.groupSize - params.row.counterMember
+      ),
+    },
     {
       field: "actions",
       headerName: "Actions",
@@ -104,10 +108,9 @@ const UserGroupList: React.FC = () => {
     logo: IMAGE_URL + group.logo,
     name: group.name,
     location: group.location,
-    owner: getOwnerName(group.owner),
+    owner: getOwnerName(group?.owner as string),
     counterMember: group.counterMember,
     groupSize: group.groupSize,
-    seatRemaining: group.groupSize - group.counterMember,
     // dateCreated: group.dateCreated,
     // numberOfMembers: group.numberOfMembers,
   }));

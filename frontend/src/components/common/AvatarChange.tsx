@@ -95,7 +95,7 @@ const AvatarChange: React.FC<IAvatarChange> = ({ filename, width, height, btntex
     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center"}}>
       <MuiAvatar
         sx={{
-            marginBottom: "1rem",
+            marginBottom: 1,
             width: {width},
             height: {height},
             borderRadius: 0, // Set borderRadius to 0 for square corners
@@ -105,6 +105,7 @@ const AvatarChange: React.FC<IAvatarChange> = ({ filename, width, height, btntex
       />
       <Button
           variant="outlined"
+          style={{textTransform: 'none', paddingBottom: 1, paddingTop: 1}}
           onClick={handleClickOpen}>
           {btntext}
         </Button>

@@ -1,5 +1,5 @@
 
-import { IPaginatedGroups, IGroup, IPaginatedGroupMembers } from '../types/group'; 
+import { IPaginatedGroups, IGroup, IMember } from '../types/group'; 
 import instance from '../utils/axiosInstance';
 import { SERVER_URL } from '../utils/constants';
 
@@ -49,13 +49,33 @@ export const fetchGroupTotals = async () => {
   return response.data;
 };
 
-export const fetchGroupMembers = async (_id: string, page: number, limit: number = 10): Promise<IPaginatedGroupMembers> => {
-  const response = await instance.get(`${baseUrl}${_id}` + "/members", {params: { page, limit }});
-  return response.data;
-};
-
 export const fetchRecentGroupTotals = async () => {
   const url = baseUrl + "recent/count";
   const response = await instance.get(url);
+  return response.data;
+};
+
+export const fetchGroupMembers = async (_id: string, cate: string = 'ALL'): Promise<IMember[]> => {
+  const response = await instance.get(`${baseUrl}${_id}` + "/members", {params: { cate }});
+  return response.data;
+};
+
+export const createSeat = async (newSeat: IMember) => {
+  const response = await instance.post(`${baseUrl}member`, newSeat);
+  return response.data;
+};
+
+export const getSeat = async (_id: string) => {
+  const response = await instance.get(`${baseUrl}member/${_id}`);
+  return response.data;
+};
+
+export const updateSeat = async ({_id, updatedSeat}: {_id: string, updatedSeat: IMember}) => {
+  const response = await instance.put(`${baseUrl}member/${_id}`, updatedSeat);
+  return response.data;
+};
+
+export const deleteSeat = async (_id: string) => {
+  const response = await instance.delete(`${baseUrl}member/${_id}`);
   return response.data;
 };

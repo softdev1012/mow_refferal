@@ -48,12 +48,12 @@ export interface IBaseSelectFieldProps {
 
 export interface IBaseTextarea {
   _id: string;
-  placeholder: string;
-  row: number;
-  label: string;
-  required: boolean;
-  register: any;
-  error: string | undefined;
+  placeholder?: string;
+  row?: number;
+  label?: string;
+  required?: boolean;
+  register?: any;
+  error?: string | undefined;
 }
 
 export interface IBaseToogleProps {

@@ -4,6 +4,11 @@ import { verifyToken } from '../middleware/authMiddleware';
 
 const grouprouter: Router = express.Router();
 
+grouprouter.post('/member', groupController.createMember);
+grouprouter.get('/member/:id', groupController.getMember);
+grouprouter.put('/member/:id', groupController.updateMember);
+grouprouter.delete('/member/:id', groupController.deleteMember);
+
 grouprouter.get('/total', groupController.totalGroup);
 grouprouter.get('/recent/count', groupController.recentGroupTotal);
 grouprouter.post('/',verifyToken, groupController.createGroup);

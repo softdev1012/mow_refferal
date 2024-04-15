@@ -14,32 +14,13 @@ const userGroupSchema = new mongoose.Schema({
   },
   seat: {
     type: String,
-    default: "test"
+    default: "Owner"
   },
   clanStatus: {  
     type: Boolean,
     default: false,
   },
 }, { timestamps: true });
-
-// Post-save hook to update the counterMember field of the corresponding Group
-userGroupSchema.post<IUserGroup>('save', async function(doc) {
-  try {
-    const count = await this.model('UserGroup').countDocuments({ group_id: doc.group_id, user_id: { $ne: null }});
-    await Group.findByIdAndUpdate(doc.group_id, { counterMember: count });
-  } catch (error) {
-    console.error("Error updating counterMember:", error);
-  }
-});
-
-userGroupSchema.post<IUserGroup>('save', async function(doc) {
-  try {
-    const count = await this.model('UserGroup').countDocuments({ group_id: doc.group_id});
-    await Group.findByIdAndUpdate(doc.group_id, { groupSize: count });
-  } catch (error) {
-    console.error("Error updating counterMember:", error);
-  }
-});
 
 const UserGroup = mongoose.model<IUserGroup>('UserGroup', userGroupSchema);
 export default UserGroup;

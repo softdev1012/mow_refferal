@@ -1,16 +1,16 @@
 import Modal from "react-modal";
-import OutsideClickHandler from "react-outside-click-handler";
-import { BaseInputField, BaseToogle, BaseSelectField} from "../common";
+// import OutsideClickHandler from "react-outside-click-handler";
+import { BaseInputField, BaseSelectField, BaseTextarea} from "../common";
 import { useGroupModalHook } from "./hooks";
 import { changeModalStatus } from "../../store";
 import { ModalStatus} from "../../types";
-import ImageUpload from "../common/ImageUpload";
 import { useState, useEffect} from "react";
 import {fetchOwners} from "../../services/OwnerService";
 import { IOwner } from '../../types/owner'; 
+import AvatarChange from "../common/AvatarChange";
 
 const GroupModal: React.FC = () => {
-  const { isOpen, register, handleSubmit, onSubmit, dispatch, errors } = useGroupModalHook();
+  const { isOpen, register, handleSubmit, onSubmit, dispatch, errors , logoFile, onLogoFileChange } = useGroupModalHook();
   const [owners, setOwners] = useState<IOwner[]>();
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const GroupModal: React.FC = () => {
       className="relative modal-container dark:bg-gray-800"
       overlayClassName="modal-overlay"
     >
-      <OutsideClickHandler
+      {/* <OutsideClickHandler
         onOutsideClick={() =>
           dispatch(
             changeModalStatus({
@@ -44,7 +44,7 @@ const GroupModal: React.FC = () => {
             })
           )
         }
-      >
+      > */}
         <form className="max-w-sm mx-auto" onSubmit={handleSubmit(onSubmit)}>
           <button
             type="button"
@@ -65,6 +65,14 @@ const GroupModal: React.FC = () => {
               Create a new group
             </h1>
           </div>
+          <AvatarChange
+            _id="profilePhoto"
+            width={120}
+            height={120}
+            btntext="Change Group Logo"
+            filename={logoFile}
+            onFileNameChange={onLogoFileChange}
+            />
           <BaseInputField
             type="text"
             _id="name"
@@ -95,36 +103,15 @@ const GroupModal: React.FC = () => {
             error={errors.owner?.message}
             options={owners? owners : []}
           />
-          {/* <BaseInputField
-            type="number"
-            _id="groupSize"
-            placeholder="Enter the group size"
-            autoFocus={true}
-            required={true}
-            label="# of Members"
+          <BaseTextarea
+            _id="message"
+            placeholder="Enter the Group Message"
+            row={4}
+            required={false}
+            label="Message"
             register={register}
-            error={errors.groupSize?.message}
-          /> */}
-          <div className="flex items-start mb-5">
-            <div className="flex-grow">Profile Status:</div> {/* Align text to left */}
-            <div> {/* Align ImageUpload to right */}
-              <BaseToogle register={register} status={"profileStatus"}/>
-            </div>
-          </div>
-
-          <div className="flex items-start mb-5">
-            <div className="flex-grow">Group Logo:</div> {/* Align text to left */}
-            <div> {/* Align ImageUpload to right */}
-              <ImageUpload
-                _id="logo"
-                register={register}
-                width={100}
-                height={100}
-              />
-            </div>
-          </div>
-
-          
+            error={errors.message?.message}
+          />
 
           <div className="flex justify-center mt-4"> 
             <button
@@ -135,7 +122,7 @@ const GroupModal: React.FC = () => {
             </button>
           </div>
         </form>
-      </OutsideClickHandler>
+      {/* </OutsideClickHandler> */}
     </Modal>
   );
 };

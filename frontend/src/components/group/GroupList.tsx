@@ -17,6 +17,9 @@ import { ModalStatus } from "../../types";
 import { IOwner } from "../../types/owner";
 import { fetchOwners } from "../../services";
 import { IMAGE_URL } from "../../utils/constants";
+import CardMembershipIcon from '@mui/icons-material/CardMembership';
+import { Tooltip } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -45,6 +48,8 @@ const GroupList: React.FC = () => {
     fetchOwnersList();
   }, []);
 
+  const navigate = useNavigate();
+
   const handleEditClick = (groupId: string) => {
     dispatch(
       changeModalStatus({
@@ -61,6 +66,10 @@ const GroupList: React.FC = () => {
         currentId: groupId,
       })
     );
+  };
+
+  const handleSeatClick = (groupId: string) => {
+    navigate("/groups/seat/" + groupId);
   };
 
   const [page, setPage] = useState<number>(1);
@@ -105,22 +114,34 @@ const GroupList: React.FC = () => {
       field: "actions",
       headerName: "Actions",
       sortable: false,
-      width: 120,
+      width: 140,
       headerClassName:"custom-header",
       renderCell: (params) => (
         <>
-          <IconButton
-            onClick={() => handleEditClick(params.row.id as string)}
-            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-          >
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            onClick={() => handleDeleteClick(params.row.id as string)}
-            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-          >
-            <DeleteIcon />
-          </IconButton>
+          <Tooltip title="Edit Group">
+            <IconButton
+              onClick={() => handleEditClick(params.row.id as string)}
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Manage Seat">
+            <IconButton
+              onClick={() => handleSeatClick(params.row.id as string)}
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              <CardMembershipIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete Group">
+            <IconButton
+              onClick={() => handleDeleteClick(params.row.id as string)}
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
         </>
       ),
     },
@@ -131,7 +152,7 @@ const GroupList: React.FC = () => {
     logo: IMAGE_URL + group.logo,
     name: group.name,
     location: group.location,
-    owner: getOwnerName(group.owner),
+    owner: getOwnerName(group?.owner as string),
     profileStatus: group.profileStatus,
     counterMember: group.counterMember,
     // dateCreated: group.dateCreated,
