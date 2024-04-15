@@ -2,7 +2,6 @@ import React from 'react';
 import Chart from 'react-apexcharts';
 import { fetchRecentGroupTotals } from '../../services';
 import { useQuery } from '@tanstack/react-query';
-import { colors } from '@mui/material';
 
 const useGetRecentGroupTotalsHook = () => useQuery({
     queryKey: ["getRecentGroupTotal"],
