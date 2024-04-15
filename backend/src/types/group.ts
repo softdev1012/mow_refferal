@@ -7,6 +7,9 @@ export interface IGroup extends Document {
     owner: string;  
     profileStatus: boolean;
     counterMember: Number;
+    groupSize: Number;
+    logo: string;
+    message: string;
     meetings: mongoose.Types.ObjectId[];
 }
   

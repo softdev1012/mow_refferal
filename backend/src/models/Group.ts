@@ -12,6 +12,7 @@ const groupSchema = new mongoose.Schema({
   counterMember: Number,
   groupSize: Number,
   logo: String,
+  message: String,
   meetings: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Meeting'

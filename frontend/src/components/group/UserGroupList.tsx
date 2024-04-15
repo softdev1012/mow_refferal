@@ -68,7 +68,7 @@ const UserGroupList: React.FC = () => {
     { field: "name", headerName: "Group Name",headerClassName:"custom-header", flex: 1 },
     { field: "location", headerName: "Location/Territory",headerClassName:"custom-header", flex: 1 },
     { field: "owner", headerName: "Owner",headerClassName:"custom-header", flex: 1},
-    { field: "groupSize", headerName: "# of Members",headerClassName:"custom-header", flex: 1 },
+    { field: "counterMember", headerName: "# of Members",headerClassName:"custom-header", flex: 1 },
     { field: "seatRemaining", headerName: "Seats Remaining",headerClassName:"custom-header", flex: 1 },
     {
       field: "actions",
@@ -105,6 +105,7 @@ const UserGroupList: React.FC = () => {
     name: group.name,
     location: group.location,
     owner: getOwnerName(group.owner),
+    counterMember: group.counterMember,
     groupSize: group.groupSize,
     seatRemaining: group.groupSize - group.counterMember,
     // dateCreated: group.dateCreated,
