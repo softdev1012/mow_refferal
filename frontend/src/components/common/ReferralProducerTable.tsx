@@ -7,43 +7,42 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { fetchReferralTotalByUser } from '../../services';
 
-function createData(fullname:string, group: string, revenue: number) {
-  return {fullname, group, revenue };
-}
-
-const initialRows = [
-  createData('Full Name','Group1', 159),
-  createData('Full Name','Group2', 237),
-  createData('Full Name','Group3', 262),
-  createData('Full Name','Group4', 262),
- 
-];
-
-const allRows = [
-  ...initialRows,
-  createData('Full Name','Group6', 262),
-  createData('Full Name','Group7', 262),
-  createData('Full Name','Group8', 262),
-  createData('Full Name','Group9', 262),
-];
+const useGetReferralTotalByUserHook = () => useQuery({
+  queryKey: ["getReferralTotalByUser"],
+  queryFn: async (): Promise<any> => {
+      try {
+          const data = await fetchReferralTotalByUser();
+          return data;
+      } catch (error) {
+          throw new Error('Failed to fetch recent member totals');
+      }
+  }
+});
 
 const ReferralProducerTable = () => {
+  const {data: allData, isPending, isError} = useGetReferralTotalByUserHook();
   const [showAll, setShowAll] = useState(false);
-  const [rows, setRows] = useState(initialRows);
+  const [rows, setRows] = useState([]);
+  useEffect(() => {
+    setRows(showAll ? allData?.slice(0, 4): allData);
+  }, [allData, isPending, isError]);
 
   const toggleShowAll = () => {
     setShowAll(!showAll);
-    setRows(showAll ? initialRows : allRows);
+    setRows(showAll ? allData?.slice(0, 4): allData);
   };
 
 
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: "15rem" }} aria-label="caption table">
-        <caption>Top Revenue Group (All Time)<Button sx={{marginLeft:"36rem"}} size={"small"} onClick={toggleShowAll} variant="contained" color="primary">{showAll ? 'Show Less' : 'Show All'}</Button></caption>
-        
+        { allData && allData?.length > 4 &&
+          <caption>Top Revenue Group (All Time)<Button sx={{marginLeft:"36rem"}} size={"small"} onClick={toggleShowAll} variant="contained" color="primary">{showAll ? 'Show Less' : 'Show All'}</Button></caption>
+        }
         <TableHead>
           <TableRow>
           <TableCell align='center'>Full Name</TableCell>
@@ -53,15 +52,15 @@ const ReferralProducerTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, index) => (
+          {rows?.map((row: any, index) => (
             <TableRow key={index}>
               <TableCell align='center' component="th" scope="row">
-                {row.fullname}
+                {row?.user}
               </TableCell>
               <TableCell align='center' component="th" scope="row">
-                {row.group}
+                {row?.group}
               </TableCell>
-              <TableCell align="center">{row.revenue}</TableCell>
+              <TableCell align="center">{`$${row?.totalPrice}`}</TableCell>
               
             </TableRow>
           ))}

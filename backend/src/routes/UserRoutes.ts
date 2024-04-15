@@ -5,6 +5,7 @@ import { verifyToken } from '../middleware/authMiddleware';
 const userrouter: Router = express.Router();
 
 userrouter.get('/total', verifyToken, UserController.totalUser);
+userrouter.get('/recent/count', UserController.recentMemberTotal);
 userrouter.post('/',verifyToken, UserController.createUser);
 userrouter.get('/', verifyToken, UserController.getAllUsers);
 userrouter.get('/:id', verifyToken, UserController.getUser);

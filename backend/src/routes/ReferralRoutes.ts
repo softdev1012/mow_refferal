@@ -6,6 +6,10 @@ const referralrouter: Router = express.Router();
 
 referralrouter.get('/total', referralController.totalReferral);
 referralrouter.get('/byuser', referralController.getAllByUser);
+referralrouter.get('/recent/count', referralController.recentReferralTotal);
+referralrouter.get('/totalbygroup', referralController.totalReferralByGroup);
+referralrouter.get('/totalbyuser', referralController.totalReferralByUser);
+
 referralrouter.post('/', verifyToken, referralController.createReferral);
 referralrouter.get('/', referralController.getAllReferrals);
 referralrouter.get('/:id', verifyToken, referralController.getReferral);

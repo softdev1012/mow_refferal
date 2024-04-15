@@ -15,6 +15,7 @@ const useGroupUpdateHook = () => {
                 position: "top-right",
             });
             queryClient.invalidateQueries({queryKey: ['getAllGroups']});
+            queryClient.invalidateQueries({queryKey: ['getGroupTotals']});
         },
         onError: (error: any) => {
             toast.error(`Error: ${error?.response?.data?.message}`, {

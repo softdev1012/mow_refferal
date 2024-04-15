@@ -46,3 +46,21 @@ export const getAllReferralsByUser = async (user_id?: string) => {
   const response = await instance.get(`${baseUrl}` + "/byuser", {params: params});
   return response.data;
 }
+
+export const fetchRecentReferralTotals = async () => {
+  const url = baseUrl + "recent/count";
+  const response = await instance.get(url);
+  return response.data;
+};
+
+export const fetchReferralTotalByGroup = async () => {
+  const url = baseUrl + "totalbygroup";
+  const response = await instance.get(url);
+  return response.data;
+};
+
+export const fetchReferralTotalByUser = async () => {
+  const url = baseUrl + "totalbyuser";
+  const response = await instance.get(url);
+  return response.data;
+};

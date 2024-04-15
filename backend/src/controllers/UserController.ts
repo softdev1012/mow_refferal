@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { UserGroupRepository, UserRepository } from '../repositories';
 import { UserService } from '../service';
 import { Roles } from '../enums/role.enums';
+import { getRecentMonths, getStartAndEndDateFromMonthStr } from '../utils/utils';
 
 export async function createUser(req: Request, res: Response, next: NextFunction) {
     try {  
@@ -124,4 +125,27 @@ export async function passwordResetUser(req: Request, res: Response, next: NextF
     } catch (error) {
         next(error);
   }
+}
+
+
+export async function recentMemberTotal(req: Request, res: Response, next: NextFunction) {
+    
+    try {
+        
+        const months = getRecentMonths(5);
+        const counts: number[] = [];
+        for (var i in months) {
+            const {startDate, endDate} = getStartAndEndDateFromMonthStr(months[i]);
+            const cnt = await UserRepository.count({
+                createdAt: {
+                    $gte: startDate,
+                    $lt: endDate
+                }
+            });
+            counts.push(cnt);
+        }
+        res.status(200).send({months: months, counts: counts});
+    } catch (error) {
+        next(error);
+    }
 }

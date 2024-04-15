@@ -16,6 +16,7 @@ const useReferralDeleteHook = () => {
                 position: "top-right",
             });
             queryClient.invalidateQueries({queryKey: ['getAllReferrals']});
+            queryClient.invalidateQueries({queryKey: ['getReferralTotals']});
         },
         onError: (error: any) => {
             toast.error(`Error: ${error?.response?.data?.message}`, {

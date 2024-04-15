@@ -39,9 +39,9 @@ class GroupRepository {
         return Group.findByIdAndUpdate(id, { $inc: { [fieldName]: inc } }, { new: true });
     }
 
-    async count(): Promise<number> {
+    async count(filter?:any): Promise<number> {
         try {
-            const totalCount = await Group.countDocuments();
+            const totalCount = await Group.countDocuments(filter);
             return totalCount;
         } catch (error) {
             console.error("Error getting total count of documents:", error);

@@ -92,3 +92,9 @@ export const fetchUserTotals = async () => {
   const response = await instance.get(url);
   return response.data;
 };
+
+export const fetchRecentMemberTotals = async () => {
+  const url = baseUrl + "recent/count";
+  const response = await instance.get(url);
+  return response.data;
+};

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { GroupRepository, MeetingRepository, UserGroupRepository, UserRepository } from '../repositories';
 import { GroupService } from '../service';
+import { getRecentMonths, getStartAndEndDateFromMonthStr } from '../utils/utils';
 
 export async function createGroup(req: Request, res: Response, next: NextFunction) {
     try {
@@ -145,6 +146,28 @@ export async function getGroupMembers(req: Request, res: Response, next: NextFun
             data: paginatedData,
             pageNumber: nextPage
         });
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function recentGroupTotal(req: Request, res: Response, next: NextFunction) {
+    
+    try {
+        
+        const months = getRecentMonths(5);
+        const counts: number[] = [];
+        for (var i in months) {
+            const {startDate, endDate} = getStartAndEndDateFromMonthStr(months[i]);
+            const cnt = await GroupRepository.count({
+                createdAt: {
+                    $gte: startDate,
+                    $lt: endDate
+                }
+            });
+            counts.push(cnt);
+        }
+        res.status(200).send({months: months, counts: counts});
     } catch (error) {
         next(error);
     }

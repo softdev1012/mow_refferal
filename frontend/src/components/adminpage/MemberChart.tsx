@@ -1,54 +1,66 @@
-import React, { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import React from 'react';
 
 import Chart from 'react-apexcharts';
+import { fetchRecentMemberTotals } from '../../services';
+
+const useGetRecentMemberTotalsHook = () => useQuery({
+    queryKey: ["getRecentMemberTotal"],
+    queryFn: async (): Promise<any> => {
+        try {
+            const data = await fetchRecentMemberTotals();
+            return data;
+        } catch (error) {
+            throw new Error('Failed to fetch recent member totals');
+        }
+    }
+  });
 
 const MemberChart: React.FC = () => {
-    useEffect(() => {
-        const options = {
-            series: [{
-                name: "Desktops",
-                data: [41,  51, 49, 69,  148]
-            }],
-            chart: {
-                height: 350,
-                type: 'line',
-                zoom: {
-                    enabled: false
-                }
-            },
-            dataLabels: {
+    const {data: memberRecent, isLoading, isError} = useGetRecentMemberTotalsHook();
+    if (isLoading) {
+        return <div>Loading...</div>; // Show loading indicator
+    }
+    if (isError) {
+        return <div>Error: Failed to fetch data</div>; // Show error message
+    }
+    const options: any = {
+        chart: {
+            id: "chart_member",
+            height: 350,
+            type: 'line',
+            zoom: {
                 enabled: false
-            },
-            stroke: {
-                curve: 'straight'
-            },
-            title: {
-                text: 'New Members',
-                align: 'left'
-            },
-            grid: {
-                row: {
-                    colors: ['#f3f3f3', 'transparent'],
-                    opacity: 0.5
-                },
-            },
-            xaxis: {
-                categories: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'],
             }
-        };
-
-        const chart_member = new ApexCharts(document.querySelector("#chart_member"), options);
-        chart_member.render();
-
-        // Cleanup function
-        return () => {
-            chart_member.destroy();
-        };
-    }, []);
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            curve: 'straight'
+        },
+        title: {
+            text: 'New Members',
+            align: 'left'
+        },
+        grid: {
+            row: {
+                colors: ['#f3f3f3', 'transparent'],
+                opacity: 0.5
+            },
+        },
+        xaxis: {
+            categories: memberRecent?.months,
+        },
+    };
+    const series = [{
+        name: "Members",
+        data: memberRecent?.counts
+    }];
 
     return (
         <div id="chart_member">
-             <Chart options={{}} series={[]} type="line" height={350} />
+             <Chart options={options} series={series} type="line" height={350} />
         </div>
     );
 };

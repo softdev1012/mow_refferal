@@ -53,3 +53,9 @@ export const fetchGroupMembers = async (_id: string, page: number, limit: number
   const response = await instance.get(`${baseUrl}${_id}` + "/members", {params: { page, limit }});
   return response.data;
 };
+
+export const fetchRecentGroupTotals = async () => {
+  const url = baseUrl + "recent/count";
+  const response = await instance.get(url);
+  return response.data;
+};

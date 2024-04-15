@@ -16,7 +16,7 @@ const Transfer: React.FC = () => {
           <Button
             variant="contained"
             sx={{ width: "100%", height: "100%", bgcolor: "#C1FF72" }}
-            onClick={() => onFunc('/user/dashboard')} // Fix: Pass a function reference
+            onClick={() => onFunc('/users')} // Fix: Pass a function reference
           >
           </Button>
         </Box>
@@ -24,7 +24,7 @@ const Transfer: React.FC = () => {
           <Button
             variant="contained"
             sx={{ width: "100%", height: "100%", bgcolor: "#FED5D5" }}
-            onClick={() => onFunc('/referral/dashboard')}
+            onClick={() => onFunc('/referrals')}
           ></Button>
         </Box>
         <Box sx={{ width: "15rem", height: "3rem" }}>
@@ -38,14 +38,14 @@ const Transfer: React.FC = () => {
           <Button
             variant="contained"
             sx={{ width: "100%", height: "100%", bgcolor:"#FFDE59" }}
-            onClick={() => onFunc('/owner/dashboard')}
+            onClick={() => onFunc('/owners')}
           ></Button>
         </Box>
         <Box sx={{ width: "15rem", height: "3rem" }}>
           <Button
             variant="contained"
             sx={{ width: "100%", height: "100%", bgcolor: "#D85BA8" }}
-            onClick={() => onFunc('/meeting')}
+            onClick={() => onFunc('/meetings')}
           ></Button>
         </Box>
       </Box>

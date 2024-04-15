@@ -6,3 +6,4 @@ export { default as useReferralListHook } from './useReferralListHook';
 export { default as useReferralCreateModalHook } from './useReferralCreateModalHook';
 export { default as useReferralEditModalHook } from './useReferralEditModalHook';
 export { default as useReferralUpdateHook } from './useReferralUpdateHook';
+export { default as useReferralTotalHook } from './useReferralTotalHook';

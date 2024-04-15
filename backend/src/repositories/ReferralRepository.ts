@@ -1,7 +1,7 @@
 
 import mongoose from 'mongoose';
 import Referral from '../models/Referral';
-import { IReferral } from '../types/referral';
+import { IPriceSumByGroup, IPriceSumBySenderAndGroup, IReferral } from '../types/referral';
 
 class ReferralRepository {
     async create(referralData: IReferral): Promise<IReferral> {
@@ -74,6 +74,49 @@ class ReferralRepository {
             ]
         };
         return Referral.find(query).populate('group').populate('sender').populate('receiver').lean();
+    }
+
+    async sumPriceBySenderAndGroup(): Promise<IPriceSumBySenderAndGroup[]> {
+        try {
+            const result = await Referral.aggregate<IPriceSumBySenderAndGroup>([
+                {
+                    $match: {payStatus: true}
+                },
+              {
+                $group: {
+                  _id: {
+                    sender: '$sender',
+                    group: '$group'
+                  },
+                  totalPrice: { $sum: '$price' }
+                }
+              }
+            ]);
+            return result;
+          } catch (error) {
+            throw new Error('Error summing price by sender and group');
+          }
+    }
+
+    async sumPriceByGroup(): Promise<IPriceSumByGroup[]> {
+        try {
+            const result = await Referral.aggregate<IPriceSumByGroup>([
+              {  
+                $match: {payStatus: true}
+              },
+              {
+                $group: {
+                  _id: {
+                    group: '$group'
+                  },
+                  totalPrice: { $sum: '$price' }
+                }
+              }
+            ]);
+            return result;
+          } catch (error) {
+            throw new Error('Error summing price by sender and group');
+          }
     }
 
 }

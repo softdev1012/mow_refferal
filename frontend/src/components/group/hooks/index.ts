@@ -6,3 +6,4 @@ export { default as useGroupListHook } from './useGroupListHook';
 export { default as useGroupJoinHook } from './useGroupJoinHook';
 export { default as useGroupModalHook } from './useGroupModalHook';
 export { default as useGroupUpdateHook } from './useGroupUpdateHook';
+export { default as useGroupTotalHook } from './useGroupTotalHook';

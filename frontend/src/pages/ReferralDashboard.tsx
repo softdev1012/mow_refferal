@@ -5,28 +5,11 @@ import MainPage from "../components/mainpage/MainPage";
 import Container from "@mui/material/Container";
 import Counter from "../components/mainpage/Counter";
 import { MainHeader } from "../components/mainpage";
-import { ConfirmModal, ReferralList, ReferralEditModal } from "../components/referral";
-import { useEffect, useState } from "react";
-import { fetchReferralTotals } from "../services";
+import { ConfirmModal, ReferralList, ReferralEditModal, useReferralTotalHook } from "../components/referral";
 
 const ReferralDashboard: React.FC = () => {
-  const [totReferral, setTotReferral] = useState("0");
-  const [totClosedReferral, setTotClosedReferral] = useState("0");
-  const [totUnclosedReferral, setTotUnclosedReferral] = useState("0");
-  const fetchTotalNumber = async () => {
-    try {
-        const response =  await fetchReferralTotals();
-        setTotReferral(response.totReferral);
-        setTotClosedReferral(response.totClosedReferral);
-        setTotUnclosedReferral(response.totUnclosedReferral);
-    } catch (error) {
-        console.error("Error fetching owners:", error);
-    }
-};
-useEffect(() => {
-    fetchTotalNumber();
-}, []);
-const totValues = [totReferral, totClosedReferral, totUnclosedReferral];
+  const {data: totals} = useReferralTotalHook();
+const totValues = [totals?.totReferral, totals?.totClosedReferral, totals?.totUnclosedReferral];
   return (
     <>
       <ResponsiveAppBar />

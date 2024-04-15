@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import ReferralRepository from '../repositories/ReferralRepository';
 import { ReferralService } from '../service';
-import { UserGroupRepository } from '../repositories';
+import { GroupRepository, UserGroupRepository, UserRepository } from '../repositories';
+import { getRecentMonths, getStartAndEndDateFromMonthStr } from '../utils/utils';
 
 
 export async function createReferral(req: Request, res: Response, next: NextFunction) {
@@ -98,6 +99,59 @@ export async function getAllByUser(req: Request, res: Response, next: NextFuncti
         }
         const referrals = await ReferralRepository.findByUser(user_id);
         res.status(200).send(referrals);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function recentReferralTotal(req: Request, res: Response, next: NextFunction) {
+    try {
+        
+        const months = getRecentMonths(5);
+        const counts: number[] = [];
+        for (var i in months) {
+            const {startDate, endDate} = getStartAndEndDateFromMonthStr(months[i]);
+            const cnt = await ReferralRepository.count({
+                createdAt: {
+                    $gte: startDate,
+                    $lt: endDate
+                }
+            });
+            counts.push(cnt);
+        }
+        res.status(200).send({months: months, counts: counts});
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function totalReferralByGroup(req: Request, res: Response, next: NextFunction) {
+    try {
+        const data = await ReferralRepository.sumPriceByGroup();
+        let result = [];
+        for (let i in data) {
+            const groupId = data[i]?._id?.group?.toString();
+            const group = await GroupRepository.findById(groupId);
+            result.push({totalPrice: data[i]?.totalPrice, group: group?group.name: ""});            
+        }
+        res.status(200).send(result);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function totalReferralByUser(req: Request, res: Response, next: NextFunction) {
+    try {
+        const data = await ReferralRepository.sumPriceBySenderAndGroup();
+        let result = [];
+        for (let i in data) {
+            const groupId = data[i]?._id?.group?.toString();
+            const userId = data[i]?._id?.sender?.toString();
+            const group = await GroupRepository.findById(groupId);
+            const sender = await UserRepository.findById(userId);
+            result.push({totalPrice: data[i]?.totalPrice, group: group?group.name: "", user: sender?sender.name: ""});    
+        }
+        res.status(200).send(result);
     } catch (error) {
         next(error);
     }
