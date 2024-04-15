@@ -71,7 +71,7 @@ export async function updateOwner(req: Request, res: Response, next: NextFunctio
             const data = {
                 group_id: req.body.group,
                 clanStatus: req.body.clanStatus,
-                seat: req.body.seat,
+                seat: "Owner",
                 user_id: user._id
             }
             await UserGroupRepository.deleteByUser(user._id)
@@ -86,6 +86,7 @@ export async function updateOwner(req: Request, res: Response, next: NextFunctio
 export async function deleteOwner(req: Request, res: Response, next: NextFunction) {
     try {
         const user = await UserRepository.delete(req.params.id);
+        await UserGroupRepository.deleteByUser(req.params.id);
         if (!user) {
             return res.status(404).send({ message: 'User not found' });
         }

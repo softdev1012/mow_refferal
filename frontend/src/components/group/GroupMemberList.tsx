@@ -36,8 +36,7 @@ const GroupMemberList: React.FC = () => {
     );
   };
 
-  const [page, setPage] = React.useState<number>(1);
-  const { data: members } = useGroupMemberListHook(groupId, page);
+  const { data: members } = useGroupMemberListHook(groupId);
 
   const columns: GridColDef[] = [
     {
@@ -98,7 +97,7 @@ const GroupMemberList: React.FC = () => {
     },
   ];
 
-  const rows = members?.data.map((member: IMember) => ({
+  const rows = members?.map((member: IMember) => ({
     id: member._id,
     user_id: member.user_id?._id,
     name: member.user_id?.name,
@@ -107,6 +106,7 @@ const GroupMemberList: React.FC = () => {
     phone: member.user_id?.phone,
     email: member.user_id?.email,
     clan: member.group_id?.name,
+    seat: member?.seat,
   }))||[];
   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
     items: [],
@@ -124,7 +124,7 @@ const GroupMemberList: React.FC = () => {
         control={<Switch />}
         label="Ignore diacritics"
       />
-      <div style={{ height: 500, width: "100%" }}>
+      <div style={{ height: 600, width: "100%", paddingBottom: 20}}>
         <DataGrid
           key={ignoreDiacritics.toString()}
           rows={rows}
@@ -139,22 +139,6 @@ const GroupMemberList: React.FC = () => {
           ignoreDiacritics={ignoreDiacritics}
           rowHeight={90}
         />
-      </div>
-      <div className="flex justify-between mt-4" aria-label="Table navigation">
-        <button
-          disabled={page === 1}
-          onClick={() => setPage(page - 1)}
-          className="p-2 text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-        >
-          Previous
-        </button>
-        <button
-          onClick={() => setPage(page + 1)}
-        //   disabled={!users.pageNumber}
-          className="p-2 text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-        >
-          Next
-        </button>
       </div>
     </div>
   );

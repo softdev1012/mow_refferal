@@ -2,14 +2,14 @@ import {
     useQuery,
   } from "@tanstack/react-query";
   import { fetchGroupMembers } from "../../../services/GroupService";
-  import { IPaginatedGroupMembers } from "../../../types/group";
+  import { IMember } from "../../../types/group";
   
-  const useGroupMemberListHook = (group_id: string, page: number = 1) => {
-        const queryKey = ["getAllGroupMembers", group_id, page];
+  const useGroupMemberListHook = (group_id: string) => {
+        const queryKey = ["getAllGroupMembers", group_id];
         return useQuery({
             queryKey,
-            queryFn: async (): Promise<IPaginatedGroupMembers> =>
-            await fetchGroupMembers(group_id, page),
+            queryFn: async (): Promise<IMember[]> =>
+            await fetchGroupMembers(group_id, 'MEMBER'),
         });
     }
   

@@ -1,18 +1,19 @@
 import Modal from "react-modal";
-// import OutsideClickHandler from "react-outside-click-handler";
+import OutsideClickHandler from "react-outside-click-handler";
 import { BaseSelectField, BaseToogle } from "../common";
 import { useUserModalHook } from "./hooks";
 import { changeModalStatus } from "../../store";
 
 import { ModalStatus } from "../../types";
-import { Box, Grid, TextField } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
-import { IGroup } from "../../types/group";
-import { fetchGroups } from "../../services";
+import { IGroup, IMember } from "../../types/group";
+import { fetchGroupMembers, fetchGroups } from "../../services";
 
 const UserModal: React.FC = () => {
-  const { isOpen, register, handleSubmit, onSubmit, dispatch, errors } = useUserModalHook();
+  const { isOpen, register, handleSubmit, reset, onSubmit, dispatch, errors , editableuser} = useUserModalHook();
   const [groups, setGroups] = useState<IGroup[]>();
+  const [seats, setSeats] = useState<any[]>();
   const fetchGroupList = async () => {
     try {
       const response = await fetchGroups(1, 100000000);
@@ -23,7 +24,27 @@ const UserModal: React.FC = () => {
   }
   useEffect(() => {
     fetchGroupList();
-  }, []);
+    if (editableuser && editableuser.group) {
+      fetchSeatList(editableuser.group);
+    }
+  }, [editableuser]);
+  const fetchSeatList = async (group_id: string) => {
+    try {
+      const response = await fetchGroupMembers(group_id, "UNSEAT");
+      const data = response && response.map((seat: IMember) => ({
+        _id: seat.seat,
+        name: seat.seat
+      }));
+      setSeats(data) ;
+      reset({seat: editableuser.seat});
+    } catch (error) {
+      console.error("Error fetching groups:", error);
+    }
+  }
+
+  const handleGroupChange = (group_id: string) => {
+    fetchSeatList(group_id);
+  };
   return (
     <Modal
       isOpen={isOpen}
@@ -38,7 +59,7 @@ const UserModal: React.FC = () => {
         },
       }}
     >
-      {/* <OutsideClickHandler
+      <OutsideClickHandler
         onOutsideClick={() =>
           dispatch(
             changeModalStatus({
@@ -47,7 +68,7 @@ const UserModal: React.FC = () => {
             })
           )
         }
-      > */}
+      >
         <form className="mx-auto" onSubmit={handleSubmit(onSubmit)}>
           <button
             type="button"
@@ -84,15 +105,17 @@ const UserModal: React.FC = () => {
                   register={register}
                   error={errors.group?.message}
                   options={groups? groups : []}
+                  onChange = {handleGroupChange}
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  id="seat"
-                  label="Group Seat"
-                  {...register("seat")}
-                  autoComplete="seat"
+                <BaseSelectField
+                  _id="seat"
+                  placeholder="Select Seat"
+                  label="Seat"
+                  register={register}
+                  error={errors.seat?.message}
+                  options={seats? seats : []}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -122,7 +145,7 @@ const UserModal: React.FC = () => {
             </button>
           </div>
         </form>
-      {/* </OutsideClickHandler> */}
+      </OutsideClickHandler>
     </Modal>
   );
 };

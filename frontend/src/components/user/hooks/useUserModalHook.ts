@@ -25,22 +25,6 @@ const useUserModalHook = () => {
         clan: z.any(),
         clanStatus: z.boolean(),
         profileStatus: z.boolean(),
-        firstName: z.string(),
-        lastName: z.string(),
-        phone: z.string(),
-        city: z.string(),
-        street: z.string(),
-        zipcode: z.string(),
-        email: z.string(),
-        password: z.string(),
-        confirmpassword: z.string(),
-        businessName: z.string(),
-        businessPhone: z.string(),
-        businessEmail: z.string(),
-        businessWebsite: z.string(),
-        googleLink: z.string(),
-        profilePhoto: z.string(),
-        businessLogo: z.string(),
         group: z.string(),
         seat: z.string(),
     });
@@ -52,22 +36,6 @@ const useUserModalHook = () => {
       clan: "",
       clanStatus: false,
       profileStatus: false,
-      firstName: "",
-      lastName: "",
-      phone: "",
-      city: "",
-      street: "",
-      zipcode: "",
-      email: "",
-      password: "",
-      confirmpassword: "",
-      businessName: "",
-      businessPhone: "",
-      businessEmail: "",
-      businessWebsite: "",
-      googleLink: "",
-      profilePhoto: "",
-      businessLogo: "",
       group: "",
       seat: "",
     }
@@ -86,22 +54,6 @@ const useUserModalHook = () => {
             clan: editableuser.group?.name,
             clanStatus: editableuser.clanStatus,
             profileStatus: editableuser.profileStatus,
-            firstName: editableuser.firstName,
-            lastName: editableuser.lastName,
-            phone: editableuser.phone,
-            city: editableuser.city,
-            street: editableuser.street,
-            zipcode: editableuser.zipcode,
-            email: editableuser.email,
-            password: editableuser.password,
-            confirmpassword: editableuser.confirmpassword,
-            businessName: editableuser.businessName,
-            businessPhone: editableuser.businessName,
-            businessEmail: editableuser.businessEmail,
-            businessWebsite: editableuser.businessWebsite,
-            googleLink: editableuser.googleLink,
-            profilePhoto: editableuser.profilePhoto,
-            businessLogo: editableuser.businessLogo,
             group: editableuser.group,
             seat: editableuser.seat,
           });
@@ -118,7 +70,7 @@ const useUserModalHook = () => {
           );
           reset(defaultValues);
         };
-    return {isOpen, register, handleSubmit, onSubmit, dispatch, errors}
+    return {isOpen, register, handleSubmit, reset, onSubmit, dispatch, errors, editableuser}
 }
 
 export default useUserModalHook;

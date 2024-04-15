@@ -48,6 +48,10 @@ class UserGroupRepository {
     async deleteByUser(userId:string | null) {
         return UserGroup.deleteMany({ user_id: userId});
     }
+    async deleteByGroup(groupId:string | null) {
+        return UserGroup.deleteMany({ group_id: groupId});
+    }
+
 
     async count(filter?:any): Promise<number> {
         try {

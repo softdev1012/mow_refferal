@@ -118,10 +118,7 @@ const UserViewSingleGroup: React.FC = () => {
                 Owner Message
               </Typography>
               <Typography>
-                Come join the best MOW clan in the country, check out our stats,
-                give me a call and talk about the opportunity here. Our group is
-                one of the top performers in the entire country. We have plenty
-                of seats left.
+                {groupInfo?.message}
               </Typography>
             </Grid>
           </Grid>

@@ -88,6 +88,7 @@ export async function updateUser(req: Request, res: Response, next: NextFunction
 export async function deleteUser(req: Request, res: Response, next: NextFunction) {
     try {
         const user = await UserRepository.delete(req.params.id);
+        await UserGroupRepository.deleteByUser(req.params.id);
         if (!user) {
             return res.status(404).send({ message: 'User not found' });
         }

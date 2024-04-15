@@ -10,8 +10,7 @@ import { IGroup } from "../../types/group";
 import { fetchGroups } from "../../services";
 
 const OwnerModal: React.FC = () => {
-  const { isOpen, register, handleSubmit, onSubmit, dispatch, errors } =
-    useOwnerModalHook();
+  const { isOpen, register, handleSubmit, onSubmit, dispatch, errors } = useOwnerModalHook();
   const [groups, setGroups] = useState<IGroup[]>();
   const fetchGroupList = async () => {
     try {
@@ -72,7 +71,7 @@ const OwnerModal: React.FC = () => {
             options={groups? groups : []}
           />
           <div className="flex items-start mb-5">
-            Clan status:&nbsp;<BaseToogle register={register} status={"clanstatus"}/>
+            Clan status:&nbsp;<BaseToogle register={register} status={"clanStatus"}/>
           </div>
           <div className="flex items-start mb-5">
             Profile Status:&nbsp; <BaseToogle register={register} status={"profileStatus"} />

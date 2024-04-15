@@ -90,6 +90,9 @@ class ReferralRepository {
                   },
                   totalPrice: { $sum: '$price' }
                 }
+              },
+              {
+                $sort: { totalPrice: -1 }
               }
             ]);
             return result;
@@ -111,6 +114,9 @@ class ReferralRepository {
                   },
                   totalPrice: { $sum: '$price' }
                 }
+              },
+              {
+                $sort: { totalPrice: -1 }
               }
             ]);
             return result;

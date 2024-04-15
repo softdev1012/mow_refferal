@@ -105,13 +105,13 @@ const SeatList: React.FC = () => {
     },
   ];
 
-  const rows = seats && seats.map((seat: IMember) => ({
+  const rows = seats ? seats.map((seat: IMember) => ({
     id: seat._id,
     seat: seat.seat,
     status: seat.clanStatus,
     user: seat.user_id?.name,
     dateCreated: new Date(seat?.createdAt as string),
-  }));
+  })) : [];
 
   const [filterModel, setFilterModel] = useState<GridFilterModel>({
     items: [],

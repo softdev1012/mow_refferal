@@ -56,7 +56,7 @@ function ResponsiveAppBar() {
         {name: "Users", url: "/users"},
         {name: "Owners", url: "/owners"},
       ]);
-    } else if (hasRole("ADMIN", roles)) {
+    } else if (hasRole("OWNER", roles)) {
       setPages([
         {name: "Groups", url: "/user/group"},
         {name: "Meetings", url: "/user/meeting"}

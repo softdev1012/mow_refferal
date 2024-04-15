@@ -73,6 +73,7 @@ export async function updateGroup(req: Request, res: Response, next: NextFunctio
 export async function deleteGroup(req: Request, res: Response, next: NextFunction) {
     try {
         const group = await GroupRepository.delete(req.params.id);
+        await UserGroupRepository.deleteByGroup(req.params.id);
         if (!group) {
             return res.status(404).send({ message: 'Group not found' });
         }
