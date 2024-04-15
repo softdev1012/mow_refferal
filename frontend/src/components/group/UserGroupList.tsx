@@ -19,6 +19,7 @@ import { fetchOwners } from "../../services";
 import { Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { IMAGE_URL } from "../../utils/constants";
+import { hasRole } from "../../utils";
 
 const UserGroupList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -90,14 +91,17 @@ const UserGroupList: React.FC = () => {
               <VisibilityIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Join Group">
-            <IconButton
-              onClick={() => handleJoinClick(params.row.id as string)}
-              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            >
-              <Diversity3Icon />
-            </IconButton>
-          </Tooltip>
+          {
+            hasRole("USER") && 
+            <Tooltip title="Join Group">
+              <IconButton
+                onClick={() => handleJoinClick(params.row.id as string)}
+                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              >
+                <Diversity3Icon />
+              </IconButton>
+            </Tooltip>
+          }
         </>
       ),
     },

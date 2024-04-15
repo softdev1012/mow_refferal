@@ -33,10 +33,11 @@ export const deleteGroup = async (_id: string) => {
   return response.data;
 };
 
-export const joinGroup = async (_id: string) => {
+export const joinGroup = async ({_id, seat}: {_id: string, seat: string}) => {
   const param = {
     userId: "",
     groupId: _id,
+    seatId: seat,
     headers: tokenHeader
   };
   const response = await instance.post(`${baseUrl + "join"}`, param);

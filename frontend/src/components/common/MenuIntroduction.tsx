@@ -38,7 +38,7 @@ const MenuIntroduction = (props: any) => {
           Change Password
         </MenuItem>
         <Divider />
-        <MenuItem onClick={createHandleMenuClick("/user/group")}>
+        {/* <MenuItem onClick={createHandleMenuClick("/user/group")}>
           User-Groups
         </MenuItem>
         <MenuItem onClick={createHandleMenuClick("/user/meeting")}>
@@ -60,7 +60,7 @@ const MenuIntroduction = (props: any) => {
         <MenuItem onClick={createHandleMenuClick("/owners")}>
           Owners
         </MenuItem>
-        <Divider />
+        <Divider /> */}
         <MenuItem onClick={logOut}>
           Log out
         </MenuItem>

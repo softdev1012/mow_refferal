@@ -48,7 +48,7 @@ function ResponsiveAppBar() {
   }, [user]);
 
   const makePages = (roles: string[]) => {
-    if (hasRole("SUPERADMIN", roles)) {
+    if (hasRole("SUPERADMIN")) {
       setPages([
         {name: "Groups", url: "/groups"},
         {name: "Meetings", url: "/meetings"},
@@ -56,12 +56,12 @@ function ResponsiveAppBar() {
         {name: "Users", url: "/users"},
         {name: "Owners", url: "/owners"},
       ]);
-    } else if (hasRole("OWNER", roles)) {
+    } else if (hasRole("OWNER")) {
       setPages([
         {name: "Groups", url: "/user/group"},
         {name: "Meetings", url: "/user/meeting"}
       ]);
-    } else if(hasRole("USER", roles)) {
+    } else if(hasRole("USER")) {
       setPages([
         {name: "Groups", url: "/user/group"},
         {name: "Meetings", url: "/user/meeting"}

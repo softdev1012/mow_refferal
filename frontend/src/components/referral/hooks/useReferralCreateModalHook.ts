@@ -18,7 +18,7 @@ const useReferralCreateModalHook = () => {
     });
 
     type ValidationSchema = z.infer<typeof validationSchema>;
-    const isOpen = modalStatus === "open" || modalStatus === "edit" ? true : false;
+    const isOpen = modalStatus === ModalStatus.OPEN ? true : false;
 
     const defaultValues = {
       price: 0,

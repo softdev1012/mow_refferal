@@ -4,7 +4,7 @@ import MainPage from "../components/mainpage/MainPage";
 // import { Box } from "@mui/material";
 import Container from '@mui/material/Container';
 import { MainHeader } from "../components/mainpage";
-import { UserGroupList } from "../components/group";
+import { JoinModal, UserGroupList } from "../components/group";
 import { ConfirmModal } from "../components/group";
 
 const UserViewGroup: React.FC = () =>{
@@ -17,7 +17,8 @@ const UserViewGroup: React.FC = () =>{
                 <UserGroupList />
             </MainPage>
         </Container>
-        <ConfirmModal index={"Group"} />  
+        <ConfirmModal index={"Group"} />
+        <JoinModal />
         </>
     );
 }

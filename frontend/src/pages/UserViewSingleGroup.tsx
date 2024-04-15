@@ -15,6 +15,7 @@ import { IGroup } from "../types/group";
 import { useEffect, useState } from "react";
 import GroupMemberList from "../components/group/GroupMemberList";
 import { ReferralCreateModal } from "../components/referral";
+// import { MemberModal } from "../components/group";
 
 const UserViewSingleGroup: React.FC = () => {
   const { id } = useParams<{ id: string}>();
@@ -127,6 +128,7 @@ const UserViewSingleGroup: React.FC = () => {
         <GroupMemberList />
       </Container>
       <ReferralCreateModal />
+      {/* <MemberModal /> */}
     </>
   );
 };

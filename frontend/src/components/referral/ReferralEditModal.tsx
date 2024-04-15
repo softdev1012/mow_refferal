@@ -82,7 +82,7 @@ const ReferralEditModal: React.FC = () => {
           />
           <div className="flex items-start mb-5">
             <div className="flex-grow">Paid Status:</div> {/* Align text to left */}
-            <div> {/* Align ImageUpload to right */}
+            <div> {}
               <BaseToogle register={register} status={"payStatus"} trueText="Paid" falseText="Unpaid"/>
             </div>
           </div>

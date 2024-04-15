@@ -7,6 +7,7 @@ import {
 } from "@mui/x-data-grid";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
+import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import OutboxIcon from '@mui/icons-material/Outbox';
@@ -17,6 +18,7 @@ import { Grid, Tooltip, Typography } from "@mui/material";
 import useGroupMemberListHook from "./hooks/useGroupMemberListHook";
 import { useNavigate, useParams } from "react-router-dom";
 import { IMember } from "../../types/group";
+import { hasRole } from "../../utils";
 
 const GroupMemberList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -31,6 +33,15 @@ const GroupMemberList: React.FC = () => {
     dispatch(
       changeModalStatus({
         modalStatus: ModalStatus.OPEN,
+        currentId: userId,
+      })
+    );
+  };
+
+  const handleEditClick = (userId: string) => {
+    dispatch(
+      changeModalStatus({
+        modalStatus: ModalStatus.EDIT,
         currentId: userId,
       })
     );
@@ -69,13 +80,41 @@ const GroupMemberList: React.FC = () => {
     { field: "rank", headerName: "Clan Rank", flex: 1,headerClassName:"custom-header"},
     { field: "seat", headerName: "Seat", flex: 1,headerClassName:"custom-header"},
     {
+      field: "clanStatus",
+      headerName: "Clan Status",
+      flex: 1,
+      headerClassName:"custom-header",
+      renderCell: (params) => (
+        <>
+          {" "}
+          <div
+            className={`h-2.5 w-2.5 rounded-full me-2 ${
+              params.value ? "bg-green-500" : "bg-red-500"
+            }`}
+          ></div>
+          <span>{params.value ? "Active" : "Inactive"}</span>
+        </>
+      ),
+    },
+    {
         field: "actions",
         headerName: "Actions",
         sortable: false,
-        width: 120,
+        width: 140,
         headerClassName:"custom-header",
         renderCell: (params) => (
           <>
+            {
+              (hasRole("OWNER") || hasRole("SUPERADMIN") ) &&
+              <Tooltip title="Edit User">
+                <IconButton
+                  onClick={() => handleEditClick(params.row.id as string)}
+                  className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                >
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
+            }
             <Tooltip title="View Member Profile">
               <IconButton
                 onClick={() => handleViewClick(params.row.user_id as string)}
@@ -103,6 +142,7 @@ const GroupMemberList: React.FC = () => {
     name: member.user_id?.name,
     businessName: member.user_id?.businessName,
     profilePhoto: member.user_id?.profilePhoto,
+    clanStatus: member.clanStatus,
     phone: member.user_id?.phone,
     email: member.user_id?.email,
     clan: member.group_id?.name,

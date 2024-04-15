@@ -36,6 +36,7 @@ export enum UserModalStatus {
     isOwner?: boolean;
     seat?: string;
     roles?: string[];
+    group?: any;
   }
   
   export interface IBaseInputFieldProps {

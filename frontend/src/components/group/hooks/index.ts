@@ -7,3 +7,5 @@ export { default as useGroupJoinHook } from './useGroupJoinHook';
 export { default as useGroupModalHook } from './useGroupModalHook';
 export { default as useGroupUpdateHook } from './useGroupUpdateHook';
 export { default as useGroupTotalHook } from './useGroupTotalHook';
+// export { default as useMemberModalHook } from './useMemberModalHook';
+export { default as useJoinModalHook } from './useJoinModalHook';

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+// import { zodResolver } from "@hookform/resolvers/zod";
 import { changeModalStatus, useAppDispatch, useAppSelector } from "../../../store";
 import { useOwnerCreateHook, useOwnerUpdateHook, useGetOwnerHook } from "."; 
 import { ModalStatus } from "../../../types";

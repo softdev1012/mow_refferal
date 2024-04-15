@@ -1,4 +1,4 @@
-import { useGroupDeleteHook, useGroupJoinHook} from ".";
+import { useGroupDeleteHook} from ".";
 import { changeModalStatus, useAppDispatch, useAppSelector } from "../../../store";
 import { ModalStatus } from "../../../types";
 
@@ -10,13 +10,11 @@ const useConfirmModalHook = () => {
     let mutation = null
     if (modalStatus == "remove") {
         mutation = useGroupDeleteHook();
-    } else if (modalStatus == "join") {
-        mutation = useGroupJoinHook();
     } else {
         mutation = useGroupDeleteHook();
     }
 
-    const isOpen = modalStatus === "remove" || modalStatus === "join" ? true : false;
+    const isOpen = modalStatus === "remove" ? true : false;
 
     const handleSubmit = async () => {
         await mutation.mutateAsync(currentId);

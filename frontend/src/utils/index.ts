@@ -5,11 +5,17 @@ export const truncateSentence = (sentence: string, maxLength: number = 30) => {
     return sentence;
 }
 
-export const hasRole = (role: string, roles: string[]) : boolean => {
+export const hasRole = (role: string) : boolean => {
+    const roles = JSON.parse(localStorage.getItem('user') as string)?.roles;
     for (var i in roles) {
       if (roles[i] === role) return true;
     }
     return false;
+}
+
+export const getUserId = () : string => {
+  const id = JSON.parse(localStorage.getItem('user') as string)?._id;
+  return id;
 }
 
 export const shorDate = (dateStr: string) : string => {

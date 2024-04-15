@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { IPaginatedUsers, IUser } from '../types/user'; 
 import instance from '../utils/axiosInstance';
 import { SERVER_URL } from '../utils/constants';
-import { useNavigate } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
 
 const baseUrl = SERVER_URL + 'api/users/';
 const tokenHeader =  {
@@ -62,6 +62,7 @@ export const signin = async (User: {email:string,password:string}) => {
 export const fetchMe = async () => {
   try{
   const response = await instance.get(SERVER_URL + "account/me", {headers: tokenHeader});
+  localStorage.setItem('user', JSON.stringify(response.data));
   return response.data;
   }catch(err){
     console.log("err",err);

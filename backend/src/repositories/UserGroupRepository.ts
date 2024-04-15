@@ -46,7 +46,7 @@ class UserGroupRepository {
     }
 
     async deleteByUser(userId:string | null) {
-        return UserGroup.deleteMany({ user_id: userId});
+        return UserGroup.updateMany({ user_id: userId}, {user_id: null});
     }
     async deleteByGroup(groupId:string | null) {
         return UserGroup.deleteMany({ group_id: groupId});
