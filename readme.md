@@ -1,4 +1,4 @@
-# Task Manager App
+# MOW Referral System
 
 A modern task management application with client and server components built with React, TypeScript, Express, and MongoDB.
 
@@ -33,25 +33,25 @@ Before you begin, ensure you have the following installed:
 
 1.  Clone the repository:
     ```bash
-    git clone https://github.com/Eagle9461/Tryhackme-assessment.git
+    git clone https://github.com/softdev1012/mow_refferal.git
     ```
 2.  Navigate to the project directory:
     ```bash
-    cd Tryhackme-assessment
+    cd mow_refferal
     ```
 3.  Install dependencies:
 
     - For the client:
 
       ```bash
-      cd task-manager-client
+      cd frontend
       yarn
       ```
 
     - For the client:
 
       ```bash
-      cd task-manager-server
+      cd cd backend
       yarn
       ```
 
@@ -60,7 +60,7 @@ Before you begin, ensure you have the following installed:
 1. Client
 
    ```bash
-   cd task-manager-client
+   cd frontend
    yarn dev
    ```
 
@@ -69,8 +69,8 @@ Before you begin, ensure you have the following installed:
 2. Server
 
    ```bash
-   cd task-manager-server
+   cd backend
    yarn dev
    ```
 
-   The server will be running at http://localhost:3001.
+   The server will be running at http://localhost:8001.
